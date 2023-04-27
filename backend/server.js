@@ -4,6 +4,7 @@ import express from "express";
 import http from "http";
 import { errorMiddleware } from "./src/middlewares/error.middleware.js";
 import { indexRouter } from "./src/routes/index.route.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -14,6 +15,8 @@ dotenv.config();
 app.use(cors());
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use(express.static("./public/uploads"));
 

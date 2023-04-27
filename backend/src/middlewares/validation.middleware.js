@@ -1,4 +1,4 @@
-import HttpError from "../utils/httpError.js";
+import HttpError from "../utils/objects/HttpError.js";
 import { validationResult } from "express-validator";
 
 export const validationCheck = (req, res, next) => {

@@ -4,15 +4,8 @@ import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 
 const verifyToken = asyncHandler(async (req, res, next) => {
-  const authHeader = req.headers.authorization || req.headers.Authorization;
+  const token = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer"))
-    throw new HttpError(
-      StatusCode.UNAUTHORIZED,
-      "Not authorized. No token found."
-    );
-
-  const token = authHeader.split(" ")[1];
   if (!token)
     throw new HttpError(
       StatusCode.UNAUTHORIZED,
