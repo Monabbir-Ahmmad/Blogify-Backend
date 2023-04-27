@@ -19,6 +19,14 @@ const logoutUser = asyncHandler(async (req, res) => {
   res.send("Logged out.");
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+  const resetToken = req.params.resetToken;
+});
+
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const { refreshToken } = req.body;
 
@@ -33,5 +41,7 @@ export const authController = {
   registerUser,
   loginUser,
   logoutUser,
+  forgotPassword,
+  resetPassword,
   refreshAccessToken,
 };
