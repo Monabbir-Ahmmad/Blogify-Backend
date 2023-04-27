@@ -6,23 +6,25 @@ import { validationCheck } from "../middlewares/validation.middleware.js";
 export const commentRouter = express.Router();
 
 commentRouter
-  .route("/create")
+  .route("/")
   .post(
     commentRouteValidator.post,
     validationCheck,
     commentController.postComment
   );
 
-commentRouter.route("/:blogId").get(commentController.getBlogComments);
+commentRouter
+  .route("/reply/:commentId")
+  .get(commentController.getCommentReplies);
+
+commentRouter.route("/blog/:blogId").get(commentController.getBlogComments);
 
 commentRouter
-  .route("/update")
+  .route("/:commentId")
+  .get(commentController.getComment)
+  .delete(commentController.deleteComment)
   .put(
     commentRouteValidator.update,
     validationCheck,
     commentController.updateComment
   );
-
-commentRouter
-  .route("/delete/:commentId")
-  .delete(commentController.deleteComment);

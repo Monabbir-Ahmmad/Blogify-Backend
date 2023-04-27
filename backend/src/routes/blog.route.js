@@ -7,7 +7,7 @@ import { validationCheck } from "../middlewares/validation.middleware.js";
 export const blogRouter = express.Router();
 
 blogRouter
-  .route("/create")
+  .route("/")
   .post(
     filesUpload.single("blogCoverImage"),
     blogRouteValidator.post,
@@ -15,23 +15,23 @@ blogRouter
     blogController.createBlog
   );
 
+blogRouter.route("/").get(blogController.getBlogList);
+
 blogRouter.route("/search").get(blogController.searchBlogs);
 
 blogRouter.route("/user/:userId").get(blogController.getUserBlogList);
 
-blogRouter.route("/:blogId").get(blogController.getBlog);
+blogRouter
+  .route("/like/:blogId")
+  .post(blogRouteValidator.like, validationCheck, blogController.likeBlog);
 
 blogRouter
-  .route("/update")
+  .route("/:blogId")
+  .get(blogController.getBlog)
+  .delete(blogController.deleteBlog)
   .patch(
     filesUpload.single("blogCoverImage"),
     blogRouteValidator.update,
     validationCheck,
     blogController.updateBlog
   );
-
-blogRouter
-  .route("/like")
-  .post(blogRouteValidator.like, validationCheck, blogController.likeBlog);
-
-blogRouter.route("/delete/:blogId").delete(blogController.deleteBlog);

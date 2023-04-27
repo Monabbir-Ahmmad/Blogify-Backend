@@ -6,36 +6,35 @@ import { validationCheck } from "../middlewares/validation.middleware.js";
 
 export const userRouter = express.Router();
 
-userRouter.route("/profile/:userId").get(userController.getUserDetails);
-
-userRouter.route("/users").get(userController.getUserList);
+userRouter.route("/").get(userController.getUserList);
 
 userRouter
-  .route("/profile")
-  .patch(
-    userRouteValidator.profileUpdate,
-    validationCheck,
-    userController.updateUserProfile
-  );
-
-userRouter
-  .route("/profileImage")
+  .route("/profile-image/:userId")
   .put(
     filesUpload.single("userProfileImage"),
     userController.updateUserProfileImage
   );
 
 userRouter
-  .route("/coverImage")
+  .route("/cover-image/:userId")
   .put(
     filesUpload.single("userCoverImage"),
     userController.updateUserCoverImage
   );
 
 userRouter
-  .route("/password")
+  .route("/password/:userId")
   .put(
     userRouteValidator.passwordUpdate,
     validationCheck,
     userController.updateUserPassword
+  );
+
+userRouter
+  .route("/:userId")
+  .get(userController.getUser)
+  .patch(
+    userRouteValidator.profileUpdate,
+    validationCheck,
+    userController.updateUserProfile
   );

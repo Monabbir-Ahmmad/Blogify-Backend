@@ -20,7 +20,7 @@ authRouter
 authRouter.route("/signout").get(authController.logoutUser);
 
 authRouter
-  .route("/refreshtoken")
+  .route("/refresh-token")
   .post(
     authRouteValidator.refreshToken,
     validationCheck,

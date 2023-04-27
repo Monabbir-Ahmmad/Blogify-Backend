@@ -1,33 +1,31 @@
 import asyncHandler from "express-async-handler";
+import { getPagination } from "../utils/functions/pagination.js";
 
-// @desc Comment on blog
-// @route POST /comment/
-// @access Protected
-// @needs blogId, text, ?parentId
 const postComment = asyncHandler(async (req, res) => {
   const userId = req.user?.id;
   const { blogId, text, parentId } = req.body;
 });
 
-// @desc Get comments for blog
-// @route Get /comment/:blogId
-// @access Protected
 const getBlogComments = asyncHandler(async (req, res) => {
   const blogId = req.params.blogId;
+  const pagination = getPagination(req.query);
 });
 
-// @desc Update a comment
-// @route Put /comment/update
-// @access Protected
-// @needs commentId, text
+const getComment = asyncHandler(async (req, res) => {
+  const commentId = req.params.commentId;
+});
+
+const getCommentReplies = asyncHandler(async (req, res) => {
+  const commentId = req.params.commentId;
+  const pagination = getPagination(req.query);
+});
+
 const updateComment = asyncHandler(async (req, res) => {
   const userId = req.user?.id;
-  const { commentId, text } = req.body;
+  const commentId = req.params.commentId;
+  const { text } = req.body;
 });
 
-// @desc Delete a comment
-// @route Delete /comment/delete/:commentId
-// @access Protected
 const deleteComment = asyncHandler(async (req, res) => {
   const userId = req.user?.id;
   const commentId = req.params.commentId;
@@ -36,6 +34,8 @@ const deleteComment = asyncHandler(async (req, res) => {
 export const commentController = {
   postComment,
   getBlogComments,
+  getComment,
+  getCommentReplies,
   updateComment,
   deleteComment,
 };
