@@ -1,9 +1,9 @@
-export class SignUpReqDto {
-  constructor() {
-    this.name = "";
-    this.email = "";
-    this.password = "";
-    this.passwordConfirmation = "";
-    this.avatar = "";
+export class SignupReqDto {
+  constructor(name, email, gender, birthDate, password) {
+    this.name = name;
+    this.email = email;
+    this.gender = gender;
+    this.birthDate = birthDate;
+    this.password = password;
   }
 }

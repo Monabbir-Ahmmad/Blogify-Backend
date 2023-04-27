@@ -13,9 +13,6 @@ const getUserList = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   const userId = req.user?.id;
   const { name, email, birthDate, gender, password } = req.body;
-  const profileImage = req.file?.filename;
-  const removeProfileImage =
-    !profileImage && parseInt(req.body.removeProfileImage) === 1;
 });
 
 const updateUserPassword = asyncHandler(async (req, res) => {

@@ -5,6 +5,8 @@ import http from "http";
 import { errorMiddleware } from "./src/middlewares/error.middleware.js";
 import { indexRouter } from "./src/routes/index.route.js";
 import cookieParser from "cookie-parser";
+import seedDatabase from "./seedDatabase.js";
+import { loggerMiddleWare } from "./src/middlewares/logger.middleware.js";
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(express.static("./public/uploads"));
+
+app.use(loggerMiddleWare.consoleLogging);
 
 app.get("/", (req, res) => {
   res.send("Server is running");
@@ -36,3 +40,5 @@ server.listen(
   PORT,
   console.log(`Server started in ${process.env.NODE_ENV} mode on port: ${PORT}`)
 );
+
+seedDatabase();

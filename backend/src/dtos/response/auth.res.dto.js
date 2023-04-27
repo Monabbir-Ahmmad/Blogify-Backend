@@ -1,6 +1,14 @@
+import { tokenService } from "../../services/token.service.js";
+
 export class AuthResDto {
-  constructor(auth) {
-    this.refreshToken = auth.refreshToken;
-    this.accessToken = auth.accessToken;
+  constructor(user) {
+    this.refreshToken = tokenService.generateRefreshToken(
+      user.id,
+      user.privilege
+    );
+    this.accessToken = tokenService.generateAccessToken(
+      user.id,
+      user.privilege
+    );
   }
 }
