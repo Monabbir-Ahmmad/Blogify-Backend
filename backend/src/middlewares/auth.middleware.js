@@ -1,10 +1,10 @@
 import asyncHandler from "express-async-handler";
-import jwt from "jsonwebtoken";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
+import { tokenService } from "../services/token.service.js";
 
 const verifyToken = asyncHandler(async (req, res, next) => {
-  const token = req.headers.authorization;
+  const token = req.cookies.authorization || req.headers.authorization;
 
   if (!token)
     throw new HttpError(
@@ -13,7 +13,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
     );
 
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_ACCESS_KEY);
+    const decodedToken = tokenService.verifyAccessToken(token);
 
     req.user = {
       id: decodedToken.id,
@@ -21,12 +21,10 @@ const verifyToken = asyncHandler(async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    if (error.statusCode) throw error;
-    else
-      throw new HttpError(
-        StatusCode.UNAUTHORIZED,
-        "Not authorized. Token failed."
-      );
+    throw new HttpError(
+      StatusCode.UNAUTHORIZED,
+      "Not authorized. Token failed."
+    );
   }
 });
 

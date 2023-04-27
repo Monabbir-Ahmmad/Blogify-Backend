@@ -9,15 +9,14 @@ const notFound = (req, res, next) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-  if (!err.statusCode) {
-    console.error(err);
-  }
+  if (!err.statusCode) console.error(err);
 
   err.statusCode = err.statusCode || StatusCode.INTERNAL_SERVER_ERROR;
 
-  if (req.file) {
-    deleteUploadedFile(req.file.filename);
-  }
+  if (req.file) deleteUploadedFile(req.file.filename);
+
+  if (err.statusCode === StatusCode.UNAUTHORIZED)
+    res.clearCookie("authorization");
 
   res.status(err.statusCode).json({
     statusCode: err.statusCode,

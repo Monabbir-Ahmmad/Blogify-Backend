@@ -5,12 +5,12 @@ const signup = [
   check("name", "Name field can not be empty.").notEmpty(),
   check("email", "Invalid email address.").isEmail(),
   check("gender", "Gender field can not be empty.").notEmpty(),
-  check("dateOfBirth")
+  check("birthDate")
     .trim()
     .isDate()
     .withMessage("Date of birth must be a valid date.")
     .bail()
-    .custom((dateOfBirth) => calculateAge(dateOfBirth) >= 13)
+    .custom((birthDate) => calculateAge(birthDate) >= 13)
     .withMessage("Must be at least 13 years old."),
   check(
     "password",

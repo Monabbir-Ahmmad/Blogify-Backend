@@ -1,12 +1,13 @@
 import asyncHandler from "express-async-handler";
 import { setAuthCookie } from "../utils/functions/setCookie.js";
+import { authService } from "../services/auth.service.js";
 
 // @desc Register new user
 // @route POST /auth/signup
 // @access Public
-// @needs name, email, dateOfBirth, gender, password
+// @needs name, email, birthDate, gender, password
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, dateOfBirth, gender, password } = req.body;
+  const { name, email, birthDate, gender, password } = req.body;
 
   setAuthCookie(res, "test");
 });
@@ -36,7 +37,11 @@ const logoutUser = asyncHandler(async (req, res) => {
 const refreshAccessToken = asyncHandler(async (req, res) => {
   const { refreshToken } = req.body;
 
-  setAuthCookie(res, "test");
+  const result = await authService.refreshAccessToken(refreshToken);
+
+  setAuthCookie(res, result.accessToken);
+
+  res.send("Access token refreshed.");
 });
 
 export const authController = {
