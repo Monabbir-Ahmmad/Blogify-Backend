@@ -32,6 +32,9 @@ export const User = database.define("user", {
   profileImage: {
     type: DataTypes.STRING,
   },
+  coverImage: {
+    type: DataTypes.STRING,
+  },
 });
 
 UserType.hasMany(User, { onDelete: "CASCADE" });
