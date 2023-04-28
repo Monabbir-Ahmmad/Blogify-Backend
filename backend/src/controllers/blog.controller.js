@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { getPagination } from "../utils/functions/pagination.js";
+import { commonUtil } from "../utils/functions/common.util.js";
 
 const createBlog = asyncHandler(async (req, res) => {
   const userId = req.user?.id;
@@ -8,17 +8,17 @@ const createBlog = asyncHandler(async (req, res) => {
 });
 
 const getBlogList = asyncHandler(async (req, res) => {
-  const pagination = getPagination(req.query);
+  const pagination = commonUtil.getPagination(req.query);
 });
 
 const searchBlogs = asyncHandler(async (req, res) => {
   const { keyword = "" } = req.query;
-  const pagination = getPagination(req.query);
+  const pagination = commonUtil.getPagination(req.query);
 });
 
 const getUserBlogList = asyncHandler(async (req, res) => {
   const userId = req.params.userId;
-  const pagination = getPagination(req.query);
+  const pagination = commonUtil.getPagination(req.query);
 });
 
 const getBlog = asyncHandler(async (req, res) => {

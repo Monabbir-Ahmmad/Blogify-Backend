@@ -24,7 +24,7 @@ const removePrivateFields = (data) => {
   return data;
 };
 
-export const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
+const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
   let responseData = removePrivateFields(data);
 
   switch (req.headers.accept) {
@@ -40,4 +40,9 @@ export const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
   }
 
   res.status(statusCode).send(responseData);
+};
+
+export const responseUtil = {
+  sendContentNegotiatedResponse,
+  removePrivateFields,
 };

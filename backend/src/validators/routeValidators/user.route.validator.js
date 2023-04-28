@@ -1,5 +1,5 @@
 import { check } from "express-validator";
-import calculateAge from "../../utils/functions/calculateAge.js";
+import { commonUtil } from "../../utils/functions/common.util.js";
 
 const profileUpdate = [
   check("name", "Name field can not be empty.")
@@ -17,7 +17,7 @@ const profileUpdate = [
     .isDate()
     .withMessage("Date of birth must be a valid date.")
     .bail()
-    .custom((birthDate) => calculateAge(birthDate) >= 13)
+    .custom((birthDate) => commonUtil.calculateAge(birthDate) >= 13)
     .withMessage("Must be at least 13 years old."),
   check("password", "Password required.").notEmpty(),
 ];

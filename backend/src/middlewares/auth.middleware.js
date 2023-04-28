@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import { tokenService } from "../services/token.service.js";
+import { authUtil } from "../utils/functions/auth.util.js";
 
 const verifyToken = asyncHandler(async (req, res, next) => {
   const token = req.cookies.authorization || req.headers.authorization;
@@ -13,7 +13,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
     );
 
   try {
-    const decodedToken = tokenService.verifyAccessToken(token);
+    const decodedToken = authUtil.verifyAccessToken(token);
 
     req.user = {
       id: decodedToken.id,

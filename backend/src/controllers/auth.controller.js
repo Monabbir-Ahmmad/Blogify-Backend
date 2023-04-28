@@ -1,10 +1,10 @@
 import asyncHandler from "express-async-handler";
-import { setAuthCookie } from "../utils/functions/setCookie.js";
 import { authService } from "../services/auth.service.js";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
-import { sendContentNegotiatedResponse } from "../utils/functions/sendResponse.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { SigninReqDto } from "../dtos/request/signin.req.dto.js";
+import { authUtil } from "../utils/functions/auth.util.js";
+import { responseUtil } from "../utils/functions/response.util.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, birthDate, gender, password } = req.body;
@@ -13,9 +13,14 @@ const registerUser = asyncHandler(async (req, res) => {
     new SignupReqDto(name, email, gender, birthDate, password)
   );
 
-  setAuthCookie(res, result.accessToken);
+  authUtil.setAuthCookie(res, result.accessToken);
 
-  sendContentNegotiatedResponse(req, res, StatusCode.CREATED, result);
+  responseUtil.sendContentNegotiatedResponse(
+    req,
+    res,
+    StatusCode.CREATED,
+    result
+  );
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -23,9 +28,9 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const result = await authService.signin(new SigninReqDto(email, password));
 
-  setAuthCookie(res, result.accessToken);
+  authUtil.setAuthCookie(res, result.accessToken);
 
-  sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -46,9 +51,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
   const result = await authService.refreshAccessToken(refreshToken);
 
-  setAuthCookie(res, result.accessToken);
+  authUtil.setAuthCookie(res, result.accessToken);
 
-  sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
 export const authController = {

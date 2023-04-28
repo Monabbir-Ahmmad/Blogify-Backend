@@ -1,8 +1,8 @@
-import { tokenService } from "../../services/token.service.js";
+import { authUtil } from "../../utils/functions/auth.util.js";
 
 export class AuthResDto {
   constructor(id, privilege) {
-    this.refreshToken = tokenService.generateRefreshToken(id, privilege);
-    this.accessToken = tokenService.generateAccessToken(id, privilege);
+    this.refreshToken = authUtil.generateRefreshToken(id, privilege);
+    this.accessToken = authUtil.generateAccessToken(id, privilege);
   }
 }

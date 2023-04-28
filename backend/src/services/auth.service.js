@@ -1,18 +1,14 @@
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
-import {
-  hashPassword,
-  verifyPassword,
-} from "../utils/functions/passwordEncryption.js";
+import { authUtil } from "../utils/functions/auth.util.js";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import { tokenService } from "./token.service.js";
 
 const signup = async (signupReqDto) => {
   if (await userDB.getUserByEmail(signupReqDto.email))
     throw new HttpError(StatusCode.CONFLICT, "Email already exists.");
 
-  signupReqDto.password = await hashPassword(signupReqDto.password);
+  signupReqDto.password = await authUtil.hashPassword(signupReqDto.password);
 
   const user = await userDB.createUser(signupReqDto);
 
@@ -22,19 +18,20 @@ const signup = async (signupReqDto) => {
 const signin = async (signinReqDto) => {
   const user = await userDB.getUserByEmail(signinReqDto.email);
 
-  if (!user) throw new HttpError(StatusCode.UNAUTHORIZED, "Invalid email.");
+  if (!user)
+    throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong email address.");
 
-  if (!(await verifyPassword(signinReqDto.password, user.password)))
-    throw new HttpError(StatusCode.UNAUTHORIZED, "Password is incorrect.");
+  if (!(await authUtil.verifyPassword(signinReqDto.password, user._password)))
+    throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong password.");
 
   return new AuthResDto(user.id, user.privilege);
 };
 
 const refreshAccessToken = async (refreshToken) => {
   try {
-    const decodedToken = tokenService.verifyRefreshToken(refreshToken);
+    const decodedToken = authUtil.verifyRefreshToken(refreshToken);
 
-    const accessToken = tokenService.generateAccessToken(
+    const accessToken = authUtil.generateAccessToken(
       decodedToken.id,
       decodedToken.privilege
     );

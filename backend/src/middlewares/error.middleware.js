@@ -1,4 +1,4 @@
-import deleteUploadedFile from "../utils/functions/deleteUploadedFile.js";
+import { commonUtil } from "../utils/functions/common.util.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 
 const notFound = (req, res, next) => {
@@ -13,7 +13,7 @@ const errorHandler = (err, req, res, next) => {
 
   err.statusCode = err.statusCode || StatusCode.INTERNAL_SERVER_ERROR;
 
-  if (req.file) deleteUploadedFile(req.file.filename);
+  if (req.file) commonUtil.deleteUploadedFile(req.file.filename);
 
   if (err.statusCode === StatusCode.UNAUTHORIZED)
     res.clearCookie("authorization");

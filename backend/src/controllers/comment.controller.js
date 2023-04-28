@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import { getPagination } from "../utils/functions/pagination.js";
+import { commonUtil } from "../utils/functions/common.util.js";
 
 const postComment = asyncHandler(async (req, res) => {
   const userId = req.user?.id;
@@ -8,7 +8,7 @@ const postComment = asyncHandler(async (req, res) => {
 
 const getBlogComments = asyncHandler(async (req, res) => {
   const blogId = req.params.blogId;
-  const pagination = getPagination(req.query);
+  const pagination = commonUtil.getPagination(req.query);
 });
 
 const getComment = asyncHandler(async (req, res) => {
@@ -17,7 +17,7 @@ const getComment = asyncHandler(async (req, res) => {
 
 const getCommentReplies = asyncHandler(async (req, res) => {
   const commentId = req.params.commentId;
-  const pagination = getPagination(req.query);
+  const pagination = commonUtil.getPagination(req.query);
 });
 
 const updateComment = asyncHandler(async (req, res) => {
