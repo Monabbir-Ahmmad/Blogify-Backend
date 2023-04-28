@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import { setAuthCookie } from "../utils/functions/setCookie.js";
 import { authService } from "../services/auth.service.js";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
-import { sendContentNegotiatedResponse } from "../utils/functions/contentNegotiation.js";
+import { sendContentNegotiatedResponse } from "../utils/functions/sendResponse.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { SigninReqDto } from "../dtos/request/signin.req.dto.js";
 

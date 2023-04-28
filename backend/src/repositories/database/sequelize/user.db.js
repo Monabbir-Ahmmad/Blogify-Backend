@@ -11,9 +11,18 @@ const createUser = async (signupReqDto) => {
 
   await user.setUserType(userType);
 
-  user.userType = userType;
+  if (!user) return null;
 
-  return new UserResDto(user);
+  return new UserResDto(
+    user.id,
+    user.name,
+    user.email,
+    user.gender,
+    user.birthDate,
+    userType.privilege,
+    user.profileImage,
+    user.coverImage
+  );
 };
 
 const getUserByEmail = async (email) => {
@@ -25,7 +34,19 @@ const getUserByEmail = async (email) => {
     },
   });
 
-  return user ? new UserResDto(user) : null;
+  if (!user) return null;
+
+  return new UserResDto(
+    user.id,
+    user.name,
+    user.email,
+    user.gender,
+    user.birthDate,
+    user.userType.privilege,
+    user.profileImage,
+    user.coverImage,
+    user.password
+  );
 };
 
 const getUserById = async (id) => {
@@ -36,7 +57,69 @@ const getUserById = async (id) => {
     },
   });
 
-  return new UserResDto(user);
+  if (!user) return null;
+
+  return new UserResDto(
+    user.id,
+    user.name,
+    user.email,
+    user.gender,
+    user.birthDate,
+    user.userType.privilege,
+    user.profileImage,
+    user.coverImage,
+    user.password
+  );
 };
 
-export const userDB = { createUser, getUserByEmail, getUserById };
+const updateUser = async (userProfileUpdateReqDto) => {
+  const [updatedRows] = await User.update(userProfileUpdateReqDto, {
+    where: { id: userProfileUpdateReqDto.id },
+  });
+
+  return updatedRows === 1;
+};
+
+const updatePassword = async (userId, password) => {
+  const [updatedRows] = await User.update(
+    { password },
+    { where: { id: userId } }
+  );
+
+  return updatedRows === 1;
+};
+
+const updateProfileImage = async (userId, profileImage) => {
+  const [updatedRows] = await User.update(
+    { profileImage },
+    { where: { id: userId } }
+  );
+
+  return updatedRows === 1;
+};
+
+const updateCoverImage = async (userId, coverImage) => {
+  const [updatedRows] = await User.update(
+    { coverImage },
+    { where: { id: userId } }
+  );
+
+  return updatedRows === 1;
+};
+
+const deleteUser = async (id) => {
+  const deletedRows = await User.destroy({ where: { id } });
+
+  return deletedRows === 1;
+};
+
+export const userDB = {
+  createUser,
+  getUserByEmail,
+  getUserById,
+  updateUser,
+  updatePassword,
+  updateProfileImage,
+  updateCoverImage,
+  deleteUser,
+};

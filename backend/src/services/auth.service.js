@@ -1,6 +1,9 @@
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
-import { hashPassword } from "../utils/functions/passwordEncryption.js";
+import {
+  hashPassword,
+  verifyPassword,
+} from "../utils/functions/passwordEncryption.js";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { tokenService } from "./token.service.js";
@@ -11,11 +14,20 @@ const signup = async (signupReqDto) => {
 
   signupReqDto.password = await hashPassword(signupReqDto.password);
 
-  return await userDB.createUser(signupReqDto);
+  const user = await userDB.createUser(signupReqDto);
+
+  return new AuthResDto(user.id, user.privilege);
 };
 
 const signin = async (signinReqDto) => {
-  return new AuthResDto(2, "user");
+  const user = await userDB.getUserByEmail(signinReqDto.email);
+
+  if (!user) throw new HttpError(StatusCode.UNAUTHORIZED, "Invalid email.");
+
+  if (!(await verifyPassword(signinReqDto.password, user.password)))
+    throw new HttpError(StatusCode.UNAUTHORIZED, "Password is incorrect.");
+
+  return new AuthResDto(user.id, user.privilege);
 };
 
 const refreshAccessToken = async (refreshToken) => {
@@ -29,7 +41,7 @@ const refreshAccessToken = async (refreshToken) => {
 
     return { accessToken };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw new HttpError(StatusCode.UNAUTHORIZED, "Token failed.");
   }
 };

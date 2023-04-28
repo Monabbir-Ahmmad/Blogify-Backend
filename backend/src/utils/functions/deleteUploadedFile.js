@@ -1,17 +1,19 @@
-import { fileURLToPath } from "url";
-import fs from "node:fs";
-import path from "node:path";
+import fs from "fs/promises";
+import path from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const rootDir = process.cwd();
 
-const deleteUploadedFile = (fileName) => {
-  const fileFullPath = path.join(__dirname, "../../public/uploads", fileName);
+const deleteUploadedFile = async (fileName) => {
+  const fileFullPath = path.join(rootDir, "public", "uploads", fileName);
 
-  fs.unlink(fileFullPath, (err) => {
-    if (err) console.error(err);
-    else console.log(`${fileFullPath} was deleted`);
-  });
+  try {
+    await fs.unlink(fileFullPath);
+    console.info(`${fileFullPath} was deleted`);
+    return true;
+  } catch (err) {
+    console.error("Error while deleting file: ", err);
+    return false;
+  }
 };
 
 export default deleteUploadedFile;

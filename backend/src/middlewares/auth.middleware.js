@@ -20,7 +20,7 @@ const verifyToken = asyncHandler(async (req, res, next) => {
     };
     next();
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw new HttpError(
       StatusCode.UNAUTHORIZED,
       "Not authorized. Token failed."

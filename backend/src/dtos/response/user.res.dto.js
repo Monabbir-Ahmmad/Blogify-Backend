@@ -1,12 +1,23 @@
 export class UserResDto {
-  constructor(user) {
-    this.id = user.id;
-    this.name = user.name;
-    this.email = user.email;
-    this.gender = user.gender;
-    this.birthDate = user.birthDate;
-    this.privilage = user.userType.privilege;
-    this.profileImage = user.profileImage;
-    this.coverImage = user.coverImage;
+  constructor(
+    id,
+    name,
+    email,
+    gender,
+    birthDate,
+    privilege,
+    profileImage,
+    coverImage,
+    password
+  ) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.gender = gender;
+    this.birthDate = birthDate;
+    this.privilage = privilege;
+    this.profileImage = profileImage;
+    this.coverImage = coverImage;
+    this._password = password;
   }
 }
