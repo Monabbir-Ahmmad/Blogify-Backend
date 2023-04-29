@@ -21,7 +21,9 @@ const createUser = async (signupReqDto) => {
     user.birthDate,
     userType.privilege,
     user.profileImage,
-    user.coverImage
+    user.coverImage,
+    user.bio,
+    user.createdAt
   );
 };
 
@@ -45,6 +47,8 @@ const getUserByEmail = async (email) => {
     user.userType.privilege,
     user.profileImage,
     user.coverImage,
+    user.bio,
+    user.createdAt,
     user.password
   );
 };
@@ -68,6 +72,8 @@ const getUserById = async (id) => {
     user.userType.privilege,
     user.profileImage,
     user.coverImage,
+    user.bio,
+    user.createdAt,
     user.password
   );
 };

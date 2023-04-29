@@ -8,6 +8,8 @@ export class UserResDto {
     privilege,
     profileImage,
     coverImage,
+    bio,
+    joinDate,
     password
   ) {
     this.id = id;
@@ -18,6 +20,8 @@ export class UserResDto {
     this.privilage = privilege;
     this.profileImage = profileImage;
     this.coverImage = coverImage;
+    this.bio = bio;
+    this.joinDate = joinDate;
     this._password = password;
   }
 }

@@ -9,7 +9,7 @@ export const database = new Sequelize({
   password: process.env.DB_PASSWORD,
   dialect: process.env.DB_DIALECT,
   storage: "database.sqlite",
-  logging: false,
+  logging: true,
 });
 
 // export const database = new Sequelize({
@@ -27,7 +27,7 @@ async function connectToDatabase() {
     await database.authenticate();
     console.log("Connected to the database...");
 
-    await database.sync();
+    await database.sync({ force: false });
     console.log("Database synced...");
   } catch (error) {
     console.error("Unable to connect to the database:", error);

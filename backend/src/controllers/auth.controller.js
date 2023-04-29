@@ -7,10 +7,10 @@ import { authUtil } from "../utils/functions/auth.util.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, birthDate, gender, password } = req.body;
+  const { name, email, password, birthDate, gender, bio } = req.body;
 
   const result = await authService.signup(
-    new SignupReqDto(name, email, gender, birthDate, password)
+    new SignupReqDto(name, email, password, gender, birthDate, bio)
   );
 
   authUtil.setAuthCookie(res, result.accessToken);
@@ -40,10 +40,19 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
+
+  const result = await authService.forgotPassword(email);
+
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
   const resetToken = req.params.resetToken;
+  const { newPassword } = req.body;
+
+  const result = await authService.resetPassword(resetToken, newPassword);
+
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {

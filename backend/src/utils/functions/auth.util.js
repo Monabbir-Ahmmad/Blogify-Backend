@@ -22,12 +22,22 @@ const generateAccessToken = (id, privilege) => {
   });
 };
 
+const generateResetToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_RESET_KEY, {
+    expiresIn: process.env.JWT_RESET_EXPIRE_TIME,
+  });
+};
+
 const verifyRefreshToken = (refreshToken) => {
   return jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
 };
 
 const verifyAccessToken = (accessToken) => {
   return jwt.verify(accessToken, process.env.JWT_ACCESS_KEY);
+};
+
+const verifyResetToken = (resetToken) => {
+  return jwt.verify(resetToken, process.env.JWT_RESET_KEY);
 };
 
 const setAuthCookie = (res, token) => {
@@ -43,7 +53,9 @@ export const authUtil = {
   verifyPassword,
   generateRefreshToken,
   generateAccessToken,
+  generateResetToken,
   verifyRefreshToken,
   verifyAccessToken,
+  verifyResetToken,
   setAuthCookie,
 };
