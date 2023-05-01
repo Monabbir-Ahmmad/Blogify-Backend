@@ -34,8 +34,11 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  res.clearCookie("authorization");
-  res.send("Logged out.");
+  authUtil.clearAuthCookie(res);
+
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, {
+    message: "Logged out successfully.",
+  });
 });
 
 const forgotPassword = asyncHandler(async (req, res) => {

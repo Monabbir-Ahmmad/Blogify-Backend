@@ -48,6 +48,10 @@ const setAuthCookie = (res, token) => {
   });
 };
 
+const clearAuthCookie = (res) => {
+  res.clearCookie("authorization");
+};
+
 export const authUtil = {
   hashPassword,
   verifyPassword,
@@ -58,4 +62,5 @@ export const authUtil = {
   verifyAccessToken,
   verifyResetToken,
   setAuthCookie,
+  clearAuthCookie,
 };

@@ -39,10 +39,14 @@ const forgotPassword = async (email) => {
   await mailUtil.sendEmail({
     to: user.email,
     subject: "Password Reset Request",
-    text: mailUtil.getMailTemplate("App Name", user.name, resetToken),
+    html: mailUtil.getResetPasswordMailTemplate(
+      "App Name",
+      user.name,
+      resetToken
+    ),
   });
 
-  return { message: "Email sent." };
+  return { message: "Password reset email sent." };
 };
 
 const resetPassword = async (resetToken, newPassword) => {

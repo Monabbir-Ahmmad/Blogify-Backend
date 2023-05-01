@@ -33,7 +33,7 @@ const passwordUpdate = [
     .bail()
     .isStrongPassword()
     .withMessage(
-      "Password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+      "New password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
     ),
 ];
 

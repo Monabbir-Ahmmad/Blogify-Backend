@@ -2,17 +2,12 @@ import asyncHandler from "express-async-handler";
 import { commonUtil } from "../utils/functions/common.util.js";
 
 const createBlog = asyncHandler(async (req, res) => {
-  const userId = req.user?.id;
+  const userId = req.user.id;
   const { title, content } = req.body;
   const coverImage = req.file?.filename;
 });
 
 const getBlogList = asyncHandler(async (req, res) => {
-  const pagination = commonUtil.getPagination(req.query);
-});
-
-const searchBlogs = asyncHandler(async (req, res) => {
-  const { keyword = "" } = req.query;
   const pagination = commonUtil.getPagination(req.query);
 });
 
@@ -26,7 +21,7 @@ const getBlog = asyncHandler(async (req, res) => {
 });
 
 const updateBlog = asyncHandler(async (req, res) => {
-  const userId = req.user?.id;
+  const userId = req.user.id;
   const blogId = req.params.blogId;
   const { title, content } = req.body;
   const coverImage = req.file?.filename;
@@ -35,12 +30,12 @@ const updateBlog = asyncHandler(async (req, res) => {
 });
 
 const likeBlog = asyncHandler(async (req, res) => {
-  const userId = req.user?.id;
+  const userId = req.user.id;
   const blogId = req.params.blogId;
 });
 
 const deleteBlog = asyncHandler(async (req, res) => {
-  const userId = req.user?.id;
+  const userId = req.user.id;
   const blogId = req.params.blogId;
 });
 
@@ -52,5 +47,4 @@ export const blogController = {
   updateBlog,
   likeBlog,
   deleteBlog,
-  searchBlogs,
 };

@@ -10,14 +10,15 @@ const convertToText = (data) => {
   return data;
 };
 
-const removePrivateFields = (data) => {
-  if (Array.isArray(data)) return data.map((item) => removePrivateFields(item));
+const removePrivateOrEmptyFields = (data) => {
+  if (Array.isArray(data))
+    return data.map((item) => removePrivateOrEmptyFields(item));
 
   Object.keys(data).forEach((key) => {
-    if (key.startsWith("_")) {
+    if (key.startsWith("_") || !data[key]) {
       delete data[key];
     } else if (typeof data[key] === "object" || Array.isArray(data[key])) {
-      data[key] = removePrivateFields(data[key]);
+      data[key] = removePrivateOrEmptyFields(data[key]);
     }
   });
 
@@ -25,7 +26,7 @@ const removePrivateFields = (data) => {
 };
 
 const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
-  let responseData = removePrivateFields(data);
+  let responseData = removePrivateOrEmptyFields(data);
 
   switch (req.headers.accept) {
     case "application/html":
@@ -44,5 +45,5 @@ const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
 
 export const responseUtil = {
   sendContentNegotiatedResponse,
-  removePrivateFields,
+  removePrivateOrEmptyFields,
 };

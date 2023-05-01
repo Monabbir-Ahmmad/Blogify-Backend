@@ -78,9 +78,9 @@ const getUserById = async (id) => {
   );
 };
 
-const updateUser = async (userProfileUpdateReqDto) => {
+const updateUser = async (userId, userProfileUpdateReqDto) => {
   const [updatedRows] = await User.update(userProfileUpdateReqDto, {
-    where: { id: userProfileUpdateReqDto.id },
+    where: { id: userId },
   });
 
   return updatedRows === 1;
@@ -95,7 +95,7 @@ const updatePassword = async (userId, password) => {
   return updatedRows === 1;
 };
 
-const updateProfileImage = async (userId, profileImage) => {
+const updateProfileImage = async (userId, profileImage = null) => {
   const [updatedRows] = await User.update(
     { profileImage },
     { where: { id: userId } }
@@ -104,7 +104,7 @@ const updateProfileImage = async (userId, profileImage) => {
   return updatedRows === 1;
 };
 
-const updateCoverImage = async (userId, coverImage) => {
+const updateCoverImage = async (userId, coverImage = null) => {
   const [updatedRows] = await User.update(
     { coverImage },
     { where: { id: userId } }

@@ -1,11 +1,9 @@
 const consoleLogging = (req, res, next) => {
-  const { method, url, body, params, query } = req;
+  const { method, url, body } = req;
 
   console.log("Request: ", {
     method,
     url,
-    params,
-    query,
     body,
   });
 

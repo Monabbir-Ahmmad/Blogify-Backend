@@ -3,7 +3,7 @@
 # dependencies
 node_modules
 coverage
-public/uploads
+backend/public
 /.pnp
 .pnp.js
 

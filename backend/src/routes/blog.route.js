@@ -8,16 +8,13 @@ export const blogRouter = express.Router();
 
 blogRouter
   .route("/")
+  .get(blogController.getBlogList)
   .post(
     filesUpload.single("blogCoverImage"),
     blogRouteValidator.post,
     validationCheck,
     blogController.createBlog
   );
-
-blogRouter.route("/list").get(blogController.getBlogList);
-
-blogRouter.route("/search").get(blogController.searchBlogs);
 
 blogRouter.route("/user/:userId").get(blogController.getUserBlogList);
 
@@ -29,7 +26,7 @@ blogRouter
   .route("/:blogId")
   .get(blogController.getBlog)
   .delete(blogController.deleteBlog)
-  .patch(
+  .put(
     filesUpload.single("blogCoverImage"),
     blogRouteValidator.update,
     validationCheck,

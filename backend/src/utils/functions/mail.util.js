@@ -8,18 +8,19 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async ({ to, subject, text }) => {
+const sendEmail = async ({ to, subject, text, html }) => {
   const mailOptions = {
     from: process.env.EMAIL_ADDRESS,
     to,
     subject,
-    html: text,
+    text,
+    html,
   };
 
   await transporter.sendMail(mailOptions);
 };
 
-const getMailTemplate = (
+const getResetPasswordMailTemplate = (
   appName,
   username,
   url = "#"
@@ -39,5 +40,5 @@ const getMailTemplate = (
 
 export const mailUtil = {
   sendEmail,
-  getMailTemplate,
+  getResetPasswordMailTemplate,
 };
