@@ -1,5 +1,5 @@
 export class UserResDto {
-  constructor(
+  constructor({
     id,
     name,
     email,
@@ -9,9 +9,9 @@ export class UserResDto {
     profileImage,
     coverImage,
     bio,
-    joinDate,
-    password
-  ) {
+    createdAt,
+    password,
+  }) {
     this.id = id;
     this.name = name;
     this.email = email;
@@ -21,7 +21,7 @@ export class UserResDto {
     this.profileImage = profileImage;
     this.coverImage = coverImage;
     this.bio = bio;
-    this.joinDate = joinDate;
+    this.createdAt = createdAt;
     this._password = password;
   }
 }

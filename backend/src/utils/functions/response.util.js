@@ -26,7 +26,7 @@ const removePrivateOrEmptyFields = (data) => {
 };
 
 const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
-  let responseData = removePrivateOrEmptyFields(data);
+  let responseData = data;
 
   switch (req.headers.accept) {
     case "application/html":

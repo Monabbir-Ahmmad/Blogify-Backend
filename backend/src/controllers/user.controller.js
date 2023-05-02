@@ -25,7 +25,7 @@ const updateProfile = asyncHandler(async (req, res) => {
 
   const result = await userService.updateProfile(
     userId,
-    new UserProfileUpdateReqDto(name, email, gender, birthDate, bio),
+    new UserProfileUpdateReqDto({ name, email, gender, birthDate, bio }),
     password
   );
 

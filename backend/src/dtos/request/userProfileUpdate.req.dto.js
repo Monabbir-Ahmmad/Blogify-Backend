@@ -1,5 +1,5 @@
 export class UserProfileUpdateReqDto {
-  constructor(name, email, gender, birthDate, bio) {
+  constructor({ name, email, gender, birthDate, bio }) {
     this.name = name;
     this.email = email;
     this.gender = gender;

@@ -13,18 +13,18 @@ const createUser = async (signupReqDto) => {
 
   if (!user) return null;
 
-  return new UserResDto(
-    user.id,
-    user.name,
-    user.email,
-    user.gender,
-    user.birthDate,
-    userType.privilege,
-    user.profileImage,
-    user.coverImage,
-    user.bio,
-    user.createdAt
-  );
+  return new UserResDto({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    gender: user.gender,
+    birthDate: user.birthDate,
+    profileImage: user.profileImage,
+    coverImage: user.coverImage,
+    bio: user.bio,
+    createdAt: user.createdAt,
+    privilege: userType.privilege,
+  });
 };
 
 const getUserByEmail = async (email) => {
@@ -38,19 +38,19 @@ const getUserByEmail = async (email) => {
 
   if (!user) return null;
 
-  return new UserResDto(
-    user.id,
-    user.name,
-    user.email,
-    user.gender,
-    user.birthDate,
-    user.userType.privilege,
-    user.profileImage,
-    user.coverImage,
-    user.bio,
-    user.createdAt,
-    user.password
-  );
+  return new UserResDto({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    gender: user.gender,
+    birthDate: user.birthDate,
+    profileImage: user.profileImage,
+    coverImage: user.coverImage,
+    bio: user.bio,
+    createdAt: user.createdAt,
+    privilege: user.userType.privilege,
+    password: user.password,
+  });
 };
 
 const getUserById = async (id) => {
@@ -63,19 +63,19 @@ const getUserById = async (id) => {
 
   if (!user) return null;
 
-  return new UserResDto(
-    user.id,
-    user.name,
-    user.email,
-    user.gender,
-    user.birthDate,
-    user.userType.privilege,
-    user.profileImage,
-    user.coverImage,
-    user.bio,
-    user.createdAt,
-    user.password
-  );
+  return new UserResDto({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    gender: user.gender,
+    birthDate: user.birthDate,
+    profileImage: user.profileImage,
+    coverImage: user.coverImage,
+    bio: user.bio,
+    createdAt: user.createdAt,
+    privilege: user.userType.privilege,
+    password: user.password,
+  });
 };
 
 const updateUser = async (userId, userProfileUpdateReqDto) => {

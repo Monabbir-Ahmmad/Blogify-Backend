@@ -2,7 +2,6 @@ import asyncHandler from "express-async-handler";
 import { authService } from "../services/auth.service.js";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import { SigninReqDto } from "../dtos/request/signin.req.dto.js";
 import { authUtil } from "../utils/functions/auth.util.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
@@ -10,7 +9,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, birthDate, gender, bio } = req.body;
 
   const result = await authService.signup(
-    new SignupReqDto(name, email, password, gender, birthDate, bio)
+    new SignupReqDto({ name, email, password, gender, birthDate, bio })
   );
 
   authUtil.setAuthCookie(res, result.accessToken);
@@ -26,7 +25,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const result = await authService.signin(new SigninReqDto(email, password));
+  const result = await authService.signin(email, password);
 
   authUtil.setAuthCookie(res, result.accessToken);
 

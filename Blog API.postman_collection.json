@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "efd62149-d4f0-4d1a-85fc-5d283cfa005d",
+		"_postman_id": "bdb8fc20-6d40-44cf-ba6c-66983c74d5e5",
 		"name": "Blog API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -148,7 +148,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Test Name\",\r\n    \"email\": \"test@example.com\",\r\n    \"gender\": \"Male\",\r\n    \"birthDate\": \"2000-01-01\",\r\n    \"password\": \"12345Aa!\"\r\n}",
+									"raw": "{\r\n    \"name\": \"Test Name\",\r\n    \"email\": \"monabbir.ahmmad@gmail.com\",\r\n    \"gender\": \"Male\",\r\n    \"birthDate\": \"2000-01-01\",\r\n    \"password\": \"12345Aa!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -247,12 +247,13 @@
 									]
 								},
 								"url": {
-									"raw": "{{blogAPI}}/blog",
+									"raw": "{{blogAPI}}/blog/",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"blog"
+										"blog",
+										""
 									]
 								}
 							},
@@ -264,31 +265,31 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/1/blog",
+									"raw": "{{blogAPI}}/blog/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
-										"blog"
+										"blog",
+										"1"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Get blog by  blogId",
+							"name": "Get blog",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/1/blog",
+									"raw": "{{blogAPI}}/blog/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
-										"blog"
+										"blog",
+										"1"
 									]
 								}
 							},
@@ -300,12 +301,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/blog?limit=12&page=1",
+									"raw": "{{blogAPI}}/blog/?limit=12&page=1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"blog"
+										"blog",
+										""
 									],
 									"query": [
 										{
@@ -329,14 +331,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/1/blog/user?limit=12&page=1",
+									"raw": "{{blogAPI}}/blog/user/1?limit=12&page=1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
 										"blog",
-										"user"
+										"user",
+										"1"
 									],
 									"query": [
 										{
@@ -357,24 +359,15 @@
 							"request": {
 								"method": "POST",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"blogId\": 1\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
 								"url": {
-									"raw": "{{blogAPI}}/1/blog/like",
+									"raw": "{{blogAPI}}/blog/like/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
 										"blog",
-										"like"
+										"like",
+										"1"
 									]
 								}
 							},
@@ -421,13 +414,13 @@
 									]
 								},
 								"url": {
-									"raw": "{{blogAPI}}/1/blog",
+									"raw": "{{blogAPI}}/blog/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
-										"blog"
+										"blog",
+										"1"
 									]
 								}
 							},
@@ -444,13 +437,13 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/1/comment",
+									"raw": "{{blogAPI}}/comment/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
-										"comment"
+										"comment",
+										"1"
 									]
 								}
 							},
@@ -462,14 +455,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/1/blog/comment",
+									"raw": "{{blogAPI}}/blog/comment/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
 										"blog",
-										"comment"
+										"comment",
+										"1"
 									]
 								}
 							},
@@ -481,14 +474,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/1/comment/reply",
+									"raw": "{{blogAPI}}/comment/reply/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
 										"comment",
-										"reply"
+										"reply",
+										"1"
 									]
 								}
 							},
@@ -500,13 +493,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/1/comment",
+									"raw": "{{blogAPI}}/comment/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
-										"comment"
+										"comment",
+										"1"
 									]
 								}
 							},
@@ -527,12 +520,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{blogAPI}}/comment",
+									"raw": "{{blogAPI}}/comment/",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"comment"
+										"comment",
+										""
 									]
 								}
 							},
@@ -553,13 +547,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{blogAPI}}/1/comment",
+									"raw": "{{blogAPI}}/comment/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
-										"comment"
+										"comment",
+										"1"
 									]
 								}
 							},
@@ -591,14 +585,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{blogAPI}}/1/cover-image/user",
+									"raw": "{{blogAPI}}/user/cover-image/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
+										"user",
 										"cover-image",
-										"user"
+										"1"
 									]
 								}
 							},
@@ -619,14 +613,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{blogAPI}}/1/password/user",
+									"raw": "{{blogAPI}}/user/password/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
+										"user",
 										"password",
-										"user"
+										"1"
 									]
 								}
 							},
@@ -653,14 +647,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{blogAPI}}/1/profile-image/user",
+									"raw": "{{blogAPI}}/user/profile-image/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
+										"user",
 										"profile-image",
-										"user"
+										"1"
 									]
 								}
 							},
@@ -681,13 +675,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{blogAPI}}/1/user",
+									"raw": "{{blogAPI}}/user/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
-										"user"
+										"user",
+										"1"
 									]
 								}
 							},
@@ -699,13 +693,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{blogAPI}}/1/user",
+									"raw": "{{blogAPI}}/user/1",
 									"host": [
 										"{{blogAPI}}"
 									],
 									"path": [
-										"1",
-										"user"
+										"user",
+										"1"
 									]
 								}
 							},
@@ -728,37 +722,36 @@
 				{
 					"listen": "prerequest",
 					"script": {
+						"type": "text/javascript",
 						"exec": [
-							"      refreshToken: pm.collectionVariables.get(\"refreshToken\"),",
-							"    \"Content-Type\": \"application/json\",",
-							"    mode: \"raw\",",
-							"    pm.collectionVariables.set(\"accessToken\", res.json().accessToken);",
-							"    raw: JSON.stringify({",
-							"    }),",
-							"  body: {",
-							"  header: {",
-							"  if (res.json().accessToken)",
-							"  method: \"POST\",",
-							"  url: `${pm.collectionVariables.get(\"blogAPI\")}/auth/refresh-token`,",
-							"  },",
-							"  },",
-							"",
-							"",
 							"const options = {",
+							"    url: `${pm.collectionVariables.get(\"blogAPI\")}/auth/refresh-token`,",
+							"    method: \"POST\",",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\",",
+							"    },",
+							"    body: {",
+							"        mode: \"raw\",",
+							"        raw: JSON.stringify({",
+							"            refreshToken: pm.collectionVariables.get(\"refreshToken\"),",
+							"        }),",
+							"    },",
+							"};",
+							"",
 							"pm.sendRequest(options, (err, res) => {",
-							"});",
-							"};"
-						],
-						"type": "text/javascript"
+							"    if (res.json().accessToken)",
+							"        pm.collectionVariables.set(\"accessToken\", res.json().accessToken);",
+							"});"
+						]
 					}
 				},
 				{
 					"listen": "test",
 					"script": {
+						"type": "text/javascript",
 						"exec": [
 							""
-						],
-						"type": "text/javascript"
+						]
 					}
 				}
 			]

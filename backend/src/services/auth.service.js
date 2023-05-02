@@ -13,19 +13,19 @@ const signup = async (signupReqDto) => {
 
   const user = await userDB.createUser(signupReqDto);
 
-  return new AuthResDto(user.id, user.privilege);
+  return new AuthResDto(user);
 };
 
-const signin = async (signinReqDto) => {
-  const user = await userDB.getUserByEmail(signinReqDto.email);
+const signin = async (email, password) => {
+  const user = await userDB.getUserByEmail(email);
 
   if (!user)
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong email address.");
 
-  if (!(await authUtil.verifyPassword(signinReqDto.password, user._password)))
+  if (!(await authUtil.verifyPassword(password, user._password)))
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong password.");
 
-  return new AuthResDto(user.id, user.privilege);
+  return new AuthResDto(user);
 };
 
 const forgotPassword = async (email) => {
