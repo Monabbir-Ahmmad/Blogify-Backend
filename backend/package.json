@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest",
     "start": "nodemon server",
-    "create-db": "node createDatabase"
+    "debug": "nodemon dist/app"
   },
   "author": "",
   "license": "ISC",
