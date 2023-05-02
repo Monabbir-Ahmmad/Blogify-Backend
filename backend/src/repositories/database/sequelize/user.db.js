@@ -4,7 +4,7 @@ import { UserType } from "../../../models/userType.model.js";
 
 const createUser = async (signupReqDto) => {
   const userType = await UserType.findOne({
-    where: { privilege: "Normal" },
+    where: { name: "Normal" },
   });
 
   const user = await User.create(signupReqDto);
@@ -23,7 +23,7 @@ const createUser = async (signupReqDto) => {
     coverImage: user.coverImage,
     bio: user.bio,
     createdAt: user.createdAt,
-    privilege: userType.privilege,
+    userType: userType.name,
   });
 };
 
@@ -32,7 +32,7 @@ const getUserByEmail = async (email) => {
     where: { email },
     include: {
       model: UserType,
-      attributes: ["privilege"],
+      attributes: ["name"],
     },
   });
 
@@ -48,7 +48,7 @@ const getUserByEmail = async (email) => {
     coverImage: user.coverImage,
     bio: user.bio,
     createdAt: user.createdAt,
-    privilege: user.userType.privilege,
+    userType: user.userType.name,
     password: user.password,
   });
 };
@@ -57,7 +57,7 @@ const getUserById = async (id) => {
   const user = await User.findByPk(id, {
     include: {
       model: UserType,
-      attributes: ["privilege"],
+      attributes: ["name"],
     },
   });
 
@@ -73,7 +73,7 @@ const getUserById = async (id) => {
     coverImage: user.coverImage,
     bio: user.bio,
     createdAt: user.createdAt,
-    privilege: user.userType.privilege,
+    userType: user.userType.name,
     password: user.password,
   });
 };

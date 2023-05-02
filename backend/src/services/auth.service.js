@@ -70,7 +70,7 @@ const refreshAccessToken = async (refreshToken) => {
 
     const accessToken = authUtil.generateAccessToken(
       decodedToken.id,
-      decodedToken.privilege
+      decodedToken.userType
     );
 
     return { accessToken };

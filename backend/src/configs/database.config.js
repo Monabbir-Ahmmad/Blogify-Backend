@@ -22,7 +22,7 @@ export const database = new Sequelize({
 //   logging: console.log,
 // });
 
-async function connectToDatabase() {
+export async function connectToDatabase() {
   try {
     await database.authenticate();
     console.log("Connected to the database...");
@@ -33,5 +33,3 @@ async function connectToDatabase() {
     console.error("Unable to connect to the database:", error);
   }
 }
-
-connectToDatabase();

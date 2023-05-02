@@ -2,17 +2,20 @@ import { UserType } from "./src/models/userType.model.js";
 
 const initialUserTypes = ["Administrator", "Normal"];
 
-const seedDatabase = () => {
-  initialUserTypes.forEach(async (type, index) => {
+const seedDatabase = async () => {
+  for (let i = 0; i < initialUserTypes.length; i++) {
     try {
-      await UserType.findOrCreate({ where: { privilege: type } });
+      await UserType.findOrCreate({
+        where: {
+          name: initialUserTypes[i],
+        },
+      });
     } catch (error) {
       console.error(error);
     }
+  }
 
-    if (index === initialUserTypes.length - 1)
-      console.log("Initial data loaded to database.");
-  });
+  console.log("Database seeded...");
 };
 
 export default seedDatabase;

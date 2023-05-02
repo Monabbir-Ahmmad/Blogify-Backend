@@ -10,14 +10,14 @@ const verifyPassword = async (inputPassword, hashedPassword) => {
   return await bcryptjs.compare(inputPassword, hashedPassword);
 };
 
-const generateRefreshToken = (id, privilege) => {
-  return jwt.sign({ id, privilege }, process.env.JWT_REFRESH_KEY, {
+const generateRefreshToken = (id, userType) => {
+  return jwt.sign({ id, userType }, process.env.JWT_REFRESH_KEY, {
     expiresIn: process.env.JWT_REFRESH_EXPIRE_TIME,
   });
 };
 
-const generateAccessToken = (id, privilege) => {
-  return jwt.sign({ id, privilege }, process.env.JWT_ACCESS_KEY, {
+const generateAccessToken = (id, userType) => {
+  return jwt.sign({ id, userType }, process.env.JWT_ACCESS_KEY, {
     expiresIn: process.env.JWT_ACCESS_EXPIRE_TIME,
   });
 };

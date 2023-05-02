@@ -5,7 +5,7 @@ export class UserResDto {
     email,
     gender,
     birthDate,
-    privilege,
+    userType,
     profileImage,
     coverImage,
     bio,
@@ -17,7 +17,7 @@ export class UserResDto {
     this.email = email;
     this.gender = gender;
     this.birthDate = birthDate;
-    this.privilage = privilege;
+    this.userType = userType;
     this.profileImage = profileImage;
     this.coverImage = coverImage;
     this.bio = bio;
