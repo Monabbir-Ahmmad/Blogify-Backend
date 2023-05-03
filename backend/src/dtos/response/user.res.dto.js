@@ -1,23 +1,32 @@
 export class UserResDto {
-  constructor(
+  constructor({
     id,
     name,
     email,
     gender,
     birthDate,
-    privilege,
+    userType,
     profileImage,
     coverImage,
-    password
-  ) {
+    bio,
+    createdAt,
+    password,
+  }) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.gender = gender;
     this.birthDate = birthDate;
-    this.privilage = privilege;
+    this.userType = userType;
     this.profileImage = profileImage;
     this.coverImage = coverImage;
-    this._password = password;
+    this.bio = bio;
+    this.createdAt = createdAt;
+    this.password = password;
+
+    // Hide password from response
+    Object.defineProperty(this, "password", {
+      enumerable: false,
+    });
   }
 }

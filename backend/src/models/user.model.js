@@ -31,9 +31,15 @@ export const User = database.define("user", {
   },
   profileImage: {
     type: DataTypes.STRING,
+    allowNull: true,
   },
   coverImage: {
     type: DataTypes.STRING,
+    allowNull: true,
+  },
+  bio: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
 });
 

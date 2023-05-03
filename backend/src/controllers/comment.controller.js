@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import { commonUtil } from "../utils/functions/common.util.js";
 
 const postComment = asyncHandler(async (req, res) => {
-  const userId = req.user?.id;
+  const userId = req.user.id;
   const { blogId, text, parentId } = req.body;
 });
 
@@ -21,13 +21,13 @@ const getCommentReplies = asyncHandler(async (req, res) => {
 });
 
 const updateComment = asyncHandler(async (req, res) => {
-  const userId = req.user?.id;
+  const userId = req.user.id;
   const commentId = req.params.commentId;
   const { text } = req.body;
 });
 
 const deleteComment = asyncHandler(async (req, res) => {
-  const userId = req.user?.id;
+  const userId = req.user.id;
   const commentId = req.params.commentId;
 });
 

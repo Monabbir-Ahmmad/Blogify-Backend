@@ -1,4 +1,7 @@
+import { authUtil } from "../utils/functions/auth.util.js";
 import { commonUtil } from "../utils/functions/common.util.js";
+import { responseUtil } from "../utils/functions/response.util.js";
+import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 
 const notFound = (req, res, next) => {
@@ -9,18 +12,19 @@ const notFound = (req, res, next) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-  if (!err.statusCode) console.error(err);
-
-  err.statusCode = err.statusCode || StatusCode.INTERNAL_SERVER_ERROR;
+  if (!(err instanceof HttpError)) {
+    console.error(err);
+    err.statusCode = StatusCode.INTERNAL_SERVER_ERROR;
+  }
 
   if (req.file) commonUtil.deleteUploadedFile(req.file.filename);
 
-  if (err.statusCode === StatusCode.UNAUTHORIZED)
-    res.clearCookie("authorization");
+  if (err.statusCode === StatusCode.UNAUTHORIZED) authUtil.clearAuthCookie(res);
 
-  res.status(err.statusCode).json({
+  responseUtil.sendContentNegotiatedResponse(req, res, err.statusCode, {
     statusCode: err.statusCode,
     message: err.message,
+    stack: process.env.NODE_ENV === "development" ? err.stack : null,
   });
 };
 

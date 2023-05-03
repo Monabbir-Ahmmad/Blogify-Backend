@@ -4,7 +4,7 @@ import { UserType } from "../../../models/userType.model.js";
 
 const createUser = async (signupReqDto) => {
   const userType = await UserType.findOne({
-    where: { privilege: "Normal" },
+    where: { name: "Normal" },
   });
 
   const user = await User.create(signupReqDto);
@@ -13,16 +13,18 @@ const createUser = async (signupReqDto) => {
 
   if (!user) return null;
 
-  return new UserResDto(
-    user.id,
-    user.name,
-    user.email,
-    user.gender,
-    user.birthDate,
-    userType.privilege,
-    user.profileImage,
-    user.coverImage
-  );
+  return new UserResDto({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    gender: user.gender,
+    birthDate: user.birthDate,
+    profileImage: user.profileImage,
+    coverImage: user.coverImage,
+    bio: user.bio,
+    createdAt: user.createdAt,
+    userType: userType.name,
+  });
 };
 
 const getUserByEmail = async (email) => {
@@ -30,51 +32,55 @@ const getUserByEmail = async (email) => {
     where: { email },
     include: {
       model: UserType,
-      attributes: ["privilege"],
+      attributes: ["name"],
     },
   });
 
   if (!user) return null;
 
-  return new UserResDto(
-    user.id,
-    user.name,
-    user.email,
-    user.gender,
-    user.birthDate,
-    user.userType.privilege,
-    user.profileImage,
-    user.coverImage,
-    user.password
-  );
+  return new UserResDto({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    gender: user.gender,
+    birthDate: user.birthDate,
+    profileImage: user.profileImage,
+    coverImage: user.coverImage,
+    bio: user.bio,
+    createdAt: user.createdAt,
+    userType: user.userType.name,
+    password: user.password,
+  });
 };
 
 const getUserById = async (id) => {
   const user = await User.findByPk(id, {
     include: {
       model: UserType,
-      attributes: ["privilege"],
+      attributes: ["name"],
     },
   });
 
   if (!user) return null;
 
-  return new UserResDto(
-    user.id,
-    user.name,
-    user.email,
-    user.gender,
-    user.birthDate,
-    user.userType.privilege,
-    user.profileImage,
-    user.coverImage,
-    user.password
-  );
+  return new UserResDto({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    gender: user.gender,
+    birthDate: user.birthDate,
+    profileImage: user.profileImage,
+    coverImage: user.coverImage,
+    bio: user.bio,
+    createdAt: user.createdAt,
+    userType: user.userType.name,
+    password: user.password,
+  });
 };
 
-const updateUser = async (userProfileUpdateReqDto) => {
+const updateUser = async (userId, userProfileUpdateReqDto) => {
   const [updatedRows] = await User.update(userProfileUpdateReqDto, {
-    where: { id: userProfileUpdateReqDto.id },
+    where: { id: userId },
   });
 
   return updatedRows === 1;
@@ -89,7 +95,7 @@ const updatePassword = async (userId, password) => {
   return updatedRows === 1;
 };
 
-const updateProfileImage = async (userId, profileImage) => {
+const updateProfileImage = async (userId, profileImage = null) => {
   const [updatedRows] = await User.update(
     { profileImage },
     { where: { id: userId } }
@@ -98,7 +104,7 @@ const updateProfileImage = async (userId, profileImage) => {
   return updatedRows === 1;
 };
 
-const updateCoverImage = async (userId, coverImage) => {
+const updateCoverImage = async (userId, coverImage = null) => {
   const [updatedRows] = await User.update(
     { coverImage },
     { where: { id: userId } }

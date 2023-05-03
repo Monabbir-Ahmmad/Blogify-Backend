@@ -2,6 +2,7 @@ import { check } from "express-validator";
 import { commonUtil } from "../../utils/functions/common.util.js";
 
 const profileUpdate = [
+  check("password", "Password required.").notEmpty(),
   check("name", "Name field can not be empty.")
     .optional({ nullable: true })
     .notEmpty(),
@@ -19,7 +20,9 @@ const profileUpdate = [
     .bail()
     .custom((birthDate) => commonUtil.calculateAge(birthDate) >= 13)
     .withMessage("Must be at least 13 years old."),
-  check("password", "Password required.").notEmpty(),
+  check("bio", "Bio field can not be empty.")
+    .optional({ nullable: true })
+    .notEmpty(),
 ];
 
 const passwordUpdate = [
@@ -30,7 +33,7 @@ const passwordUpdate = [
     .bail()
     .isStrongPassword()
     .withMessage(
-      "Password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+      "New password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
     ),
 ];
 

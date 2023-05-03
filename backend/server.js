@@ -7,6 +7,7 @@ import { indexRouter } from "./src/routes/index.route.js";
 import cookieParser from "cookie-parser";
 import seedDatabase from "./seedDatabase.js";
 import { loggerMiddleWare } from "./src/middlewares/logger.middleware.js";
+import { connectToDatabase } from "./src/configs/database.config.js";
 
 const app = express();
 
@@ -36,9 +37,11 @@ app.use(errorMiddleware.errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
+connectToDatabase()
+  .then(() => seedDatabase())
+  .catch((error) => console.error(error));
+
 server.listen(
   PORT,
   console.log(`Server started in ${process.env.NODE_ENV} mode on port: ${PORT}`)
 );
-
-seedDatabase();

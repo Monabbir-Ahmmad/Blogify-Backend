@@ -22,11 +22,21 @@ authRouter
   .route("/signout")
   .get(authMiddleware.verifyToken, authController.logoutUser);
 
-authRouter.route("/forgot-password").post(authController.forgotPassword);
+authRouter
+  .route("/forgot-password")
+  .post(
+    authRouteValidator.forgotPassword,
+    validationCheck,
+    authController.forgotPassword
+  );
 
 authRouter
   .route("/reset-password/:resetToken")
-  .get(authController.resetPassword);
+  .put(
+    authRouteValidator.resetPassword,
+    validationCheck,
+    authController.resetPassword
+  );
 
 authRouter
   .route("/refresh-token")

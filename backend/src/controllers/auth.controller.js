@@ -2,15 +2,14 @@ import asyncHandler from "express-async-handler";
 import { authService } from "../services/auth.service.js";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import { SigninReqDto } from "../dtos/request/signin.req.dto.js";
 import { authUtil } from "../utils/functions/auth.util.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, birthDate, gender, password } = req.body;
+  const { name, email, password, birthDate, gender, bio } = req.body;
 
   const result = await authService.signup(
-    new SignupReqDto(name, email, gender, birthDate, password)
+    new SignupReqDto({ name, email, password, gender, birthDate, bio })
   );
 
   authUtil.setAuthCookie(res, result.accessToken);
@@ -26,7 +25,7 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const result = await authService.signin(new SigninReqDto(email, password));
+  const result = await authService.signin(email, password);
 
   authUtil.setAuthCookie(res, result.accessToken);
 
@@ -34,16 +33,28 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  res.clearCookie("authorization");
-  res.send("Logged out.");
+  authUtil.clearAuthCookie(res);
+
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, {
+    message: "Logged out successfully.",
+  });
 });
 
 const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
+
+  const result = await authService.forgotPassword(email);
+
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
 const resetPassword = asyncHandler(async (req, res) => {
   const resetToken = req.params.resetToken;
+  const { newPassword } = req.body;
+
+  const result = await authService.resetPassword(resetToken, newPassword);
+
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {

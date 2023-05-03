@@ -1,6 +1,7 @@
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 import { authUtil } from "../utils/functions/auth.util.js";
+import { mailUtil } from "../utils/functions/mail.util.js";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 
@@ -12,19 +13,55 @@ const signup = async (signupReqDto) => {
 
   const user = await userDB.createUser(signupReqDto);
 
-  return new AuthResDto(user.id, user.privilege);
+  return new AuthResDto(user);
 };
 
-const signin = async (signinReqDto) => {
-  const user = await userDB.getUserByEmail(signinReqDto.email);
+const signin = async (email, password) => {
+  const user = await userDB.getUserByEmail(email);
 
   if (!user)
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong email address.");
 
-  if (!(await authUtil.verifyPassword(signinReqDto.password, user._password)))
+  if (!(await authUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong password.");
 
-  return new AuthResDto(user.id, user.privilege);
+  return new AuthResDto(user);
+};
+
+const forgotPassword = async (email) => {
+  const user = await userDB.getUserByEmail(email);
+
+  if (!user)
+    throw new HttpError(StatusCode.NOT_FOUND, "User with email not found.");
+
+  const resetToken = authUtil.generateResetToken(user.id);
+
+  await mailUtil.sendEmail({
+    to: user.email,
+    subject: "Password Reset Request",
+    html: mailUtil.getResetPasswordMailTemplate(
+      "App Name",
+      user.name,
+      resetToken
+    ),
+  });
+
+  return { message: "Password reset email sent." };
+};
+
+const resetPassword = async (resetToken, newPassword) => {
+  const decodedToken = authUtil.verifyResetToken(resetToken);
+
+  const user = await userDB.getUserById(decodedToken.id);
+
+  if (!user)
+    throw new HttpError(StatusCode.NOT_FOUND, "User with email not found.");
+
+  newPassword = await authUtil.hashPassword(newPassword);
+
+  await userDB.updatePassword(user.id, newPassword);
+
+  return { message: "Password updated." };
 };
 
 const refreshAccessToken = async (refreshToken) => {
@@ -33,7 +70,7 @@ const refreshAccessToken = async (refreshToken) => {
 
     const accessToken = authUtil.generateAccessToken(
       decodedToken.id,
-      decodedToken.privilege
+      decodedToken.userType
     );
 
     return { accessToken };
@@ -43,4 +80,10 @@ const refreshAccessToken = async (refreshToken) => {
   }
 };
 
-export const authService = { signup, signin, refreshAccessToken };
+export const authService = {
+  signup,
+  signin,
+  forgotPassword,
+  resetPassword,
+  refreshAccessToken,
+};
