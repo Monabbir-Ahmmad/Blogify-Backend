@@ -45,7 +45,7 @@ const updateBlog = async (userId, blogId, blogUpdatetReqDto) => {
 
   const blogUpdated = await blogDB.updateBlog(blogId, blogUpdatetReqDto);
 
-  if (blogUpdated && blog.coverImage)
+  if (blogUpdated && blog.coverImage !== blogUpdatetReqDto.coverImage)
     await commonUtil.deleteUploadedFile(blog.coverImage);
 
   return await blogDB.getBlogById(blogId);

@@ -17,7 +17,7 @@ const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
 
   if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-  if (!(await authUtil.verifyPassword(password, user._password)))
+  if (!(await authUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 
   if (
@@ -35,7 +35,7 @@ const updatePassword = async (userId, oldPassword, newPassword) => {
 
   if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-  if (!(await authUtil.verifyPassword(oldPassword, user._password)))
+  if (!(await authUtil.verifyPassword(oldPassword, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 
   if (oldPassword === newPassword)

@@ -22,7 +22,7 @@ const signin = async (email, password) => {
   if (!user)
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong email address.");
 
-  if (!(await authUtil.verifyPassword(password, user._password)))
+  if (!(await authUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong password.");
 
   return new AuthResDto(user);

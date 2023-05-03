@@ -22,6 +22,11 @@ export class UserResDto {
     this.coverImage = coverImage;
     this.bio = bio;
     this.createdAt = createdAt;
-    this._password = password;
+    this.password = password;
+
+    // Hide password from response
+    Object.defineProperty(this, "password", {
+      enumerable: false,
+    });
   }
 }

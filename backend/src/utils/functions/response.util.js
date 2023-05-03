@@ -10,21 +10,6 @@ const convertToText = (data) => {
   return data;
 };
 
-const removePrivateOrEmptyFields = (data) => {
-  if (Array.isArray(data))
-    return data.map((item) => removePrivateOrEmptyFields(item));
-
-  Object.keys(data).forEach((key) => {
-    if (key.startsWith("_") || !data[key]) {
-      delete data[key];
-    } else if (typeof data[key] === "object" || Array.isArray(data[key])) {
-      data[key] = removePrivateOrEmptyFields(data[key]);
-    }
-  });
-
-  return data;
-};
-
 const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
   let responseData = data;
 
@@ -45,5 +30,4 @@ const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
 
 export const responseUtil = {
   sendContentNegotiatedResponse,
-  removePrivateOrEmptyFields,
 };
