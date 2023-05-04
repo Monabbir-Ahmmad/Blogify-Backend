@@ -1,3 +1,4 @@
+import { environment } from "../configs/environment.config.js";
 import { authUtil } from "../utils/functions/auth.util.js";
 import { commonUtil } from "../utils/functions/common.util.js";
 import { responseUtil } from "../utils/functions/response.util.js";
@@ -24,7 +25,7 @@ const errorHandler = (err, req, res, next) => {
   responseUtil.sendContentNegotiatedResponse(req, res, err.statusCode, {
     statusCode: err.statusCode,
     message: err.message,
-    stack: process.env.NODE_ENV === "development" ? err.stack : null,
+    stack: environment.NODE_ENV === "development" ? err.stack : null,
   });
 };
 

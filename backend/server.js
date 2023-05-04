@@ -1,13 +1,14 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import http from "http";
-import { errorMiddleware } from "./src/middlewares/error.middleware.js";
-import { indexRouter } from "./src/routes/index.route.js";
-import cookieParser from "cookie-parser";
 import seedDatabase from "./seedDatabase.js";
-import { loggerMiddleWare } from "./src/middlewares/logger.middleware.js";
 import { connectToDatabase } from "./src/configs/database.config.js";
+import { environment } from "./src/configs/environment.config.js";
+import { errorMiddleware } from "./src/middlewares/error.middleware.js";
+import { loggerMiddleWare } from "./src/middlewares/logger.middleware.js";
+import { indexRouter } from "./src/routes/index.route.js";
 
 const app = express();
 
@@ -35,13 +36,13 @@ app.use(errorMiddleware.notFound);
 
 app.use(errorMiddleware.errorHandler);
 
-const PORT = process.env.PORT || 5000;
-
 connectToDatabase()
   .then(() => seedDatabase())
   .catch((error) => console.error(error));
 
 server.listen(
-  PORT,
-  console.log(`Server started in ${process.env.NODE_ENV} mode on port: ${PORT}`)
+  environment.PORT,
+  console.log(
+    `Server started in ${environment.NODE_ENV} mode on port: ${environment.PORT}`
+  )
 );

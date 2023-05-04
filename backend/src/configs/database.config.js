@@ -1,15 +1,16 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
+import { environment } from "./environment.config.js";
 
 dotenv.config();
 
 export const database = new Sequelize({
-  database: process.env.DB_NAME,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  dialect: process.env.DB_DIALECT,
+  database: environment.DB_NAME,
+  username: environment.DB_USERNAME,
+  password: environment.DB_PASSWORD,
+  dialect: environment.DB_DIALECT,
   storage: "database.sqlite",
-  logging: true,
+  logging: console.log,
 });
 
 // export const database = new Sequelize({
