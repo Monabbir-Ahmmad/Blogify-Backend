@@ -1,4 +1,18 @@
 export class UserResDto {
+  /**
+   * @param {Object} param
+   * @param {number | string} param.id
+   * @param {string} param.name
+   * @param {string} param.email
+   * @param {string} param.gender
+   * @param {Date} param.birthDate
+   * @param {string} param.userType
+   * @param {string} [param.profileImage]
+   * @param {string} [param.coverImage]
+   * @param {string} [param.bio]
+   * @param {Date} param.createdAt
+   * @param {string} param.password
+   */
   constructor({
     id,
     name,

@@ -1,6 +1,20 @@
+// @ts-check
+
 import { UserResDto } from "./user.res.dto.js";
 
 export class BlogResDto {
+  /**
+   * @param {Object} param
+   * @param {number | string} param.id
+   * @param {string} param.title
+   * @param {string} param.content
+   * @param {string} [param.coverImage]
+   * @param {Date} param.createdAt
+   * @param {Date} param.updatedAt
+   * @param {UserResDto} param.user
+   * @param {any[]} param.likes
+   * @param {number} param.commentCount
+   */
   constructor({
     id,
     title,
@@ -10,6 +24,7 @@ export class BlogResDto {
     updatedAt,
     user,
     likes,
+    commentCount,
   }) {
     this.id = id;
     this.title = title;
@@ -17,7 +32,8 @@ export class BlogResDto {
     this.coverImage = coverImage;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.user = new UserResDto(user);
+    this.user = user;
     this.likes = likes;
+    this.commentCount = commentCount;
   }
 }

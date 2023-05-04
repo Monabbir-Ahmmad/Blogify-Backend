@@ -16,13 +16,13 @@ const getBlog = async (id) => {
   return blog;
 };
 
-const getBlogs = async (offset, limit) => {
+const getBlogs = async ({ offset, limit }) => {
   const blogs = await blogDB.getBlogs(offset, limit);
 
   return blogs;
 };
 
-const getUserBlogs = async (userId, offset, limit) => {
+const getUserBlogs = async (userId, { offset, limit }) => {
   const user = await userDB.getUserById(userId);
 
   if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
