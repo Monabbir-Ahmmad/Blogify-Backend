@@ -1,8 +1,8 @@
-import { userDB } from "../repositories/database/sequelize/user.db.js";
-import { authUtil } from "../utils/functions/auth.util.js";
-import { commonUtil } from "../utils/functions/common.util.js";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
+import { authUtil } from "../utils/functions/auth.util.js";
+import { commonUtil } from "../utils/functions/common.util.js";
+import { userDB } from "../repositories/database/sequelize/user.db.js";
 
 const getUser = async (userId) => {
   const userResDto = await userDB.getUserById(userId);

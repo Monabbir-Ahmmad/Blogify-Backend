@@ -1,9 +1,9 @@
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
-import { userDB } from "../repositories/database/sequelize/user.db.js";
-import { authUtil } from "../utils/functions/auth.util.js";
-import { mailUtil } from "../utils/functions/mail.util.js";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
+import { authUtil } from "../utils/functions/auth.util.js";
+import { mailUtil } from "../utils/functions/mail.util.js";
+import { userDB } from "../repositories/database/sequelize/user.db.js";
 
 const signup = async (signupReqDto) => {
   if (await userDB.getUserByEmail(signupReqDto.email))

@@ -1,14 +1,14 @@
+import { connectToDatabase } from "./src/configs/database.config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import express from "express";
-import http from "http";
-import seedDatabase from "./seedDatabase.js";
-import { connectToDatabase } from "./src/configs/database.config.js";
 import { environment } from "./src/configs/environment.config.js";
 import { errorMiddleware } from "./src/middlewares/error.middleware.js";
-import { loggerMiddleWare } from "./src/middlewares/logger.middleware.js";
+import express from "express";
+import http from "http";
 import { indexRouter } from "./src/routes/index.route.js";
+import { loggerMiddleWare } from "./src/middlewares/logger.middleware.js";
+import seedDatabase from "./seedDatabase.js";
 
 const app = express();
 

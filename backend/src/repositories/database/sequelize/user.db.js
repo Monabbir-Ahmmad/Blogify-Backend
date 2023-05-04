@@ -1,5 +1,5 @@
-import { UserResDto } from "../../../dtos/response/user.res.dto.js";
 import { User } from "../../../models/user.model.js";
+import { UserResDto } from "../../../dtos/response/user.res.dto.js";
 import { UserType } from "../../../models/userType.model.js";
 
 const createUser = async (signupReqDto) => {

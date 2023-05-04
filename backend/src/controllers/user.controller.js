@@ -1,9 +1,9 @@
-import asyncHandler from "express-async-handler";
-import { userService } from "../services/user.service.js";
-import { responseUtil } from "../utils/functions/response.util.js";
-import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
-import StatusCode from "../utils/objects/StatusCode.js";
 import HttpError from "../utils/objects/HttpError.js";
+import StatusCode from "../utils/objects/StatusCode.js";
+import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
+import asyncHandler from "express-async-handler";
+import { responseUtil } from "../utils/functions/response.util.js";
+import { userService } from "../services/user.service.js";
 
 const getUser = asyncHandler(async (req, res) => {
   const userId = req.params.userId;

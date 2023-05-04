@@ -1,7 +1,7 @@
-import asyncHandler from "express-async-handler";
-import { authService } from "../services/auth.service.js";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
 import StatusCode from "../utils/objects/StatusCode.js";
+import asyncHandler from "express-async-handler";
+import { authService } from "../services/auth.service.js";
 import { authUtil } from "../utils/functions/auth.util.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 

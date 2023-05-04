@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import { environment } from "../../configs/environment.config.js";
+import jwt from "jsonwebtoken";
 
 const hashPassword = async (password) => {
   const salt = await bcryptjs.genSalt(parseInt(environment.SALT_ROUNDS));

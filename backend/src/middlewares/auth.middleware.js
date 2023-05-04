@@ -1,6 +1,6 @@
-import asyncHandler from "express-async-handler";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
+import asyncHandler from "express-async-handler";
 import { authUtil } from "../utils/functions/auth.util.js";
 
 const verifyToken = asyncHandler(async (req, res, next) => {
