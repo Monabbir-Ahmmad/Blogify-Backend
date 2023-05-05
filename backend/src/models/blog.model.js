@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
-import { database } from "../configs/database.config.js";
 import { User } from "./user.model.js";
+import { commonUtil } from "../utils/functions/common.util.js";
+import { database } from "../configs/database.config.js";
 
 export const Blog = database.define("blog", {
   title: {
@@ -20,3 +21,12 @@ export const Blog = database.define("blog", {
 
 User.hasMany(Blog, { onDelete: "CASCADE" });
 Blog.belongsTo(User, { onDelete: "CASCADE" });
+
+Blog.afterUpdate(async (blog) => {
+  if (blog._previousDataValues.coverImage !== blog.coverImage)
+    commonUtil.deleteUploadedFile(blog._previousDataValues.coverImage);
+});
+
+Blog.afterDestroy(async (blog) => {
+  if (blog.coverImage) commonUtil.deleteUploadedFile(blog.coverImage);
+});

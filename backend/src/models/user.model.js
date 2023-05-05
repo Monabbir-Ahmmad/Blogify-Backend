@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
-import { database } from "../configs/database.config.js";
 import { UserType } from "./userType.model.js";
+import { commonUtil } from "../utils/functions/common.util.js";
+import { database } from "../configs/database.config.js";
 
 export const User = database.define("user", {
   name: {
@@ -45,3 +46,15 @@ export const User = database.define("user", {
 
 UserType.hasMany(User, { onDelete: "CASCADE" });
 User.belongsTo(UserType, { onDelete: "CASCADE" });
+
+User.afterUpdate(async (user) => {
+  if (user._previousDataValues.profileImage !== user.profileImage)
+    commonUtil.deleteUploadedFile(user._previousDataValues.profileImage);
+  if (user._previousDataValues.coverImage !== user.coverImage)
+    commonUtil.deleteUploadedFile(user._previousDataValues.coverImage);
+});
+
+User.afterDestroy(async (user) => {
+  if (user.profileImage) commonUtil.deleteUploadedFile(user.profileImage);
+  if (user.coverImage) commonUtil.deleteUploadedFile(user.coverImage);
+});
