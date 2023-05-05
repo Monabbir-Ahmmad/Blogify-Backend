@@ -13,9 +13,7 @@ const getUser = async (userId) => {
 };
 
 const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
-  const user = await userDB.getUserById(userId);
-
-  if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
+  const user = await getUser(userId);
 
   if (!(await authUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
@@ -31,9 +29,7 @@ const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
 };
 
 const updatePassword = async (userId, oldPassword, newPassword) => {
-  const user = await userDB.getUserById(userId);
-
-  if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
+  const user = await getUser(userId);
 
   if (!(await authUtil.verifyPassword(oldPassword, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
@@ -52,9 +48,7 @@ const updatePassword = async (userId, oldPassword, newPassword) => {
 };
 
 const updateProfileImage = async (userId, profileImage = null) => {
-  const user = await userDB.getUserById(userId);
-
-  if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
+  const user = await getUser(userId);
 
   const profileImageUpdated = await userDB.updateProfileImage(
     userId,
@@ -68,9 +62,7 @@ const updateProfileImage = async (userId, profileImage = null) => {
 };
 
 const updateCoverImage = async (userId, coverImage = null) => {
-  const user = await userDB.getUserById(userId);
-
-  if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
+  const user = await getUser(userId);
 
   const coverImageUpdated = await userDB.updateCoverImage(userId, coverImage);
 
@@ -78,6 +70,18 @@ const updateCoverImage = async (userId, coverImage = null) => {
     commonUtil.deleteUploadedFile(user.coverImage);
 
   return await userDB.getUserById(userId);
+};
+
+const deleteUser = async (userId) => {
+  const user = await getUser(userId);
+
+  await userDB.deleteUser(userId);
+
+  if (user.profileImage) commonUtil.deleteUploadedFile(user.profileImage);
+
+  if (user.coverImage) commonUtil.deleteUploadedFile(user.coverImage);
+
+  return { message: "User deleted successfully." };
 };
 
 export const userService = {

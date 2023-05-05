@@ -1,7 +1,6 @@
 import { connectToDatabase } from "./src/configs/database.config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
 import { environment } from "./src/configs/environment.config.js";
 import { errorMiddleware } from "./src/middlewares/error.middleware.js";
 import express from "express";
@@ -13,8 +12,6 @@ import seedDatabase from "./seedDatabase.js";
 const app = express();
 
 const server = http.createServer(app);
-
-dotenv.config();
 
 app.use(cors());
 

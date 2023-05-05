@@ -55,7 +55,7 @@ const getBlogById = async (id) => {
     ],
   });
 
-  if (!blog) return null;
+  if (!blog?.id) return null;
 
   return new BlogResDto({
     id: blog.id,

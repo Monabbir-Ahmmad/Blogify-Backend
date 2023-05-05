@@ -3,6 +3,7 @@ import StatusCode from "../utils/objects/StatusCode.js";
 import { blogDB } from "../repositories/database/sequelize/blog.db.js";
 import { commonUtil } from "../utils/functions/common.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
+import { userService } from "./user.service.js";
 
 const createBlog = async (userId, blogPostReqDto) => {
   const blog = await blogDB.createBlog(userId, blogPostReqDto);
@@ -12,6 +13,8 @@ const createBlog = async (userId, blogPostReqDto) => {
 
 const getBlog = async (id) => {
   const blog = await blogDB.getBlogById(id);
+
+  if (!blog) throw new HttpError(StatusCode.NOT_FOUND, "Blog not found.");
 
   return blog;
 };
@@ -23,9 +26,7 @@ const getBlogs = async ({ offset, limit }) => {
 };
 
 const getUserBlogs = async (userId, { offset, limit }) => {
-  const user = await userDB.getUserById(userId);
-
-  if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
+  await userService.getUser(userId);
 
   const blogs = await blogDB.getUserBlogs(userId, offset, limit);
 
@@ -33,9 +34,7 @@ const getUserBlogs = async (userId, { offset, limit }) => {
 };
 
 const updateBlog = async (userId, blogId, blogUpdatetReqDto) => {
-  const blog = await blogDB.getBlogById(blogId);
-
-  if (!blog) throw new HttpError(StatusCode.NOT_FOUND, "Blog not found.");
+  const blog = await getBlog(blogId);
 
   if (blog.user.id !== userId)
     throw new HttpError(
@@ -52,9 +51,7 @@ const updateBlog = async (userId, blogId, blogUpdatetReqDto) => {
 };
 
 const deleteBlog = async (userId, blogId) => {
-  const blog = await blogDB.getBlogById(blogId);
-
-  if (!blog) throw new HttpError(StatusCode.NOT_FOUND, "Blog not found.");
+  const blog = await getBlog(blogId);
 
   if (blog.user.id !== userId)
     throw new HttpError(
@@ -71,9 +68,7 @@ const deleteBlog = async (userId, blogId) => {
 };
 
 const updateBlogLike = async (userId, blogId) => {
-  const blog = await blogDB.getBlogById(blogId);
-
-  if (!blog) throw new HttpError(StatusCode.NOT_FOUND, "Blog not found.");
+  await getBlog(blogId);
 
   await blogDB.updateBlogLike(userId, blogId);
 

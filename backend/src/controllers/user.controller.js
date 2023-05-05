@@ -81,10 +81,25 @@ const updateCoverImage = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
+const deleteUser = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+
+  if (userId != req.params.userId)
+    throw new HttpError(
+      StatusCode.FORBIDDEN,
+      "You are not allowed to delete this user."
+    );
+
+  const result = await userService.deleteUser(userId);
+
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+});
+
 export const userController = {
   getUser,
   updateProfile,
   updatePassword,
   updateProfileImage,
   updateCoverImage,
+  deleteUser,
 };

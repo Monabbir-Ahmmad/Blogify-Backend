@@ -4,6 +4,7 @@ import StatusCode from "../utils/objects/StatusCode.js";
 import { authUtil } from "../utils/functions/auth.util.js";
 import { mailUtil } from "../utils/functions/mail.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
+import { userService } from "./user.service.js";
 
 const signup = async (signupReqDto) => {
   if (await userDB.getUserByEmail(signupReqDto.email))
@@ -52,10 +53,7 @@ const forgotPassword = async (email) => {
 const resetPassword = async (resetToken, newPassword) => {
   const decodedToken = authUtil.verifyResetToken(resetToken);
 
-  const user = await userDB.getUserById(decodedToken.id);
-
-  if (!user)
-    throw new HttpError(StatusCode.NOT_FOUND, "User with email not found.");
+  const user = await userService.getUser(decodedToken.id);
 
   newPassword = await authUtil.hashPassword(newPassword);
 
