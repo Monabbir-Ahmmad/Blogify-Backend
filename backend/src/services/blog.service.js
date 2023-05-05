@@ -1,11 +1,11 @@
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { blogDB } from "../repositories/database/sequelize/blog.db.js";
-import { commonUtil } from "../utils/functions/common.util.js";
-import { userDB } from "../repositories/database/sequelize/user.db.js";
 import { userService } from "./user.service.js";
 
 const createBlog = async (userId, blogPostReqDto) => {
+  await userService.getUser(userId);
+
   const blog = await blogDB.createBlog(userId, blogPostReqDto);
 
   return blog;
@@ -42,12 +42,9 @@ const updateBlog = async (userId, blogId, blogUpdatetReqDto) => {
       "You are not allowed to update this blog."
     );
 
-  const blogUpdated = await blogDB.updateBlog(blogId, blogUpdatetReqDto);
+  const updatedBlog = await blogDB.updateBlog(blogId, blogUpdatetReqDto);
 
-  if (blogUpdated && blog.coverImage !== blogUpdatetReqDto.coverImage)
-    await commonUtil.deleteUploadedFile(blog.coverImage);
-
-  return await blogDB.getBlogById(blogId);
+  return updatedBlog;
 };
 
 const deleteBlog = async (userId, blogId) => {
@@ -59,15 +56,14 @@ const deleteBlog = async (userId, blogId) => {
       "You are not allowed to delete this blog."
     );
 
-  const deletedBlog = await blogDB.deleteBlog(blogId);
-
-  if (deletedBlog && blog.coverImage)
-    await commonUtil.deleteUploadedFile(blog.coverImage);
+  await blogDB.deleteBlog(blogId);
 
   return { message: "Blog deleted successfully." };
 };
 
 const updateBlogLike = async (userId, blogId) => {
+  await userService.getUser(userId);
+
   await getBlog(blogId);
 
   await blogDB.updateBlogLike(userId, blogId);

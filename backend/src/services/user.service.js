@@ -1,15 +1,14 @@
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { authUtil } from "../utils/functions/auth.util.js";
-import { commonUtil } from "../utils/functions/common.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 
 const getUser = async (userId) => {
-  const userResDto = await userDB.getUserById(userId);
+  const user = await userDB.getUserById(userId);
 
-  if (!userResDto) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
+  if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-  return userResDto;
+  return user;
 };
 
 const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
@@ -23,9 +22,9 @@ const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
   )
     throw new HttpError(StatusCode.CONFLICT, "Email already in use.");
 
-  await userDB.updateUser(userId, userProfileUpdateReqDto);
+  const updatedUser = await userDB.updateUser(userId, userProfileUpdateReqDto);
 
-  return await userDB.getUserById(userId);
+  return updatedUser;
 };
 
 const updatePassword = async (userId, oldPassword, newPassword) => {
@@ -48,38 +47,28 @@ const updatePassword = async (userId, oldPassword, newPassword) => {
 };
 
 const updateProfileImage = async (userId, profileImage = null) => {
-  const user = await getUser(userId);
+  await getUser(userId);
 
-  const profileImageUpdated = await userDB.updateProfileImage(
-    userId,
-    profileImage
-  );
+  const updatedUser = await userDB.updateProfileImage(userId, profileImage);
 
-  if (profileImageUpdated && user.profileImage)
-    commonUtil.deleteUploadedFile(user.profileImage);
-
-  return await userDB.getUserById(userId);
+  return updatedUser;
 };
 
 const updateCoverImage = async (userId, coverImage = null) => {
-  const user = await getUser(userId);
+  await getUser(userId);
 
-  const coverImageUpdated = await userDB.updateCoverImage(userId, coverImage);
+  const updatedUser = await userDB.updateCoverImage(userId, coverImage);
 
-  if (coverImageUpdated && user.coverImage)
-    commonUtil.deleteUploadedFile(user.coverImage);
-
-  return await userDB.getUserById(userId);
+  return updatedUser;
 };
 
-const deleteUser = async (userId) => {
+const deleteUser = async (userId, password) => {
   const user = await getUser(userId);
 
+  if (!(await authUtil.verifyPassword(password, user.password)))
+    throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
+
   await userDB.deleteUser(userId);
-
-  if (user.profileImage) commonUtil.deleteUploadedFile(user.profileImage);
-
-  if (user.coverImage) commonUtil.deleteUploadedFile(user.coverImage);
 
   return { message: "User deleted successfully." };
 };
@@ -90,4 +79,5 @@ export const userService = {
   updatePassword,
   updateProfileImage,
   updateCoverImage,
+  deleteUser,
 };

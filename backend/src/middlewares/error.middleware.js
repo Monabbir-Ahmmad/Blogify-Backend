@@ -6,11 +6,11 @@ import { environment } from "../configs/environment.config.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
 const notFound = (req, res, next) => {
-  const error = new Error(`Not found - ${req.originalUrl}`);
-  error.statusCode = StatusCode.NOT_FOUND;
-
-  next(error);
+  throw new HttpError(StatusCode.NOT_FOUND, `Not found - ${req.originalUrl}`);
 };
+
+const asyncHandler = (fn) => (req, res, next) =>
+  Promise.resolve(fn(req, res, next)).catch(next);
 
 const errorHandler = (err, req, res, next) => {
   if (!(err instanceof HttpError)) {
@@ -29,4 +29,4 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-export const errorMiddleware = { notFound, errorHandler };
+export const errorMiddleware = { notFound, asyncHandler, errorHandler };

@@ -23,8 +23,10 @@ User.hasMany(Blog, { onDelete: "CASCADE" });
 Blog.belongsTo(User, { onDelete: "CASCADE" });
 
 Blog.afterUpdate(async (blog) => {
-  if (blog._previousDataValues.coverImage !== blog.coverImage)
-    commonUtil.deleteUploadedFile(blog._previousDataValues.coverImage);
+  const previousBlog = blog._previousDataValues;
+
+  if (previousBlog.coverImage && previousBlog.coverImage !== blog.coverImage)
+    commonUtil.deleteUploadedFile(previousBlog.coverImage);
 });
 
 Blog.afterDestroy(async (blog) => {

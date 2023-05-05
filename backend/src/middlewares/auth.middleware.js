@@ -1,9 +1,9 @@
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import asyncHandler from "express-async-handler";
 import { authUtil } from "../utils/functions/auth.util.js";
+import { errorMiddleware } from "./error.middleware.js";
 
-const verifyToken = asyncHandler(async (req, res, next) => {
+const verifyToken = errorMiddleware.asyncHandler(async (req, res, next) => {
   const token = req.cookies.authorization || req.headers.authorization;
 
   if (!token)

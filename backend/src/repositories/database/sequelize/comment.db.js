@@ -1,7 +1,5 @@
 import { Comment } from "../../../models/comment.model.js";
-import { CommentResDto } from "../../../dtos/response/comment.res.dto.js";
 import { User } from "../../../models/user.model.js";
-import { UserResDto } from "../../../dtos/response/user.res.dto.js";
 import { database } from "../../../configs/database.config.js";
 
 const createComment = async (blogId, userId, text, parentId) => {
@@ -9,20 +7,16 @@ const createComment = async (blogId, userId, text, parentId) => {
 
   if (!comment) return null;
 
-  const user = await User.findByPk(userId, {
-    attributes: ["id", "name", "profileImage"],
+  comment.reload({
+    include: [
+      {
+        model: User,
+        attributes: ["id", "name", "profileImage"],
+      },
+    ],
   });
 
-  return new CommentResDto({
-    id: comment.id,
-    text,
-    parentId,
-    blogId,
-    user: new UserResDto(user),
-    createdAt: comment.createdAt,
-    updatedAt: comment.updatedAt,
-    replyCount: 0,
-  });
+  return comment;
 };
 
 const getCommentById = async (id) => {
@@ -52,16 +46,7 @@ const getCommentById = async (id) => {
 
   if (!comment?.id) return null;
 
-  return new CommentResDto({
-    id: comment.id,
-    text: comment.text,
-    parentId: comment.parentId,
-    blogId: comment.blogId,
-    user: new UserResDto(comment.user),
-    createdAt: comment.createdAt,
-    updatedAt: comment.updatedAt,
-    replyCount: comment.get("replyCount"),
-  });
+  return comment;
 };
 
 const getCommentsByBlogId = async (blogId, offset, limit) => {
@@ -96,19 +81,7 @@ const getCommentsByBlogId = async (blogId, offset, limit) => {
 
   return {
     pageCount: Math.ceil(count.length / limit),
-    comments: comments.map(
-      (comment) =>
-        new CommentResDto({
-          id: comment.id,
-          text: comment.text,
-          parentId: comment.parentId,
-          blogId: comment.blogId,
-          user: new UserResDto(comment.user),
-          createdAt: comment.createdAt,
-          updatedAt: comment.updatedAt,
-          replyCount: comment.get("replyCount"),
-        })
-    ),
+    comments,
   };
 };
 
@@ -144,32 +117,28 @@ const getRepliesByCommentId = async (commentId, offset, limit) => {
 
   return {
     pageCount: Math.ceil(count.length / limit),
-    comments: comments.map(
-      (comment) =>
-        new CommentResDto({
-          id: comment.id,
-          text: comment.text,
-          parentId: comment.parentId,
-          blogId: comment.blogId,
-          user: new UserResDto(comment.user),
-          createdAt: comment.createdAt,
-          updatedAt: comment.updatedAt,
-          replyCount: comment.get("replyCount"),
-        })
-    ),
+    comments,
   };
 };
 
 const updateComment = async (id, text) => {
-  const [updatedRows] = await Comment.update({ text }, { where: { id } });
+  const comment = await getCommentById(id);
 
-  return updatedRows === 1;
+  if (!comment) return null;
+
+  await comment.update({ text });
+
+  return comment;
 };
 
 const deleteComment = async (id) => {
-  const deletedRows = await Comment.destroy({ where: { id } });
+  const comment = await getCommentById(id);
 
-  return deletedRows === 1;
+  if (!comment) return false;
+
+  await comment.destroy();
+
+  return true;
 };
 
 export const commentDB = {

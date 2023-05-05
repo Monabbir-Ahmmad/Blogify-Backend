@@ -14,7 +14,7 @@ const signup = async (signupReqDto) => {
 
   const user = await userDB.createUser(signupReqDto);
 
-  return new AuthResDto(user);
+  return new AuthResDto(user.id, user.userType.name);
 };
 
 const signin = async (email, password) => {
@@ -26,7 +26,7 @@ const signin = async (email, password) => {
   if (!(await authUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong password.");
 
-  return new AuthResDto(user);
+  return new AuthResDto(user.id, user.userType.name);
 };
 
 const forgotPassword = async (email) => {

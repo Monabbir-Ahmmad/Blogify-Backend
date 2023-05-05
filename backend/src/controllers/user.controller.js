@@ -1,11 +1,11 @@
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
-import asyncHandler from "express-async-handler";
+import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 import { userService } from "../services/user.service.js";
 
-const getUser = asyncHandler(async (req, res) => {
+const getUser = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.params.userId;
 
   const result = await userService.getUser(userId);
@@ -13,7 +13,7 @@ const getUser = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const updateProfile = asyncHandler(async (req, res) => {
+const updateProfile = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const { name, email, birthDate, gender, bio, password } = req.body;
 
@@ -32,7 +32,7 @@ const updateProfile = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const updatePassword = asyncHandler(async (req, res) => {
+const updatePassword = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const { oldPassword, newPassword } = req.body;
 
@@ -51,7 +51,7 @@ const updatePassword = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const updateProfileImage = asyncHandler(async (req, res) => {
+const updateProfileImage = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const profileImage = req.file?.filename;
 
@@ -66,7 +66,7 @@ const updateProfileImage = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const updateCoverImage = asyncHandler(async (req, res) => {
+const updateCoverImage = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const coverImage = req.file?.filename;
 
@@ -81,7 +81,7 @@ const updateCoverImage = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const deleteUser = asyncHandler(async (req, res) => {
+const deleteUser = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
 
   if (userId != req.params.userId)

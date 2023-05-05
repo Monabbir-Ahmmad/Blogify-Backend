@@ -1,5 +1,4 @@
 import { User } from "../../../models/user.model.js";
-import { UserResDto } from "../../../dtos/response/user.res.dto.js";
 import { UserType } from "../../../models/userType.model.js";
 
 const createUser = async (signupReqDto) => {
@@ -7,116 +6,76 @@ const createUser = async (signupReqDto) => {
     where: { name: "Normal" },
   });
 
-  const user = await User.create(signupReqDto);
+  if (!userType) return null;
 
-  await user.setUserType(userType);
+  const user = await User.create(signupReqDto);
 
   if (!user) return null;
 
-  return new UserResDto({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    gender: user.gender,
-    birthDate: user.birthDate,
-    profileImage: user.profileImage,
-    coverImage: user.coverImage,
-    bio: user.bio,
-    createdAt: user.createdAt,
-    userType: userType.name,
-  });
+  await user.setUserType(userType);
+
+  user.userType = userType;
+
+  return user;
 };
 
 const getUserByEmail = async (email) => {
-  const user = await User.findOne({
+  return await User.findOne({
     where: { email },
     include: {
       model: UserType,
       attributes: ["name"],
     },
   });
-
-  if (!user) return null;
-
-  return new UserResDto({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    gender: user.gender,
-    birthDate: user.birthDate,
-    profileImage: user.profileImage,
-    coverImage: user.coverImage,
-    bio: user.bio,
-    createdAt: user.createdAt,
-    userType: user.userType.name,
-    password: user.password,
-  });
 };
 
 const getUserById = async (id) => {
-  const user = await User.findByPk(id, {
+  return await User.findByPk(id, {
     include: {
       model: UserType,
       attributes: ["name"],
     },
   });
-
-  if (!user) return null;
-
-  return new UserResDto({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    gender: user.gender,
-    birthDate: user.birthDate,
-    profileImage: user.profileImage,
-    coverImage: user.coverImage,
-    bio: user.bio,
-    createdAt: user.createdAt,
-    userType: user.userType.name,
-    password: user.password,
-  });
 };
 
 const updateUser = async (userId, userProfileUpdateReqDto) => {
-  const [updatedRows] = await User.update(userProfileUpdateReqDto, {
-    where: { id: userId },
-  });
+  const user = await getUserById(userId);
 
-  return updatedRows === 1;
+  if (!user) return null;
+
+  return await user.update(userProfileUpdateReqDto);
 };
 
 const updatePassword = async (userId, password) => {
-  const [updatedRows] = await User.update(
-    { password },
-    { where: { id: userId } }
-  );
+  const user = await getUserById(userId);
 
-  return updatedRows === 1;
+  if (!user) return null;
+
+  return await user.update({ password });
 };
 
 const updateProfileImage = async (userId, profileImage = null) => {
-  const [updatedRows] = await User.update(
-    { profileImage },
-    { where: { id: userId } }
-  );
+  const user = await getUserById(userId);
 
-  return updatedRows === 1;
+  if (!user) return null;
+
+  return await user.update({ profileImage });
 };
 
 const updateCoverImage = async (userId, coverImage = null) => {
-  const [updatedRows] = await User.update(
-    { coverImage },
-    { where: { id: userId } }
-  );
+  const user = await getUserById(userId);
 
-  return updatedRows === 1;
+  if (!user) return null;
+
+  return await user.update({ coverImage });
 };
 
 const deleteUser = async (id) => {
-  const deletedRows = await User.destroy({ where: { id } });
+  const user = await getUserById(userId);
 
-  return deletedRows === 1;
+  if (!user) return null;
+
+  return await user.destroy();
 };
 
 export const userDB = {

@@ -1,18 +1,5 @@
-import { UserResDto } from "./user.res.dto.js";
-
 export class CommentResDto {
-  /**
-   * @param {Object} param
-   * @param {number | string} param.id
-   * @param {string} param.text
-   * @param {number | string} param.parentId
-   * @param {number | string} param.blogId
-   * @param {UserResDto} param.user
-   * @param {Date} param.createdAt
-   * @param {Date} param.updatedAt
-   * @param {number} param.replyCount
-   */
-  constructor({
+  constructor(
     id,
     text,
     parentId,
@@ -20,8 +7,8 @@ export class CommentResDto {
     user,
     createdAt,
     updatedAt,
-    replyCount,
-  }) {
+    replyCount
+  ) {
     this.id = id;
     this.text = text;
     this.parentId = parentId;

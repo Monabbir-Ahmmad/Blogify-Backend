@@ -48,10 +48,16 @@ UserType.hasMany(User, { onDelete: "CASCADE" });
 User.belongsTo(UserType, { onDelete: "CASCADE" });
 
 User.afterUpdate(async (user) => {
-  if (user._previousDataValues.profileImage !== user.profileImage)
-    commonUtil.deleteUploadedFile(user._previousDataValues.profileImage);
-  if (user._previousDataValues.coverImage !== user.coverImage)
-    commonUtil.deleteUploadedFile(user._previousDataValues.coverImage);
+  const previousUser = user._previousDataValues;
+
+  if (
+    previousUser.profileImage &&
+    previousUser.profileImage !== user.profileImage
+  )
+    commonUtil.deleteUploadedFile(previousUser.profileImage);
+
+  if (previousUser.coverImage && previousUser.coverImage !== user.coverImage)
+    commonUtil.deleteUploadedFile(previousUser.coverImage);
 });
 
 User.afterDestroy(async (user) => {

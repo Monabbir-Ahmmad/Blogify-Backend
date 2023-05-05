@@ -1,10 +1,10 @@
 import StatusCode from "../utils/objects/StatusCode.js";
-import asyncHandler from "express-async-handler";
 import { commentService } from "../services/comment.service.js";
 import { commonUtil } from "../utils/functions/common.util.js";
+import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
-const postComment = asyncHandler(async (req, res) => {
+const postComment = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const { blogId, text, parentId } = req.body;
 
@@ -23,7 +23,7 @@ const postComment = asyncHandler(async (req, res) => {
   );
 });
 
-const getBlogComments = asyncHandler(async (req, res) => {
+const getBlogComments = errorMiddleware.asyncHandler(async (req, res) => {
   const blogId = req.params.blogId;
   const pagination = commonUtil.getPagination(req.query);
 
@@ -32,7 +32,7 @@ const getBlogComments = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const getComment = asyncHandler(async (req, res) => {
+const getComment = errorMiddleware.asyncHandler(async (req, res) => {
   const commentId = req.params.commentId;
 
   const result = await commentService.getComment(commentId);
@@ -40,7 +40,7 @@ const getComment = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const getCommentReplies = asyncHandler(async (req, res) => {
+const getCommentReplies = errorMiddleware.asyncHandler(async (req, res) => {
   const commentId = req.params.commentId;
   const pagination = commonUtil.getPagination(req.query);
 
@@ -49,7 +49,7 @@ const getCommentReplies = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const updateComment = asyncHandler(async (req, res) => {
+const updateComment = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const commentId = req.params.commentId;
   const { text } = req.body;
@@ -59,7 +59,7 @@ const updateComment = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const deleteComment = asyncHandler(async (req, res) => {
+const deleteComment = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const commentId = req.params.commentId;
 

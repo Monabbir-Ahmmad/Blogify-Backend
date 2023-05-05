@@ -4,12 +4,11 @@ import { blogService } from "./blog.service.js";
 import { commentDB } from "../repositories/database/sequelize/comment.db.js";
 
 const getComment = async (commentId) => {
-  const commentResDto = await commentDB.getCommentById(commentId);
+  const comment = await commentDB.getCommentById(commentId);
 
-  if (!commentResDto)
-    throw new HttpError(StatusCode.NOT_FOUND, "Comment not found.");
+  if (!comment) throw new HttpError(StatusCode.NOT_FOUND, "Comment not found.");
 
-  return commentResDto;
+  return comment;
 };
 
 const postComment = async (blogId, userId, text, parentId) => {
@@ -17,19 +16,29 @@ const postComment = async (blogId, userId, text, parentId) => {
 
   if (parentId) await getComment(parentId);
 
-  return await commentDB.createComment(blogId, userId, text, parentId);
+  const comment = await commentDB.createComment(blogId, userId, text, parentId);
+
+  return comment;
 };
 
 const getComments = async (blogId, { offset, limit }) => {
   await blogService.getBlog(blogId);
 
-  return await commentDB.getCommentsByBlogId(blogId, offset, limit);
+  const comments = await commentDB.getCommentsByBlogId(blogId, offset, limit);
+
+  return comments;
 };
 
 const getCommentReplies = async (commentId, { offset, limit }) => {
   await getComment(commentId);
 
-  return await commentDB.getRepliesByCommentId(commentId, offset, limit);
+  const comments = await commentDB.getRepliesByCommentId(
+    commentId,
+    offset,
+    limit
+  );
+
+  return comments;
 };
 
 const updateComment = async (userId, commentId, text) => {
@@ -41,9 +50,9 @@ const updateComment = async (userId, commentId, text) => {
       "You are not allowed to update this comment."
     );
 
-  await commentDB.updateComment(commentId, text);
+  const updatedComment = await commentDB.updateComment(commentId, text);
 
-  return await getComment(commentId);
+  return updatedComment;
 };
 
 const deleteComment = async (userId, commentId) => {

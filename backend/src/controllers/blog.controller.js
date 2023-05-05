@@ -1,12 +1,12 @@
 import { BlogPostReqDto } from "../dtos/request/blogPost.req.dto.js";
 import { BlogUpdateReqDto } from "../dtos/request/blogUpdate.req.dto.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import asyncHandler from "express-async-handler";
 import { blogService } from "../services/blog.service.js";
 import { commonUtil } from "../utils/functions/common.util.js";
+import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
-const createBlog = asyncHandler(async (req, res) => {
+const createBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const { title, content } = req.body;
   const coverImage = req.file?.filename;
@@ -28,7 +28,7 @@ const createBlog = asyncHandler(async (req, res) => {
   );
 });
 
-const getBlogList = asyncHandler(async (req, res) => {
+const getBlogList = errorMiddleware.asyncHandler(async (req, res) => {
   const pagination = commonUtil.getPagination(req.query);
 
   const result = await blogService.getBlogs(pagination);
@@ -36,7 +36,7 @@ const getBlogList = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const getUserBlogList = asyncHandler(async (req, res) => {
+const getUserBlogList = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.params.userId;
   const pagination = commonUtil.getPagination(req.query);
 
@@ -45,7 +45,7 @@ const getUserBlogList = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const getBlog = asyncHandler(async (req, res) => {
+const getBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const blogId = req.params.blogId;
 
   const result = await blogService.getBlog(blogId);
@@ -53,7 +53,7 @@ const getBlog = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const updateBlog = asyncHandler(async (req, res) => {
+const updateBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const blogId = req.params.blogId;
   const { title, content } = req.body;
@@ -68,7 +68,7 @@ const updateBlog = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const deleteBlog = asyncHandler(async (req, res) => {
+const deleteBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const blogId = req.params.blogId;
 
@@ -77,7 +77,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
-const likeBlog = asyncHandler(async (req, res) => {
+const likeBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
   const blogId = req.params.blogId;
 

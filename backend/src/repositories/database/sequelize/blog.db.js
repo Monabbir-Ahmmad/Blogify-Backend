@@ -1,31 +1,24 @@
 import { Blog } from "../../../models/blog.model.js";
-import { BlogResDto } from "../../../dtos/response/blog.res.dto.js";
 import { Comment } from "../../../models/comment.model.js";
 import { Like } from "../../../models/like.model.js";
 import { User } from "../../../models/user.model.js";
-import { UserResDto } from "../../../dtos/response/user.res.dto.js";
 import { database } from "../../../configs/database.config.js";
 
 const createBlog = async (userId, blogPostReqDto) => {
-  const user = await User.findByPk(userId, {
-    attributes: ["id", "name", "profileImage"],
+  const blog = await Blog.create({ ...blogPostReqDto, userId });
+
+  if (!blog) return null;
+
+  await blog.reload({
+    include: [
+      {
+        model: User,
+        attributes: ["id", "name", "profileImage"],
+      },
+    ],
   });
 
-  const blog = await Blog.create(blogPostReqDto);
-
-  await blog.setUser(user);
-
-  return new BlogResDto({
-    id: blog.id,
-    title: blog.title,
-    content: blog.content,
-    coverImage: blog.coverImage,
-    createdAt: blog.createdAt,
-    updatedAt: blog.updatedAt,
-    user: new UserResDto(user),
-    likes: [],
-    commentCount: 0,
-  });
+  return blog;
 };
 
 const getBlogById = async (id) => {
@@ -57,17 +50,7 @@ const getBlogById = async (id) => {
 
   if (!blog?.id) return null;
 
-  return new BlogResDto({
-    id: blog.id,
-    title: blog.title,
-    content: blog.content,
-    coverImage: blog.coverImage,
-    createdAt: blog.createdAt,
-    updatedAt: blog.updatedAt,
-    user: new UserResDto(blog.user),
-    likes: blog.likes,
-    commentCount: blog.get("commentCount"),
-  });
+  return blog;
 };
 
 const getBlogs = async (offset, limit) => {
@@ -105,20 +88,7 @@ const getBlogs = async (offset, limit) => {
 
   return {
     pageCount: Math.ceil(count.length / limit),
-    blogs: blogs.map(
-      (blog) =>
-        new BlogResDto({
-          id: blog.id,
-          title: blog.title,
-          content: blog.content,
-          coverImage: blog.coverImage,
-          createdAt: blog.createdAt,
-          updatedAt: blog.updatedAt,
-          user: new UserResDto(blog.user),
-          likes: blog.likes,
-          commentCount: blog.get("commentCount"),
-        })
-    ),
+    blogs,
   };
 };
 
@@ -158,51 +128,39 @@ const getUserBlogs = async (userId, offset, limit) => {
 
   return {
     pageCount: Math.ceil(count.length / limit),
-    blogs: blogs.map(
-      (blog) =>
-        new BlogResDto({
-          id: blog.id,
-          title: blog.title,
-          content: blog.content,
-          coverImage: blog.coverImage,
-          createdAt: blog.createdAt,
-          updatedAt: blog.updatedAt,
-          user: new UserResDto(blog.user),
-          likes: blog.likes,
-          commentCount: blog.get("commentCount"),
-        })
-    ),
+    blogs,
   };
 };
 
 const updateBlog = async (blogId, blogUpdateReqDto) => {
-  const [updatedRows] = await Blog.update(blogUpdateReqDto, {
-    where: { id: blogId },
-  });
+  const blog = await getBlogById(blogId);
 
-  return updatedRows === 1;
+  if (!blog) return null;
+
+  await blog.update(blogUpdateReqDto);
+
+  return blog;
 };
 
 const deleteBlog = async (blogId) => {
-  const deletedRows = await Blog.destroy({
-    where: { id: blogId },
-  });
+  const blog = await getBlogById(blogId);
 
-  return deletedRows === 1;
+  if (!blog) return false;
+
+  await blog.destroy();
+
+  return true;
 };
 
 const updateBlogLike = async (userId, blogId) => {
-  const like = await Like.findOne({
+  const [like, created] = await Like.findOrCreate({
     where: { userId, blogId },
+    defaults: { userId, blogId },
   });
 
-  if (like) {
-    await Like.destroy({ where: { userId, blogId } });
-    return false;
-  } else {
-    await Like.create({ userId, blogId });
-    return true;
-  }
+  if (!created && like) await like.destroy();
+
+  return created;
 };
 
 export const blogDB = {
