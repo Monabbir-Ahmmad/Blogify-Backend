@@ -1,6 +1,9 @@
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
+import { User } from "../models/user.model.js";
+import { UserResDto } from "../dtos/response/user.res.dto.js";
 import { authUtil } from "../utils/functions/auth.util.js";
+import { mapper } from "../configs/mapper.config.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 
 const getUser = async (userId) => {
@@ -8,7 +11,7 @@ const getUser = async (userId) => {
 
   if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-  return user;
+  return mapper.map(User, UserResDto, user);
 };
 
 const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
@@ -24,7 +27,7 @@ const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
 
   const updatedUser = await userDB.updateUser(userId, userProfileUpdateReqDto);
 
-  return updatedUser;
+  return mapper.map(User, UserResDto, updatedUser);
 };
 
 const updatePassword = async (userId, oldPassword, newPassword) => {
@@ -51,7 +54,7 @@ const updateProfileImage = async (userId, profileImage = null) => {
 
   const updatedUser = await userDB.updateProfileImage(userId, profileImage);
 
-  return updatedUser;
+  return mapper.map(User, UserResDto, updatedUser);
 };
 
 const updateCoverImage = async (userId, coverImage = null) => {
@@ -59,7 +62,7 @@ const updateCoverImage = async (userId, coverImage = null) => {
 
   const updatedUser = await userDB.updateCoverImage(userId, coverImage);
 
-  return updatedUser;
+  return mapper.map(User, UserResDto, updatedUser);
 };
 
 const deleteUser = async (userId, password) => {

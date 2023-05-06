@@ -44,6 +44,8 @@ const getBlogById = async (id) => {
       {
         model: Comment,
         attributes: [],
+        required: false,
+        where: { parentId: null },
       },
     ],
   });
@@ -82,6 +84,7 @@ const getBlogs = async (offset, limit) => {
         model: Comment,
         attributes: [],
         required: false,
+        where: { parentId: null },
       },
     ],
   });
@@ -122,6 +125,7 @@ const getUserBlogs = async (userId, offset, limit) => {
         model: Comment,
         attributes: [],
         required: false,
+        where: { parentId: null },
       },
     ],
   });

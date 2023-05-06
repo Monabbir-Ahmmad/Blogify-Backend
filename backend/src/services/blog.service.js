@@ -1,6 +1,9 @@
+import { Blog } from "../models/blog.model.js";
+import { BlogResDto } from "../dtos/response/blog.res.dto.js";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { blogDB } from "../repositories/database/sequelize/blog.db.js";
+import { mapper } from "../configs/mapper.config.js";
 import { userService } from "./user.service.js";
 
 const createBlog = async (userId, blogPostReqDto) => {
@@ -8,7 +11,7 @@ const createBlog = async (userId, blogPostReqDto) => {
 
   const blog = await blogDB.createBlog(userId, blogPostReqDto);
 
-  return blog;
+  return mapper.map(Blog, BlogResDto, blog);
 };
 
 const getBlog = async (id) => {
@@ -16,21 +19,27 @@ const getBlog = async (id) => {
 
   if (!blog) throw new HttpError(StatusCode.NOT_FOUND, "Blog not found.");
 
-  return blog;
+  return mapper.map(Blog, BlogResDto, blog);
 };
 
 const getBlogs = async ({ offset, limit }) => {
-  const blogs = await blogDB.getBlogs(offset, limit);
+  const { pageCount, blogs } = await blogDB.getBlogs(offset, limit);
 
-  return blogs;
+  return {
+    pageCount,
+    blogs: mapper.mapArray(Blog, BlogResDto, blogs),
+  };
 };
 
 const getUserBlogs = async (userId, { offset, limit }) => {
   await userService.getUser(userId);
 
-  const blogs = await blogDB.getUserBlogs(userId, offset, limit);
+  const { pageCount, blogs } = await blogDB.getUserBlogs(userId, offset, limit);
 
-  return blogs;
+  return {
+    pageCount,
+    blogs: mapper.mapArray(Blog, BlogResDto, blogs),
+  };
 };
 
 const updateBlog = async (userId, blogId, blogUpdatetReqDto) => {
@@ -44,7 +53,7 @@ const updateBlog = async (userId, blogId, blogUpdatetReqDto) => {
 
   const updatedBlog = await blogDB.updateBlog(blogId, blogUpdatetReqDto);
 
-  return updatedBlog;
+  return mapper.map(Blog, BlogResDto, updatedBlog);
 };
 
 const deleteBlog = async (userId, blogId) => {
@@ -68,7 +77,7 @@ const updateBlogLike = async (userId, blogId) => {
 
   await blogDB.updateBlogLike(userId, blogId);
 
-  return await blogDB.getBlogById(blogId);
+  return mapper.map(Blog, BlogResDto, await getBlog(blogId));
 };
 
 export const blogService = {

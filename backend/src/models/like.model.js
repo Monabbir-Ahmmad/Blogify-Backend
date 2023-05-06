@@ -1,8 +1,14 @@
-import { database } from "../configs/database.config.js";
 import { Blog } from "./blog.model.js";
+import { Model } from "sequelize";
 import { User } from "./user.model.js";
+import { database } from "../configs/database.config.js";
 
-export const Like = database.define("like");
+export class Like extends Model {}
+
+Like.init(null, {
+  sequelize: database,
+  modelName: "like",
+});
 
 Blog.hasMany(Like, { onDelete: "CASCADE" });
 Like.belongsTo(Blog, { onDelete: "CASCADE" });

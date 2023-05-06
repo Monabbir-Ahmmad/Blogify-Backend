@@ -7,7 +7,7 @@ const createComment = async (blogId, userId, text, parentId) => {
 
   if (!comment) return null;
 
-  comment.reload({
+  await comment.reload({
     include: [
       {
         model: User,
@@ -40,6 +40,7 @@ const getCommentById = async (id) => {
         as: "replies",
         attributes: [],
         required: false,
+        where: { parentId: id },
       },
     ],
   });
@@ -72,6 +73,7 @@ const getCommentsByBlogId = async (blogId, offset, limit) => {
         as: "replies",
         attributes: [],
         required: false,
+        where: { parentId: database.col("Comment.id") },
       },
     ],
     group: ["Comment.id"],
@@ -108,6 +110,7 @@ const getRepliesByCommentId = async (commentId, offset, limit) => {
         as: "replies",
         attributes: [],
         required: false,
+        where: { parentId: database.col("Comment.id") },
       },
     ],
     group: ["Comment.id"],

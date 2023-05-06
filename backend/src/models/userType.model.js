@@ -1,11 +1,19 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { database } from "../configs/database.config.js";
 
-export const UserType = database.define("userType", {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    validate: { notEmpty: true },
+export class UserType extends Model { }
+
+UserType.init(
+  {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: { notEmpty: true },
+    },
   },
-});
+  {
+    sequelize: database,
+    modelName: "userType",
+  }
+);

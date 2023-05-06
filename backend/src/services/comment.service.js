@@ -1,14 +1,17 @@
+import { Comment } from "../models/comment.model.js";
+import { CommentResDto } from "../dtos/response/comment.res.dto.js";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { blogService } from "./blog.service.js";
 import { commentDB } from "../repositories/database/sequelize/comment.db.js";
+import { mapper } from "../configs/mapper.config.js";
 
 const getComment = async (commentId) => {
   const comment = await commentDB.getCommentById(commentId);
 
   if (!comment) throw new HttpError(StatusCode.NOT_FOUND, "Comment not found.");
 
-  return comment;
+  return mapper.map(Comment, CommentResDto, comment);
 };
 
 const postComment = async (blogId, userId, text, parentId) => {
@@ -18,27 +21,37 @@ const postComment = async (blogId, userId, text, parentId) => {
 
   const comment = await commentDB.createComment(blogId, userId, text, parentId);
 
-  return comment;
+  return mapper.map(Comment, CommentResDto, comment);
 };
 
 const getComments = async (blogId, { offset, limit }) => {
   await blogService.getBlog(blogId);
 
-  const comments = await commentDB.getCommentsByBlogId(blogId, offset, limit);
+  const { pageCount, comments } = await commentDB.getCommentsByBlogId(
+    blogId,
+    offset,
+    limit
+  );
 
-  return comments;
+  return {
+    pageCount,
+    comments: mapper.mapArray(Comment, CommentResDto, comments),
+  };
 };
 
 const getCommentReplies = async (commentId, { offset, limit }) => {
   await getComment(commentId);
 
-  const comments = await commentDB.getRepliesByCommentId(
+  const { pageCount, comments } = await commentDB.getRepliesByCommentId(
     commentId,
     offset,
     limit
   );
 
-  return comments;
+  return {
+    pageCount,
+    comments: mapper.mapArray(Comment, CommentResDto, comments),
+  };
 };
 
 const updateComment = async (userId, commentId, text) => {
@@ -52,7 +65,7 @@ const updateComment = async (userId, commentId, text) => {
 
   const updatedComment = await commentDB.updateComment(commentId, text);
 
-  return updatedComment;
+  return mapper.map(Comment, CommentResDto, updatedComment);
 };
 
 const deleteComment = async (userId, commentId) => {

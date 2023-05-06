@@ -1,15 +1,24 @@
-import { DataTypes } from "sequelize";
-import { database } from "../configs/database.config.js";
-import { User } from "./user.model.js";
-import { Blog } from "./blog.model.js";
+import { DataTypes, Model } from "sequelize";
 
-export const Comment = database.define("comment", {
-  text: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    validate: { notEmpty: true },
+import { Blog } from "./blog.model.js";
+import { User } from "./user.model.js";
+import { database } from "../configs/database.config.js";
+
+export class Comment extends Model {}
+
+Comment.init(
+  {
+    text: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: { notEmpty: true },
+    },
   },
-});
+  {
+    sequelize: database,
+    modelName: "comment",
+  }
+);
 
 User.hasMany(Comment, { onDelete: "CASCADE" });
 Comment.belongsTo(User, { onDelete: "CASCADE" });
