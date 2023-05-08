@@ -1,8 +1,6 @@
-import { ValidationChain, body } from "express-validator";
-
+import { body } from "express-validator";
 import { commonUtil } from "../../utils/functions/common.util.js";
 
-/**@type {ValidationChain[]} */
 const signup = [
   body("name").notEmpty().withMessage("Name field can not be empty."),
   body("email").isEmail().withMessage("Invalid email address."),
@@ -21,7 +19,6 @@ const signup = [
     .withMessage("Must be at least 13 years old."),
 ];
 
-/**@type {ValidationChain[]} */
 const signin = [
   body("email").isEmail().withMessage("Invalid email address."),
   body("password")
@@ -31,12 +28,10 @@ const signin = [
     ),
 ];
 
-/**@type {ValidationChain[]} */
 const forgotPassword = [
   body("email").isEmail().withMessage("Invalid email address."),
 ];
 
-/**@type {ValidationChain[]} */
 const resetPassword = [
   body("newPassword")
     .isStrongPassword()

@@ -3,7 +3,6 @@ import StatusCode from "../utils/objects/StatusCode.js";
 import { User } from "../models/user.model.js";
 import { UserResDto } from "../dtos/response/user.res.dto.js";
 import { authUtil } from "../utils/functions/auth.util.js";
-import { commonUtil } from "../utils/functions/common.util.js";
 import { mapper } from "../configs/mapper.config.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 
@@ -27,8 +26,6 @@ const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
     (await userDB.getUserByEmail(userProfileUpdateReqDto.email))?.id !== userId
   )
     throw new HttpError(StatusCode.CONFLICT, "Email already in use.");
-
-  commonUtil.removeInvalidFields(userProfileUpdateReqDto);
 
   const updatedUser = await userDB.updateUser(userId, userProfileUpdateReqDto);
 

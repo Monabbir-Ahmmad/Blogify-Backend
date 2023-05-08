@@ -37,7 +37,8 @@ const getPagination = ({ page, limit }) => {
 
 const removeInvalidFields = (obj) => {
   Object.keys(obj).forEach((key) => {
-    if (!obj[key]) delete obj[key];
+    if (!obj[key] && Object.getOwnPropertyDescriptor(obj, key).configurable)
+      delete obj[key];
   });
 };
 

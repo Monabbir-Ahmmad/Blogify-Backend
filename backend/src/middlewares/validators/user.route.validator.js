@@ -1,24 +1,12 @@
-import { ValidationChain, body } from "express-validator";
-
+import { body } from "express-validator";
 import { commonUtil } from "../../utils/functions/common.util.js";
 
-/**@type {ValidationChain[]} */
 const profileUpdate = [
-  body("name")
-    .optional({ nullable: true })
-    .notEmpty()
-    .withMessage("Name field can not be empty."),
-  body("email")
-    .optional({ nullable: true })
-    .isEmail()
-    .withMessage("Invalid email address."),
+  body("name").notEmpty().withMessage("Name field can not be empty."),
+  body("email").isEmail().withMessage("Invalid email address."),
   body("password").isStrongPassword().withMessage("Invalid password."),
-  body("gender")
-    .optional({ nullable: true })
-    .notEmpty()
-    .withMessage("Gender field can not be empty."),
+  body("gender").notEmpty().withMessage("Gender field can not be empty."),
   body("birthDate")
-    .optional({ nullable: true })
     .trim()
     .isDate()
     .withMessage("Date of birth must be a valid date.")
@@ -31,7 +19,6 @@ const profileUpdate = [
     .withMessage("Bio can not be empty."),
 ];
 
-/**@type {ValidationChain[]} */
 const passwordUpdate = [
   body("oldPassword")
     .notEmpty()
