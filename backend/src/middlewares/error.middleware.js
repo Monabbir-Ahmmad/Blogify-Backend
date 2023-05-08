@@ -24,7 +24,10 @@ const errorHandler = (err, req, res, next) => {
 
   responseUtil.sendContentNegotiatedResponse(req, res, err.statusCode, {
     statusCode: err.statusCode,
-    message: err.message,
+    message:
+      environment.NODE_ENV === "development"
+        ? err.message
+        : "Internal server error.",
     stack: environment.NODE_ENV === "development" ? err.stack : null,
   });
 };

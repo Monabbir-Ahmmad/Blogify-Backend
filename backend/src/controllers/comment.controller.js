@@ -68,6 +68,15 @@ const deleteComment = errorMiddleware.asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
+const likeComment = errorMiddleware.asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+  const commentId = req.params.commentId;
+
+  const result = await commentService.updateCommentLike(userId, commentId);
+
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+});
+
 export const commentController = {
   postComment,
   getBlogComments,
@@ -75,4 +84,5 @@ export const commentController = {
   getCommentReplies,
   updateComment,
   deleteComment,
+  likeComment,
 };

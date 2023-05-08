@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { User } from "../../../models/user.model.js";
 import { UserType } from "../../../models/userType.model.js";
 
@@ -78,6 +79,24 @@ const deleteUser = async (id) => {
   return await user.destroy();
 };
 
+const searchUserByName = async (keyword, offset, limit) => {
+  const { rows: users, count } = await User.findAndCountAll({
+    where: {
+      name: {
+        [Op.substring]: keyword,
+      },
+    },
+    offset,
+    limit,
+    attributes: ["id", "name", "profileImage"],
+  });
+
+  return {
+    pageCount: Math.ceil(count / limit),
+    users,
+  };
+};
+
 export const userDB = {
   createUser,
   getUserByEmail,
@@ -87,4 +106,5 @@ export const userDB = {
   updateProfileImage,
   updateCoverImage,
   deleteUser,
+  searchUserByName,
 };

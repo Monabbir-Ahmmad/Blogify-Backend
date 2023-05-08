@@ -1,6 +1,7 @@
 import { Comment } from "../../../models/comment.model.js";
+import { CommentLike } from "../../../models/commentLike.model.js";
+import { Sequelize } from "sequelize";
 import { User } from "../../../models/user.model.js";
-import { database } from "../../../configs/database.config.js";
 
 const createComment = async (blogId, userId, text, parentId) => {
   const comment = await Comment.create({ text, parentId, blogId, userId });
@@ -12,6 +13,11 @@ const createComment = async (blogId, userId, text, parentId) => {
       {
         model: User,
         attributes: ["id", "name", "profileImage"],
+      },
+      {
+        model: CommentLike,
+        attributes: ["userId"],
+        required: false,
       },
     ],
   });
@@ -28,12 +34,17 @@ const getCommentById = async (id) => {
       "blogId",
       "createdAt",
       "updatedAt",
-      [database.fn("COUNT", database.col("replies.id")), "replyCount"],
+      [Sequelize.fn("COUNT", Sequelize.col("replies.id")), "replyCount"],
     ],
     include: [
       {
         model: User,
         attributes: ["id", "name", "profileImage"],
+      },
+      {
+        model: CommentLike,
+        attributes: ["userId"],
+        required: false,
       },
       {
         model: Comment,
@@ -61,7 +72,7 @@ const getCommentsByBlogId = async (blogId, offset, limit) => {
       "blogId",
       "createdAt",
       "updatedAt",
-      [database.fn("COUNT", database.col("replies.id")), "replyCount"],
+      [Sequelize.fn("COUNT", Sequelize.col("replies.id")), "replyCount"],
     ],
     include: [
       {
@@ -69,11 +80,16 @@ const getCommentsByBlogId = async (blogId, offset, limit) => {
         attributes: ["id", "name", "profileImage"],
       },
       {
+        model: CommentLike,
+        attributes: ["userId"],
+        required: false,
+      },
+      {
         model: Comment,
         as: "replies",
         attributes: [],
         required: false,
-        where: { parentId: database.col("Comment.id") },
+        where: { parentId: Sequelize.col("Comment.id") },
       },
     ],
     group: ["Comment.id"],
@@ -98,7 +114,7 @@ const getRepliesByCommentId = async (commentId, offset, limit) => {
       "blogId",
       "createdAt",
       "updatedAt",
-      [database.fn("COUNT", database.col("replies.id")), "replyCount"],
+      [Sequelize.fn("COUNT", Sequelize.col("replies.id")), "replyCount"],
     ],
     include: [
       {
@@ -106,11 +122,16 @@ const getRepliesByCommentId = async (commentId, offset, limit) => {
         attributes: ["id", "name", "profileImage"],
       },
       {
+        model: CommentLike,
+        attributes: ["userId"],
+        required: false,
+      },
+      {
         model: Comment,
         as: "replies",
         attributes: [],
         required: false,
-        where: { parentId: database.col("Comment.id") },
+        where: { parentId: Sequelize.col("Comment.id") },
       },
     ],
     group: ["Comment.id"],
@@ -144,6 +165,17 @@ const deleteComment = async (id) => {
   return true;
 };
 
+const updateCommentLike = async (userId, commentId) => {
+  const [like, created] = await CommentLike.findOrCreate({
+    where: { userId, commentId },
+    defaults: { userId, commentId },
+  });
+
+  if (!created && like) await like.destroy();
+
+  return created;
+};
+
 export const commentDB = {
   createComment,
   getCommentById,
@@ -151,4 +183,5 @@ export const commentDB = {
   getRepliesByCommentId,
   updateComment,
   deleteComment,
+  updateCommentLike,
 };

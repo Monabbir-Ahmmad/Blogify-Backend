@@ -7,6 +7,7 @@ export class CommentResDto {
     user,
     createdAt,
     updatedAt,
+    likes,
     replyCount
   ) {
     this.id = id;
@@ -16,6 +17,7 @@ export class CommentResDto {
     this.user = user;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.likes = likes;
     this.replyCount = replyCount;
   }
 }

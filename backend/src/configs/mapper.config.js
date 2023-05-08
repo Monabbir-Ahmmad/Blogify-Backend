@@ -28,6 +28,7 @@ mapper.setMapping(Blog, BlogResDto, {
 mapper.setMapping(Comment, CommentResDto, {
   properties: {
     user: (comment) => mapper.map(User, UserResDto, comment.user),
+    likes: (comment) => comment.commentLikes ?? [],
     replyCount: (comment) => comment.get("replyCount") ?? 0,
   },
 });

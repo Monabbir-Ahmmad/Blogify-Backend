@@ -77,7 +77,20 @@ const updateBlogLike = async (userId, blogId) => {
 
   await blogDB.updateBlogLike(userId, blogId);
 
-  return mapper.map(Blog, BlogResDto, await getBlog(blogId));
+  return await getBlog(blogId);
+};
+
+const searchBlog = async (keyword, { offset, limit }) => {
+  const { pageCount, blogs } = await blogDB.searchBlogByTitle(
+    keyword,
+    offset,
+    limit
+  );
+
+  return {
+    pageCount,
+    blogs: mapper.mapArray(Blog, BlogResDto, blogs),
+  };
 };
 
 export const blogService = {
@@ -88,4 +101,5 @@ export const blogService = {
   updateBlog,
   deleteBlog,
   updateBlogLike,
+  searchBlog,
 };

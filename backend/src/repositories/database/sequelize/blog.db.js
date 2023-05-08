@@ -1,8 +1,9 @@
+import { Op, Sequelize } from "sequelize";
+
 import { Blog } from "../../../models/blog.model.js";
 import { Comment } from "../../../models/comment.model.js";
 import { Like } from "../../../models/like.model.js";
 import { User } from "../../../models/user.model.js";
-import { database } from "../../../configs/database.config.js";
 
 const createBlog = async (userId, blogPostReqDto) => {
   const blog = await Blog.create({ ...blogPostReqDto, userId });
@@ -14,6 +15,11 @@ const createBlog = async (userId, blogPostReqDto) => {
       {
         model: User,
         attributes: ["id", "name", "profileImage"],
+      },
+      {
+        model: Like,
+        attributes: ["userId"],
+        required: false,
       },
     ],
   });
@@ -30,7 +36,7 @@ const getBlogById = async (id) => {
       "coverImage",
       "createdAt",
       "updatedAt",
-      [database.fn("COUNT", database.col("comments.id")), "commentCount"],
+      [Sequelize.fn("COUNT", Sequelize.col("comments.id")), "commentCount"],
     ],
     include: [
       {
@@ -40,6 +46,7 @@ const getBlogById = async (id) => {
       {
         model: Like,
         attributes: ["userId"],
+        required: false,
       },
       {
         model: Comment,
@@ -68,7 +75,7 @@ const getBlogs = async (offset, limit) => {
       "coverImage",
       "createdAt",
       "updatedAt",
-      [database.fn("COUNT", database.col("comments.id")), "commentCount"],
+      [Sequelize.fn("COUNT", Sequelize.col("comments.id")), "commentCount"],
     ],
     include: [
       {
@@ -109,7 +116,7 @@ const getUserBlogs = async (userId, offset, limit) => {
       "coverImage",
       "createdAt",
       "updatedAt",
-      [database.fn("COUNT", database.col("comments.id")), "commentCount"],
+      [Sequelize.fn("COUNT", Sequelize.col("comments.id")), "commentCount"],
     ],
     include: [
       {
@@ -167,6 +174,48 @@ const updateBlogLike = async (userId, blogId) => {
   return created;
 };
 
+const searchBlogByTitle = async (keyword, offset, limit) => {
+  const { rows: blogs, count } = await Blog.findAndCountAll({
+    where: { title: { [Op.substring]: keyword } },
+    subQuery: false,
+    group: ["Blog.id"],
+    offset,
+    limit,
+    attributes: [
+      "id",
+      "title",
+      "content",
+      "coverImage",
+      "createdAt",
+      "updatedAt",
+      [Sequelize.fn("COUNT", Sequelize.col("comments.id")), "commentCount"],
+    ],
+
+    include: [
+      {
+        model: User,
+        attributes: ["id", "name", "profileImage"],
+      },
+      {
+        model: Like,
+        attributes: ["userId"],
+        required: false,
+      },
+      {
+        model: Comment,
+        attributes: [],
+        required: false,
+        where: { parentId: null },
+      },
+    ],
+  });
+
+  return {
+    pageCount: Math.ceil(count.length / limit),
+    blogs,
+  };
+};
+
 export const blogDB = {
   createBlog,
   getBlogById,
@@ -175,4 +224,5 @@ export const blogDB = {
   updateBlog,
   deleteBlog,
   updateBlogLike,
+  searchBlogByTitle,
 };

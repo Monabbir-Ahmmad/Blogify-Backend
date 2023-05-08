@@ -1,12 +1,12 @@
 import { DataTypes, Model } from "sequelize";
 
-import { Blog } from "./blog.model.js";
+import { Comment } from "./comment.model.js";
 import { User } from "./user.model.js";
 import { database } from "../configs/database.config.js";
 
-export class Like extends Model {}
+export class CommentLike extends Model {}
 
-Like.init(
+CommentLike.init(
   {
     userId: {
       type: DataTypes.INTEGER,
@@ -16,23 +16,23 @@ Like.init(
         key: "id",
       },
     },
-    blogId: {
+    commentId: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       references: {
-        model: Blog,
+        model: Comment,
         key: "id",
       },
     },
   },
   {
     sequelize: database,
-    modelName: "like",
+    modelName: "commentLike",
   }
 );
 
-Blog.hasMany(Like, { onDelete: "CASCADE" });
-Like.belongsTo(Blog, { onDelete: "CASCADE" });
+Comment.hasMany(CommentLike, { onDelete: "CASCADE" });
+CommentLike.belongsTo(Comment, { onDelete: "CASCADE" });
 
-User.hasMany(Like, { onDelete: "CASCADE" });
-Like.belongsTo(User, { onDelete: "CASCADE" });
+User.hasMany(CommentLike, { onDelete: "CASCADE" });
+CommentLike.belongsTo(User, { onDelete: "CASCADE" });

@@ -19,6 +19,8 @@ commentRouter
 
 commentRouter.route("/blog/:blogId").get(commentController.getBlogComments);
 
+commentRouter.route("/like/:commentId").put(commentController.likeComment);
+
 commentRouter
   .route("/:commentId")
   .get(commentController.getComment)

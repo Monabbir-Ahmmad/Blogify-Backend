@@ -80,6 +80,19 @@ const deleteUser = async (userId, password) => {
   return { message: "User deleted successfully." };
 };
 
+const searchUser = async (keyword, { offset, limit }) => {
+  const { pageCount, users } = await userDB.searchUserByName(
+    keyword,
+    offset,
+    limit
+  );
+
+  return {
+    pageCount,
+    users: mapper.mapArray(User, UserResDto, users),
+  };
+};
+
 export const userService = {
   getUser,
   updateProfile,
@@ -87,4 +100,5 @@ export const userService = {
   updateProfileImage,
   updateCoverImage,
   deleteUser,
+  searchUser,
 };

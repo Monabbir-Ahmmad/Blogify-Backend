@@ -18,7 +18,7 @@ blogRouter
 
 blogRouter.route("/user/:userId").get(blogController.getUserBlogList);
 
-blogRouter.route("/like/:blogId").post(blogController.likeBlog);
+blogRouter.route("/like/:blogId").put(blogController.likeBlog);
 
 blogRouter
   .route("/:blogId")

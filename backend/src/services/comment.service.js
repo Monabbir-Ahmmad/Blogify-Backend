@@ -5,6 +5,7 @@ import StatusCode from "../utils/objects/StatusCode.js";
 import { blogService } from "./blog.service.js";
 import { commentDB } from "../repositories/database/sequelize/comment.db.js";
 import { mapper } from "../configs/mapper.config.js";
+import { userService } from "./user.service.js";
 
 const getComment = async (commentId) => {
   const comment = await commentDB.getCommentById(commentId);
@@ -82,6 +83,16 @@ const deleteComment = async (userId, commentId) => {
   return { message: "Comment deleted successfully." };
 };
 
+const updateCommentLike = async (userId, commentId) => {
+  await userService.getUser(userId);
+
+  await getComment(commentId);
+
+  await commentDB.updateCommentLike(userId, commentId);
+
+  return await getComment(commentId);
+};
+
 export const commentService = {
   getComment,
   postComment,
@@ -89,4 +100,5 @@ export const commentService = {
   getCommentReplies,
   updateComment,
   deleteComment,
+  updateCommentLike,
 };

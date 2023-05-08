@@ -3,6 +3,7 @@ import { authRouter } from "./auth.route.js";
 import { blogRouter } from "./blog.route.js";
 import { commentRouter } from "./comment.route.js";
 import express from "express";
+import { searchRouter } from "./search.route.js";
 import { testRouter } from "./test.route.js";
 import { userRouter } from "./user.route.js";
 
@@ -17,3 +18,5 @@ indexRouter.use("/user", authMiddleware.verifyToken, userRouter);
 indexRouter.use("/blog", authMiddleware.verifyToken, blogRouter);
 
 indexRouter.use("/comment", authMiddleware.verifyToken, commentRouter);
+
+indexRouter.use("/search", authMiddleware.verifyToken, searchRouter);
