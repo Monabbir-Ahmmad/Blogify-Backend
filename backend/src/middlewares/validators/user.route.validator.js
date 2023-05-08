@@ -1,18 +1,23 @@
-import { check } from "express-validator";
+import { ValidationChain, body } from "express-validator";
+
 import { commonUtil } from "../../utils/functions/common.util.js";
 
+/**@type {ValidationChain[]} */
 const profileUpdate = [
-  check("password", "Password required.").notEmpty(),
-  check("name", "Name field can not be empty.")
+  body("name")
     .optional({ nullable: true })
-    .notEmpty(),
-  check("email", "Invalid email address.")
+    .notEmpty()
+    .withMessage("Name field can not be empty."),
+  body("email")
     .optional({ nullable: true })
-    .isEmail(),
-  check("gender", "Gender field can not be empty.")
+    .isEmail()
+    .withMessage("Invalid email address."),
+  body("password").isStrongPassword().withMessage("Invalid password."),
+  body("gender")
     .optional({ nullable: true })
-    .notEmpty(),
-  check("birthDate", "Date of birth must be a valid date.")
+    .notEmpty()
+    .withMessage("Gender field can not be empty."),
+  body("birthDate")
     .optional({ nullable: true })
     .trim()
     .isDate()
@@ -20,14 +25,21 @@ const profileUpdate = [
     .bail()
     .custom((birthDate) => commonUtil.calculateAge(birthDate) >= 13)
     .withMessage("Must be at least 13 years old."),
-  check("bio", "Bio field can not be empty.")
+  body("bio")
     .optional({ nullable: true })
-    .notEmpty(),
+    .notEmpty()
+    .withMessage("Bio can not be empty."),
 ];
 
+/**@type {ValidationChain[]} */
 const passwordUpdate = [
-  check("oldPassword").notEmpty().withMessage("Old password required."),
-  check("newPassword")
+  body("oldPassword")
+    .notEmpty()
+    .withMessage("Old password required.")
+    .bail()
+    .isStrongPassword()
+    .withMessage("Invalid old password."),
+  body("newPassword")
     .notEmpty()
     .withMessage("New password required.")
     .bail()

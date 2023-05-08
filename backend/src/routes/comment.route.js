@@ -1,5 +1,5 @@
 import { commentController } from "../controllers/comment.controller.js";
-import { commentRouteValidator } from "../validators/routeValidators/comment.route.validator.js";
+import { commentRouteValidator } from "../middlewares/validators/comment.route.validator.js";
 import express from "express";
 import { validationCheck } from "../middlewares/validation.middleware.js";
 

@@ -6,10 +6,10 @@ import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
 const registerUser = errorMiddleware.asyncHandler(async (req, res) => {
-  const { name, email, password, birthDate, gender, bio } = req.body;
+  const { name, email, password, birthDate, gender } = req.body;
 
   const result = await authService.signup(
-    new SignupReqDto({ name, email, password, gender, birthDate, bio })
+    new SignupReqDto({ name, email, password, gender, birthDate })
   );
 
   authUtil.setAuthCookie(res, result.accessToken);

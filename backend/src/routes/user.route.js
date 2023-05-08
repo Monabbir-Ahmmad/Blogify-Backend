@@ -1,7 +1,7 @@
 import express from "express";
 import { filesUpload } from "../middlewares/fileUpload.middleware.js";
 import { userController } from "../controllers/user.controller.js";
-import { userRouteValidator } from "../validators/routeValidators/user.route.validator.js";
+import { userRouteValidator } from "../middlewares/validators/user.route.validator.js";
 import { validationCheck } from "../middlewares/validation.middleware.js";
 
 export const userRouter = express.Router();

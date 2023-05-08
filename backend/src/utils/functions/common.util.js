@@ -35,8 +35,15 @@ const getPagination = ({ page, limit }) => {
   return { offset, limit };
 };
 
+const removeInvalidFields = (obj) => {
+  Object.keys(obj).forEach((key) => {
+    if (!obj[key]) delete obj[key];
+  });
+};
+
 export const commonUtil = {
   deleteUploadedFile,
   calculateAge,
   getPagination,
+  removeInvalidFields,
 };

@@ -3,6 +3,7 @@ import StatusCode from "../utils/objects/StatusCode.js";
 import { User } from "../models/user.model.js";
 import { UserResDto } from "../dtos/response/user.res.dto.js";
 import { authUtil } from "../utils/functions/auth.util.js";
+import { commonUtil } from "../utils/functions/common.util.js";
 import { mapper } from "../configs/mapper.config.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 
@@ -15,7 +16,9 @@ const getUser = async (userId) => {
 };
 
 const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
-  const user = await getUser(userId);
+  const user = await userDB.getUserById(userId);
+
+  if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
   if (!(await authUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
@@ -25,13 +28,17 @@ const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
   )
     throw new HttpError(StatusCode.CONFLICT, "Email already in use.");
 
+  commonUtil.removeInvalidFields(userProfileUpdateReqDto);
+
   const updatedUser = await userDB.updateUser(userId, userProfileUpdateReqDto);
 
   return mapper.map(User, UserResDto, updatedUser);
 };
 
 const updatePassword = async (userId, oldPassword, newPassword) => {
-  const user = await getUser(userId);
+  const user = await userDB.getUserById(userId);
+
+  if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
   if (!(await authUtil.verifyPassword(oldPassword, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");

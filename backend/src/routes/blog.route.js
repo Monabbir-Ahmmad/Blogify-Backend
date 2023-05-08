@@ -1,5 +1,5 @@
 import { blogController } from "../controllers/blog.controller.js";
-import { blogRouteValidator } from "../validators/routeValidators/blog.route.validator.js";
+import { blogRouteValidator } from "../middlewares/validators/blog.route.validator.js";
 import express from "express";
 import { filesUpload } from "../middlewares/fileUpload.middleware.js";
 import { validationCheck } from "../middlewares/validation.middleware.js";
@@ -18,9 +18,7 @@ blogRouter
 
 blogRouter.route("/user/:userId").get(blogController.getUserBlogList);
 
-blogRouter
-  .route("/like/:blogId")
-  .post(blogRouteValidator.like, validationCheck, blogController.likeBlog);
+blogRouter.route("/like/:blogId").post(blogController.likeBlog);
 
 blogRouter
   .route("/:blogId")
