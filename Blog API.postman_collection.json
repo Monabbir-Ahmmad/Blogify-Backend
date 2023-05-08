@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3b789560-06b3-4c3c-aac1-e0867a720ed1",
+		"_postman_id": "0bce0a70-03d9-4295-89b7-43d6a4b43470",
 		"name": "Blog API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -544,7 +544,7 @@
 						{
 							"name": "Like blog",
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [],
 								"url": {
 									"raw": "{{blogAPI}}/blog/like/1",
@@ -675,7 +675,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"commentId\": 1,\r\n    \"text\": \"Something new\"\r\n}",
+									"raw": "{\r\n    \"text\": \"Something new\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -708,6 +708,88 @@
 									"path": [
 										"comment",
 										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Like comment",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{blogAPI}}/comment/like/1",
+									"host": [
+										"{{blogAPI}}"
+									],
+									"path": [
+										"comment",
+										"like",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Search",
+					"item": [
+						{
+							"name": "Search users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{blogAPI}}/search/user/T?limit=12&page=1",
+									"host": [
+										"{{blogAPI}}"
+									],
+									"path": [
+										"search",
+										"user",
+										"T"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "12"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search blogs",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{blogAPI}}/search/blog/T?limit=12&page=1",
+									"host": [
+										"{{blogAPI}}"
+									],
+									"path": [
+										"search",
+										"blog",
+										"T"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "12"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
 									]
 								}
 							},
