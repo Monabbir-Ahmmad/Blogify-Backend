@@ -243,7 +243,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"Test Name\",\r\n    \"email\": \"monabbir.ahmmad@gmail.com\",\r\n    \"gender\": \"Male\",\r\n    \"birthDate\": \"2000-01-01\",\r\n    \"bio\": \"This is my bio\",\r\n    \"password\": \"12345Aa!\"\r\n}",
+									"raw": "{\r\n    \"name\": \"User Name\",\r\n    \"email\": \"monabbir.ahmmad@gmail.com\",\r\n    \"gender\": \"Male\",\r\n    \"birthDate\": \"2000-01-01\",\r\n    \"bio\": \"This is my bio\",\r\n    \"password\": \"12345Aa!\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -302,7 +302,7 @@
 										{
 											"key": "userProfileImage",
 											"type": "file",
-											"src": "/G:/Image/4k-multiple-game-wallpaper-3.jpg"
+											"src": "/C:/Users/Tajbir/Pictures/Screenshot 2023-05-08 152135.png"
 										}
 									],
 									"options": {
@@ -336,7 +336,7 @@
 										{
 											"key": "userCoverImage",
 											"type": "file",
-											"src": "/G:/Image/99116_minimalist-forest-wallpaper.jpg"
+											"src": "/C:/Users/Tajbir/Pictures/Screenshot 2023-05-08 152135.png"
 										}
 									],
 									"options": {
