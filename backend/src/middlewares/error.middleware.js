@@ -1,7 +1,7 @@
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import { authUtil } from "../utils/functions/auth.util.js";
 import { commonUtil } from "../utils/functions/common.util.js";
+import { cookieUtil } from "../utils/functions/cookie.util.js";
 import { environment } from "../configs/environment.config.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
@@ -20,7 +20,8 @@ const errorHandler = (err, req, res, next) => {
 
   if (req.file) commonUtil.deleteUploadedFile(req.file.filename);
 
-  if (err.statusCode === StatusCode.UNAUTHORIZED) authUtil.clearAuthCookie(res);
+  if (err.statusCode === StatusCode.UNAUTHORIZED)
+    cookieUtil.clearAuthCookie(res);
 
   responseUtil.sendContentNegotiatedResponse(req, res, err.statusCode, {
     statusCode: err.statusCode,

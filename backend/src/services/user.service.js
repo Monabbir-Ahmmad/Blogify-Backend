@@ -2,8 +2,8 @@ import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { User } from "../models/user.model.js";
 import { UserResDto } from "../dtos/response/user.res.dto.js";
-import { authUtil } from "../utils/functions/auth.util.js";
 import { mapper } from "../configs/mapper.config.js";
+import { passwordUtil } from "../utils/functions/password.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 
 const getUser = async (userId) => {
@@ -19,7 +19,7 @@ const updateProfile = async (userId, userProfileUpdateReqDto, password) => {
 
   if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-  if (!(await authUtil.verifyPassword(password, user.password)))
+  if (!(await passwordUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 
   if (
@@ -37,7 +37,7 @@ const updatePassword = async (userId, oldPassword, newPassword) => {
 
   if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-  if (!(await authUtil.verifyPassword(oldPassword, user.password)))
+  if (!(await passwordUtil.verifyPassword(oldPassword, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 
   if (oldPassword === newPassword)
@@ -46,7 +46,7 @@ const updatePassword = async (userId, oldPassword, newPassword) => {
       "New password cannot be the same as the old password."
     );
 
-  newPassword = await authUtil.hashPassword(newPassword);
+  newPassword = await passwordUtil.hashPassword(newPassword);
 
   await userDB.updatePassword(userId, newPassword);
 
@@ -72,7 +72,7 @@ const updateCoverImage = async (userId, coverImage = null) => {
 const deleteUser = async (userId, password) => {
   const user = await getUser(userId);
 
-  if (!(await authUtil.verifyPassword(password, user.password)))
+  if (!(await passwordUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 
   await userDB.deleteUser(userId);

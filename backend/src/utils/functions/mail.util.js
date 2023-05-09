@@ -9,6 +9,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+/**
+ * @param {Object} mailOptions
+ * @param {string} mailOptions.to
+ * @param {string} mailOptions.subject
+ * @param {string} mailOptions.text
+ * @param {string} mailOptions.html
+ */
 const sendEmail = async ({ to, subject, text, html }) => {
   const mailOptions = {
     from: environment.EMAIL_ADDRESS,
@@ -18,7 +25,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
     html,
   };
 
-  await transporter.sendMail(mailOptions);
+  return await transporter.sendMail(mailOptions);
 };
 
 const getResetPasswordMailTemplate = (

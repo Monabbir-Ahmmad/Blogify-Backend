@@ -1,7 +1,7 @@
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import { authUtil } from "../utils/functions/auth.util.js";
 import { errorMiddleware } from "./error.middleware.js";
+import { tokenUtil } from "../utils/functions/token.util.js";
 
 const verifyToken = errorMiddleware.asyncHandler(async (req, res, next) => {
   const token = req.cookies.authorization || req.headers.authorization;
@@ -13,7 +13,7 @@ const verifyToken = errorMiddleware.asyncHandler(async (req, res, next) => {
     );
 
   try {
-    const decodedToken = authUtil.verifyAccessToken(token);
+    const decodedToken = tokenUtil.verifyAccessToken(token);
 
     req.user = {
       id: decodedToken.id,

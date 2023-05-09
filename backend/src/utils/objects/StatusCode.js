@@ -1,3 +1,9 @@
+/**
+ * @enum {number} StatusCode
+ * @description HTTP status codes
+ * @readonly
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+ */
 const StatusCode = {
   // 1xx Informational
   CONTINUE: 100,
@@ -71,5 +77,7 @@ const StatusCode = {
   NOT_EXTENDED: 510,
   NETWORK_AUTHENTICATION_REQUIRED: 511,
 };
+
+Object.freeze(StatusCode);
 
 export default StatusCode;

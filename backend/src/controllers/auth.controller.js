@@ -1,7 +1,7 @@
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { authService } from "../services/auth.service.js";
-import { authUtil } from "../utils/functions/auth.util.js";
+import { cookieUtil } from "../utils/functions/cookie.util.js";
 import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
@@ -12,7 +12,7 @@ const registerUser = errorMiddleware.asyncHandler(async (req, res) => {
     new SignupReqDto({ name, email, password, gender, birthDate })
   );
 
-  authUtil.setAuthCookie(res, result.accessToken);
+  cookieUtil.setAuthCookie(res, result.accessToken);
 
   responseUtil.sendContentNegotiatedResponse(
     req,
@@ -27,13 +27,13 @@ const loginUser = errorMiddleware.asyncHandler(async (req, res) => {
 
   const result = await authService.signin(email, password);
 
-  authUtil.setAuthCookie(res, result.accessToken);
+  cookieUtil.setAuthCookie(res, result.accessToken);
 
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
 const logoutUser = errorMiddleware.asyncHandler(async (req, res) => {
-  authUtil.clearAuthCookie(res);
+  cookieUtil.clearAuthCookie(res);
 
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, {
     message: "Logged out successfully.",
@@ -62,7 +62,7 @@ const refreshAccessToken = errorMiddleware.asyncHandler(async (req, res) => {
 
   const result = await authService.refreshAccessToken(refreshToken);
 
-  authUtil.setAuthCookie(res, result.accessToken);
+  cookieUtil.setAuthCookie(res, result.accessToken);
 
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });

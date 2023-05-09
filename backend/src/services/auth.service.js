@@ -1,8 +1,9 @@
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
 import HttpError from "../utils/objects/HttpError.js";
 import StatusCode from "../utils/objects/StatusCode.js";
-import { authUtil } from "../utils/functions/auth.util.js";
 import { mailUtil } from "../utils/functions/mail.util.js";
+import { passwordUtil } from "../utils/functions/password.util.js";
+import { tokenUtil } from "../utils/functions/token.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 import { userService } from "./user.service.js";
 
@@ -10,7 +11,9 @@ const signup = async (signupReqDto) => {
   if (await userDB.getUserByEmail(signupReqDto.email))
     throw new HttpError(StatusCode.CONFLICT, "Email already exists.");
 
-  signupReqDto.password = await authUtil.hashPassword(signupReqDto.password);
+  signupReqDto.password = await passwordUtil.hashPassword(
+    signupReqDto.password
+  );
 
   const user = await userDB.createUser(signupReqDto);
 
@@ -23,7 +26,7 @@ const signin = async (email, password) => {
   if (!user)
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong email address.");
 
-  if (!(await authUtil.verifyPassword(password, user.password)))
+  if (!(await passwordUtil.verifyPassword(password, user.password)))
     throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong password.");
 
   return new AuthResDto(user.id, user.userType.name);
@@ -35,7 +38,7 @@ const forgotPassword = async (email) => {
   if (!user)
     throw new HttpError(StatusCode.NOT_FOUND, "User with email not found.");
 
-  const resetToken = authUtil.generateResetToken(user.id);
+  const resetToken = tokenUtil.generateResetToken(user.id);
 
   await mailUtil.sendEmail({
     to: user.email,
@@ -51,11 +54,11 @@ const forgotPassword = async (email) => {
 };
 
 const resetPassword = async (resetToken, newPassword) => {
-  const decodedToken = authUtil.verifyResetToken(resetToken);
+  const decodedToken = tokenUtil.verifyResetToken(resetToken);
 
   const user = await userService.getUser(decodedToken.id);
 
-  newPassword = await authUtil.hashPassword(newPassword);
+  newPassword = await passwordUtil.hashPassword(newPassword);
 
   await userDB.updatePassword(user.id, newPassword);
 
@@ -64,9 +67,9 @@ const resetPassword = async (resetToken, newPassword) => {
 
 const refreshAccessToken = async (refreshToken) => {
   try {
-    const decodedToken = authUtil.verifyRefreshToken(refreshToken);
+    const decodedToken = tokenUtil.verifyRefreshToken(refreshToken);
 
-    const accessToken = authUtil.generateAccessToken(
+    const accessToken = tokenUtil.generateAccessToken(
       decodedToken.id,
       decodedToken.userType
     );

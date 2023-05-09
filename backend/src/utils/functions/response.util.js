@@ -10,6 +10,13 @@ const convertToText = (data) => {
   return data;
 };
 
+/**
+ * Sends a response based on the Accept header of the request.
+ * @param {Request} req
+ * @param {Response} res
+ * @param {number} statusCode
+ * @param {any} data
+ */
 const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
   let responseData = data;
 
