@@ -1,3 +1,6 @@
+import bcryptjs from "bcryptjs";
+import { environment } from "../../configs/environment.config.js";
+
 /**@param {string} password */
 const hashPassword = async (password) => {
   const salt = await bcryptjs.genSalt(parseInt(environment.SALT_ROUNDS));

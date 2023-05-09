@@ -1,6 +1,6 @@
 import { authController } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
-import { authRouteValidator } from "../middlewares/validators/auth.route.validator.js";
+import { authRouteValidator } from "../validators/auth.route.validator.js";
 import express from "express";
 import { validationCheck } from "../middlewares/validation.middleware.js";
 
@@ -9,6 +9,7 @@ export const authRouter = express.Router();
 authRouter
   .route("/signup")
   .post(
+    authMiddleware.checkLoggedin,
     authRouteValidator.signup,
     validationCheck,
     authController.registerUser
@@ -16,7 +17,12 @@ authRouter
 
 authRouter
   .route("/signin")
-  .post(authRouteValidator.signin, validationCheck, authController.loginUser);
+  .post(
+    authMiddleware.checkLoggedin,
+    authRouteValidator.signin,
+    validationCheck,
+    authController.loginUser
+  );
 
 authRouter
   .route("/signout")

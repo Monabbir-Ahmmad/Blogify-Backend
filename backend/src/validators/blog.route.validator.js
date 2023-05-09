@@ -4,16 +4,14 @@ const post = [
   body("title")
     .isLength({ min: 1, max: 200 })
     .withMessage("Title must be between 1 and 200 characters long."),
-  body("content")
-    .notEmpty()
-    .withMessage("Content field can not be empty. Please write something."),
+  body("content").notEmpty().withMessage("Content is required."),
 ];
 
 const update = [
   body("title")
     .isLength({ min: 1, max: 200 })
     .withMessage("Title must be between 1 and 200 characters long."),
-  body("content").notEmpty().withMessage("Content field can not be empty."),
+  body("content").notEmpty().withMessage("Content is required."),
 ];
 
 export const blogRouteValidator = { post, update };

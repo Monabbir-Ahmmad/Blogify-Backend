@@ -1,6 +1,7 @@
 import { Comment } from "../models/comment.model.js";
 import { CommentResDto } from "../dtos/response/comment.res.dto.js";
 import HttpError from "../utils/objects/HttpError.js";
+import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { blogService } from "./blog.service.js";
 import { commentDB } from "../repositories/database/sequelize/comment.db.js";
@@ -34,10 +35,10 @@ const getComments = async (blogId, { offset, limit }) => {
     limit
   );
 
-  return {
+  return new PaginatedResDto(
     pageCount,
-    comments: mapper.mapArray(Comment, CommentResDto, comments),
-  };
+    mapper.mapArray(Comment, CommentResDto, comments)
+  );
 };
 
 const getCommentReplies = async (commentId, { offset, limit }) => {
@@ -49,10 +50,10 @@ const getCommentReplies = async (commentId, { offset, limit }) => {
     limit
   );
 
-  return {
+  return new PaginatedResDto(
     pageCount,
-    comments: mapper.mapArray(Comment, CommentResDto, comments),
-  };
+    mapper.mapArray(Comment, CommentResDto, comments)
+  );
 };
 
 const updateComment = async (userId, commentId, text) => {

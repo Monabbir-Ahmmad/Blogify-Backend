@@ -1,4 +1,5 @@
 import HttpError from "../utils/objects/HttpError.js";
+import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { User } from "../models/user.model.js";
 import { UserResDto } from "../dtos/response/user.res.dto.js";
@@ -87,10 +88,10 @@ const searchUser = async (keyword, { offset, limit }) => {
     limit
   );
 
-  return {
+  return new PaginatedResDto(
     pageCount,
-    users: mapper.mapArray(User, UserResDto, users),
-  };
+    mapper.mapArray(User, UserResDto, users)
+  );
 };
 
 export const userService = {

@@ -1,6 +1,7 @@
 import { Blog } from "../models/blog.model.js";
 import { BlogResDto } from "../dtos/response/blog.res.dto.js";
 import HttpError from "../utils/objects/HttpError.js";
+import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
 import StatusCode from "../utils/objects/StatusCode.js";
 import { blogDB } from "../repositories/database/sequelize/blog.db.js";
 import { mapper } from "../configs/mapper.config.js";
@@ -25,10 +26,10 @@ const getBlog = async (id) => {
 const getBlogs = async ({ offset, limit }) => {
   const { pageCount, blogs } = await blogDB.getBlogs(offset, limit);
 
-  return {
+  return new PaginatedResDto(
     pageCount,
-    blogs: mapper.mapArray(Blog, BlogResDto, blogs),
-  };
+    mapper.mapArray(Blog, BlogResDto, blogs)
+  );
 };
 
 const getUserBlogs = async (userId, { offset, limit }) => {
@@ -36,10 +37,10 @@ const getUserBlogs = async (userId, { offset, limit }) => {
 
   const { pageCount, blogs } = await blogDB.getUserBlogs(userId, offset, limit);
 
-  return {
+  return new PaginatedResDto(
     pageCount,
-    blogs: mapper.mapArray(Blog, BlogResDto, blogs),
-  };
+    mapper.mapArray(Blog, BlogResDto, blogs)
+  );
 };
 
 const updateBlog = async (userId, blogId, blogUpdatetReqDto) => {
@@ -87,10 +88,10 @@ const searchBlog = async (keyword, { offset, limit }) => {
     limit
   );
 
-  return {
+  return new PaginatedResDto(
     pageCount,
-    blogs: mapper.mapArray(Blog, BlogResDto, blogs),
-  };
+    mapper.mapArray(Blog, BlogResDto, blogs)
+  );
 };
 
 export const blogService = {

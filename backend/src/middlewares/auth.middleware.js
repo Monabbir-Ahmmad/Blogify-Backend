@@ -3,6 +3,18 @@ import StatusCode from "../utils/objects/StatusCode.js";
 import { errorMiddleware } from "./error.middleware.js";
 import { tokenUtil } from "../utils/functions/token.util.js";
 
+const checkLoggedin = errorMiddleware.asyncHandler(async (req, res, next) => {
+  const token = req.cookies.authorization || req.headers.authorization;
+
+  if (token)
+    throw new HttpError(
+      StatusCode.BAD_REQUEST,
+      "Already logged in. Please log out first."
+    );
+
+  next();
+});
+
 const verifyToken = errorMiddleware.asyncHandler(async (req, res, next) => {
   const token = req.cookies.authorization || req.headers.authorization;
 
@@ -29,4 +41,4 @@ const verifyToken = errorMiddleware.asyncHandler(async (req, res, next) => {
   }
 });
 
-export const authMiddleware = { verifyToken };
+export const authMiddleware = { checkLoggedin, verifyToken };
