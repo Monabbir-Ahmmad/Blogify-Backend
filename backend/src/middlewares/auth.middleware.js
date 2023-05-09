@@ -8,7 +8,7 @@ const checkLoggedin = errorMiddleware.asyncHandler(async (req, res, next) => {
 
   if (token)
     throw new HttpError(
-      StatusCode.BAD_REQUEST,
+      StatusCode.FORBIDDEN,
       "Already logged in. Please log out first."
     );
 
