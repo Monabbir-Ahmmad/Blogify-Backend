@@ -1,13 +1,21 @@
-const convertToHtml = (data) => {
-  return data;
-};
+import js2xmlparser from "js2xmlparser";
 
+/**
+ * Converts a JSON object to XML.
+ * @param {any} data
+ * @returns {string}
+ */
 const convertToXml = (data) => {
-  return data;
+  return js2xmlparser.parse("data", data);
 };
 
+/**
+ * Converts a JSON object to plain text.
+ * @param {any} data
+ * @returns {string}
+ */
 const convertToText = (data) => {
-  return data;
+  return JSON.stringify(data);
 };
 
 /**
@@ -21,9 +29,6 @@ const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
   let responseData = data;
 
   switch (req.headers.accept) {
-    case "application/html":
-      responseData = convertToHtml(data);
-      break;
     case "application/xml":
       responseData = convertToXml(data);
       break;
