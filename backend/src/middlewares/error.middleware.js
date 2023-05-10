@@ -1,5 +1,5 @@
-import HttpError from "../utils/objects/HttpError.js";
-import StatusCode from "../utils/objects/StatusCode.js";
+import { HttpError } from "../utils/objects/HttpError.js";
+import { StatusCode } from "../utils/objects/StatusCode.js";
 import { commonUtil } from "../utils/functions/common.util.js";
 import { cookieUtil } from "../utils/functions/cookie.util.js";
 import { environment } from "../configs/environment.config.js";
@@ -17,19 +17,18 @@ const notFound = (req, res, next) => {
 
 /**
  * This is for handling async errors.
- * @param {Function} fn
- * @returns {Function}
+ * @param {Function} fn The async function to be handled.
+ * @returns {Function} The async function with error handling.
  */
 const asyncHandler = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
 /**
- * This is for handling errors.
+ * This is for handling errors and sending them to the client.
  * @param {Error} err
  * @param {Express.Request} req
  * @param {Express.Response} res
  * @param {Express.NextFunction} next
- * @returns {Function}
  */
 const errorHandler = (err, req, res, next) => {
   if (!(err instanceof HttpError)) {

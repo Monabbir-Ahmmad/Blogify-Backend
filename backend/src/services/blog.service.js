@@ -1,8 +1,8 @@
 import { Blog } from "../models/blog.model.js";
 import { BlogResDto } from "../dtos/response/blog.res.dto.js";
-import HttpError from "../utils/objects/HttpError.js";
+import { HttpError } from "../utils/objects/HttpError.js";
 import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
-import StatusCode from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/objects/StatusCode.js";
 import { blogDB } from "../repositories/database/sequelize/blog.db.js";
 import { mapper } from "../configs/mapper.config.js";
 import { userService } from "./user.service.js";

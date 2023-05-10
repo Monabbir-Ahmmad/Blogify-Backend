@@ -1,4 +1,4 @@
-import StatusCode from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/objects/StatusCode.js";
 import { blogService } from "../services/blog.service.js";
 import { commonUtil } from "../utils/functions/common.util.js";
 import { errorMiddleware } from "../middlewares/error.middleware.js";

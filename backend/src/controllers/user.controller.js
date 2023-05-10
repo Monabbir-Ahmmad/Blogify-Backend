@@ -1,5 +1,5 @@
-import HttpError from "../utils/objects/HttpError.js";
-import StatusCode from "../utils/objects/StatusCode.js";
+import { HttpError } from "../utils/objects/HttpError.js";
+import { StatusCode } from "../utils/objects/StatusCode.js";
 import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
 import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";

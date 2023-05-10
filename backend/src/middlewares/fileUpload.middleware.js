@@ -1,5 +1,5 @@
-import HttpError from "../utils/objects/HttpError.js";
-import StatusCode from "../utils/objects/StatusCode.js";
+import { HttpError } from "../utils/objects/HttpError.js";
+import { StatusCode } from "../utils/objects/StatusCode.js";
 import multer from "multer";
 import path from "path";
 

@@ -1,5 +1,5 @@
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
-import StatusCode from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/objects/StatusCode.js";
 import { authService } from "../services/auth.service.js";
 import { cookieUtil } from "../utils/functions/cookie.util.js";
 import { errorMiddleware } from "../middlewares/error.middleware.js";

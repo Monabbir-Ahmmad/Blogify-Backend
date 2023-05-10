@@ -1,6 +1,6 @@
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
-import HttpError from "../utils/objects/HttpError.js";
-import StatusCode from "../utils/objects/StatusCode.js";
+import { HttpError } from "../utils/objects/HttpError.js";
+import { StatusCode } from "../utils/objects/StatusCode.js";
 import { mailUtil } from "../utils/functions/mail.util.js";
 import { passwordUtil } from "../utils/functions/password.util.js";
 import { tokenUtil } from "../utils/functions/token.util.js";

@@ -1,5 +1,5 @@
-import HttpError from "../utils/objects/HttpError.js";
-import StatusCode from "../utils/objects/StatusCode.js";
+import { HttpError } from "../utils/objects/HttpError.js";
+import { StatusCode } from "../utils/objects/StatusCode.js";
 import { errorMiddleware } from "./error.middleware.js";
 import { tokenUtil } from "../utils/functions/token.util.js";
 

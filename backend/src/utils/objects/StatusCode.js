@@ -4,7 +4,7 @@
  * @readonly
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
  */
-const StatusCode = {
+export const StatusCode = {
   // 1xx Informational
   CONTINUE: 100,
   SWITCHING_PROTOCOLS: 101,
@@ -79,5 +79,3 @@ const StatusCode = {
 };
 
 Object.freeze(StatusCode);
-
-export default StatusCode;
