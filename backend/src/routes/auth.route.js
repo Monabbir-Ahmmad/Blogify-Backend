@@ -24,9 +24,7 @@ authRouter
     authController.loginUser
   );
 
-authRouter
-  .route("/signout")
-  .get(authMiddleware.verifyToken, authController.logoutUser);
+authRouter.route("/signout").get(authController.logoutUser);
 
 authRouter
   .route("/forgot-password")

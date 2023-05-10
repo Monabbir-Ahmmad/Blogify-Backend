@@ -3,8 +3,14 @@ import StatusCode from "../utils/objects/StatusCode.js";
 import { errorMiddleware } from "./error.middleware.js";
 import { tokenUtil } from "../utils/functions/token.util.js";
 
+/**
+ * @description Check if user is logged in. This prevents logged in users from accessing login and signup routes.
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
 const checkLoggedin = errorMiddleware.asyncHandler(async (req, res, next) => {
-  const token = req.cookies.authorization || req.headers.authorization;
+  const token = req.cookies.authorization;
 
   if (token)
     throw new HttpError(
@@ -15,8 +21,14 @@ const checkLoggedin = errorMiddleware.asyncHandler(async (req, res, next) => {
   next();
 });
 
+/**
+ * @description Verify token for private routes.
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
 const verifyToken = errorMiddleware.asyncHandler(async (req, res, next) => {
-  const token = req.cookies.authorization || req.headers.authorization;
+  const token = req.cookies.authorization;
 
   if (!token)
     throw new HttpError(

@@ -5,6 +5,12 @@ import { cookieUtil } from "../utils/functions/cookie.util.js";
 import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
+/**
+ * @description Registers a new user and logs them in by setting the auth cookie
+ * @param {Request} req The request object
+ * @param {Response} res The response object
+ * @returns {void}
+ */
 const registerUser = errorMiddleware.asyncHandler(async (req, res) => {
   const { name, email, password, birthDate, gender } = req.body;
 
@@ -22,6 +28,12 @@ const registerUser = errorMiddleware.asyncHandler(async (req, res) => {
   );
 });
 
+/**
+ * @description Logs in a user and sets the auth cookie
+ * @param {Request} req The request object
+ * @param {Response} res The response object
+ * @returns {void}
+ */
 const loginUser = errorMiddleware.asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -32,6 +44,12 @@ const loginUser = errorMiddleware.asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
+/**
+ * @description Logs out a user by clearing the auth cookie
+ * @param {Request} req The request object
+ * @param {Response} res The response object
+ * @returns {void}
+ */
 const logoutUser = errorMiddleware.asyncHandler(async (req, res) => {
   cookieUtil.clearAuthCookie(res);
 
@@ -40,6 +58,12 @@ const logoutUser = errorMiddleware.asyncHandler(async (req, res) => {
   });
 });
 
+/**
+ * @description Sends a reset password email to the user
+ * @param {Request} req The request object
+ * @param {Response} res The response object
+ * @returns {void}
+ */
 const forgotPassword = errorMiddleware.asyncHandler(async (req, res) => {
   const { email } = req.body;
 
@@ -48,6 +72,12 @@ const forgotPassword = errorMiddleware.asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
+/**
+ * @description Resets the user's password with the reset token
+ * @param {Request} req The request object
+ * @param {Response} res The response object
+ * @returns {void}
+ */
 const resetPassword = errorMiddleware.asyncHandler(async (req, res) => {
   const resetToken = req.params.resetToken;
   const { newPassword } = req.body;
@@ -57,6 +87,12 @@ const resetPassword = errorMiddleware.asyncHandler(async (req, res) => {
   responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
 });
 
+/**
+ * @description Refreshes the user's access token with the refresh token and sets the auth cookie
+ * @param {Request} req The request object
+ * @param {Response} res The response object
+ * @returns {void}
+ */
 const refreshAccessToken = errorMiddleware.asyncHandler(async (req, res) => {
   const { refreshToken } = req.body;
 

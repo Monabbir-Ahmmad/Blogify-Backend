@@ -1,8 +1,5 @@
 import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
 import { environment } from "./environment.config.js";
-
-dotenv.config();
 
 export const database = new Sequelize({
   database: environment.DB_NAME,
@@ -23,6 +20,11 @@ export const database = new Sequelize({
 //   logging: console.log,
 // });
 
+/**
+ * Connect to the database
+ * First authenticates the connection
+ * Then syncs the database
+ */
 export async function connectToDatabase() {
   try {
     await database.authenticate();

@@ -12,12 +12,14 @@ import { UserResDto } from "../dtos/response/user.res.dto.js";
  */
 export const mapper = AutoMapper.getInstance();
 
+/** Set the mappings for the User model and User res dto. */
 mapper.setMapping(User, UserResDto, {
   properties: {
     userType: (user) => user.userType?.name,
   },
 });
 
+/** Set the mappings for the Blog model and Blog res dto. */
 mapper.setMapping(Blog, BlogResDto, {
   properties: {
     user: (blog) => mapper.map(User, UserResDto, blog.user),
@@ -25,6 +27,7 @@ mapper.setMapping(Blog, BlogResDto, {
   },
 });
 
+/** Set the mappings for the Comment model and Comment res dto. */
 mapper.setMapping(Comment, CommentResDto, {
   properties: {
     user: (comment) => mapper.map(User, UserResDto, comment.user),
