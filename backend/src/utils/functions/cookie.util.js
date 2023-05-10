@@ -1,6 +1,6 @@
 /**
- * @description Set cookie with authorization token
- * @param {Response} res - Express response object
+ * Set cookie with authorization token
+ * @param {Express.Response} res - Express response object
  * @param {string} token - Authorization token
  */
 const setAuthCookie = (res, token) => {
@@ -12,8 +12,8 @@ const setAuthCookie = (res, token) => {
 };
 
 /**
- * @description Clear cookie with authorization token
- * @param {Response} res - Express response object
+ * Clear cookie with authorization token
+ * @param {Express.Response} res - Express response object
  */
 const clearAuthCookie = (res) => {
   res.clearCookie("authorization");

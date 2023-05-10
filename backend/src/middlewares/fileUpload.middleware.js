@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 /**
  * The file filter to use for file upload.
  * @type {multer.FileFilterCallback}
- * @param {Request} req The request object.
+ * @param {Express.Request} req The request object.
  * @param {multer.File} file The file object.
  * @param {multer.FileFilterCallback} cb The callback function.
  * @returns {multer.FileFilterCallback} The callback function.

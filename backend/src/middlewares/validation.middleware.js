@@ -4,10 +4,9 @@ import { validationResult } from "express-validator";
 
 /**
  * The validation check middleware.
- * @param {Request} req The request object.
- * @param {Response} res The response object.
- * @param {NextFunction} next The next function.
- * @returns {void}
+ * @param {Express.Request} req The request object.
+ * @param {Express.Response} res The response object.
+ * @param {Express.NextFunction} next The next function.
  * @throws {HttpError} If the validation fails.
  */
 export const validationCheck = (req, res, next) => {

@@ -1,9 +1,8 @@
 /**
- * @description Logs the request to the console and to a file
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @param {NextFunction} next The next function
- * @returns {void}
+ * Logs the request to the console and to a file
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
+ * @param {Express.NextFunction} next The next function
  */
 const consoleLogging = (req, res, next) => {
   const { method, url, body } = req;

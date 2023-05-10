@@ -1,6 +1,6 @@
 /**
+ * HTTP status codes
  * @enum {number} StatusCode
- * @description HTTP status codes
  * @readonly
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
  */

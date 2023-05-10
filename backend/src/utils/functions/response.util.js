@@ -20,8 +20,8 @@ const convertToText = (data) => {
 
 /**
  * Sends a response based on the Accept header of the request.
- * @param {Request} req
- * @param {Response} res
+ * @param {Express.Request} req
+ * @param {Express.Response} res
  * @param {number} statusCode
  * @param {any} data
  */

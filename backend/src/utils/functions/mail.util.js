@@ -33,7 +33,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
 };
 
 /**
- * @description Generates reset password email template
+ * Generates reset password email template
  * @param {string} appName
  * @param {string} username
  * @param {string} url

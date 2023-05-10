@@ -4,10 +4,10 @@ import { errorMiddleware } from "./error.middleware.js";
 import { tokenUtil } from "../utils/functions/token.util.js";
 
 /**
- * @description Check if user is logged in. This prevents logged in users from accessing login and signup routes.
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
+ * Check if user is logged in. This prevents logged in users from accessing login and signup routes.
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
  */
 const checkLoggedin = errorMiddleware.asyncHandler(async (req, res, next) => {
   const token = req.cookies.authorization;
@@ -22,10 +22,10 @@ const checkLoggedin = errorMiddleware.asyncHandler(async (req, res, next) => {
 });
 
 /**
- * @description Verify token for private routes.
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
+ * Verify token for private routes.
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
  */
 const verifyToken = errorMiddleware.asyncHandler(async (req, res, next) => {
   const token = req.cookies.authorization;

@@ -6,10 +6,9 @@ import { responseUtil } from "../utils/functions/response.util.js";
 import { userService } from "../services/user.service.js";
 
 /**
- * @description Gets a list of blogs by a user name
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Gets a list of blogs by a user name
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const searchUser = errorMiddleware.asyncHandler(async (req, res) => {
   const keyword = req.params.keyword;
@@ -21,10 +20,9 @@ const searchUser = errorMiddleware.asyncHandler(async (req, res) => {
 });
 
 /**
- * @description Gets a list of blogs by a title
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Gets a list of blogs by a title
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const searchBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const keyword = req.params.keyword;

@@ -7,10 +7,9 @@ import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
 /**
- * @description Creates a new blog post
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Creates a new blog post
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const createBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
@@ -35,10 +34,9 @@ const createBlog = errorMiddleware.asyncHandler(async (req, res) => {
 });
 
 /**
- * @description Gets a list of blogs
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Gets a list of blogs
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const getBlogList = errorMiddleware.asyncHandler(async (req, res) => {
   const pagination = commonUtil.getPagination(req.query);
@@ -49,10 +47,9 @@ const getBlogList = errorMiddleware.asyncHandler(async (req, res) => {
 });
 
 /**
- * @description Gets a list of blogs by a user
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Gets a list of blogs by a user
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const getUserBlogList = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.params.userId;
@@ -64,10 +61,9 @@ const getUserBlogList = errorMiddleware.asyncHandler(async (req, res) => {
 });
 
 /**
- * @description Gets a blog by id
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Gets a blog by id
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const getBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const blogId = req.params.blogId;
@@ -78,10 +74,9 @@ const getBlog = errorMiddleware.asyncHandler(async (req, res) => {
 });
 
 /**
- * @description Updates a blog post
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Updates a blog post
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const updateBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
@@ -99,10 +94,9 @@ const updateBlog = errorMiddleware.asyncHandler(async (req, res) => {
 });
 
 /**
- * @description Deletes a blog post
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Deletes a blog post
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const deleteBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
@@ -114,10 +108,9 @@ const deleteBlog = errorMiddleware.asyncHandler(async (req, res) => {
 });
 
 /**
- * @description Likes or removes like from a blog post
- * @param {Request} req The request object
- * @param {Response} res The response object
- * @returns {void}
+ * Likes or removes like from a blog post
+ * @param {Express.Request} req The request object
+ * @param {Express.Response} res The response object
  */
 const likeBlog = errorMiddleware.asyncHandler(async (req, res) => {
   const userId = req.user.id;
