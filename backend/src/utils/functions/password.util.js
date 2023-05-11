@@ -1,21 +1,29 @@
 import bcryptjs from "bcryptjs";
 import { environment } from "../../configs/environment.config.js";
 
-/**@param {string} password */
-const hashPassword = async (password) => {
-  const salt = await bcryptjs.genSalt(parseInt(environment.SALT_ROUNDS));
-  return await bcryptjs.hash(password, salt);
-};
-
 /**
- * @param {string} inputPassword
- * @param {string} hashedPassword
+ * PasswordUtil is a class that provides utility functions for password hashing and verification.
  */
-const verifyPassword = async (inputPassword, hashedPassword) => {
-  return await bcryptjs.compare(inputPassword, hashedPassword);
-};
+export class PasswordUtil {
+  /**
+   * Hashes a password.
+   * @param {string} password - The password to be hashed.
+   * @returns {Promise<string>} A promise that resolves with the hashed password.
+   */
+  hashPassword(password) {
+    const saltRounds = parseInt(environment.SALT_ROUNDS);
+    return bcryptjs.hash(password, saltRounds);
+  }
 
-export const passwordUtil = {
-  hashPassword,
-  verifyPassword,
-};
+  /**
+   * Verifies a password against a hashed password.
+   * @param {string} inputPassword - The password to be verified.
+   * @param {string} hashedPassword - The hashed password to compare against.
+   * @returns {Promise<boolean>} A promise that resolves to `true` if the password is verified, or `false` otherwise.
+   */
+  verifyPassword(inputPassword, hashedPassword) {
+    return bcryptjs.compare(inputPassword, hashedPassword);
+  }
+}
+
+export const passwordUtil = new PasswordUtil();

@@ -1,45 +1,48 @@
 import js2xmlparser from "js2xmlparser";
 
 /**
- * Converts a JSON object to XML.
- * @param {any} data
- * @returns {string}
+ * ResponseUtil is a class that provides utility functions for handling HTTP responses.
  */
-const convertToXml = (data) => {
-  return js2xmlparser.parse("data", data);
-};
-
-/**
- * Converts a JSON object to plain text.
- * @param {any} data
- * @returns {string}
- */
-const convertToText = (data) => {
-  return JSON.stringify(data);
-};
-
-/**
- * Sends a response based on the Accept header of the request.
- * @param {Express.Request} req
- * @param {Express.Response} res
- * @param {number} statusCode
- * @param {any} data
- */
-const sendContentNegotiatedResponse = (req, res, statusCode, data) => {
-  let responseData = data;
-
-  switch (req.headers.accept) {
-    case "application/xml":
-      responseData = convertToXml(data);
-      break;
-    case "text/plain":
-      responseData = convertToText(data);
-      break;
+export class ResponseUtil {
+  /**
+   * Converts data to XML format using js2xmlparser.
+   * @param {object} data - The data to be converted.
+   * @returns {string} The XML representation of the data.
+   */
+  convertToXml(data) {
+    return js2xmlparser.parse("data", data);
   }
 
-  res.status(statusCode).send(responseData);
-};
+  /**
+   * Converts data to JSON text format.
+   * @param {object} data - The data to be converted.
+   * @returns {string} The JSON text representation of the data.
+   */
+  convertToText(data) {
+    return JSON.stringify(data);
+  }
 
-export const responseUtil = {
-  sendContentNegotiatedResponse,
-};
+  /**
+   * Sends a content-negotiated response based on the client's accept header.
+   * @param {Request} req - The HTTP request object.
+   * @param {Response} res - The HTTP response object.
+   * @param {number} statusCode - The status code to send with the response.
+   * @param {object} data - The data to be sent in the response.
+   */
+  sendContentNegotiatedResponse(req, res, statusCode, data) {
+    let responseData = data;
+
+    switch (req.headers.accept) {
+      case "application/xml":
+        responseData = this.convertToXml(data);
+        break;
+      case "text/plain":
+        responseData = this.convertToText(data);
+        break;
+    }
+
+    res.status(statusCode).send(responseData);
+  }
+}
+
+export const responseUtil = new ResponseUtil();

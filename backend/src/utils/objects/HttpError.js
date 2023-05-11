@@ -4,8 +4,8 @@
  */
 export class HttpError extends Error {
   /**
-   * @param {number} statusCode
-   * @param {string} message
+   * @param {number} statusCode - The status code of the error.
+   * @param {string} message - The error message.
    */
   constructor(statusCode, message) {
     super(message);

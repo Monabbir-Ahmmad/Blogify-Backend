@@ -4,6 +4,7 @@ import path from "path";
 dotenv.config(path.resolve(process.cwd(), "src", ".env"));
 
 export const environment = {
+  APP_NAME: process.env.APP_NAME || "Blogify",
   NODE_ENV: process.env.NODE_ENV || "development",
   PORT: process.env.PORT || 5000,
   DB_NAME: process.env.DB_NAME || "blog_database",
