@@ -1,4 +1,7 @@
+/** @module Service */
+
 import { Blog } from "../models/blog.model.js";
+import { BlogPostReqDto } from "../dtos/request/blogPost.req.dto.js";
 import { BlogResDto } from "../dtos/response/blog.res.dto.js";
 import { BlogUpdateReqDto } from "../dtos/request/blogUpdate.req.dto.js";
 import { HttpError } from "../utils/objects/HttpError.js";
@@ -9,7 +12,7 @@ import { mapper } from "../configs/mapper.config.js";
 import { userService } from "./user.service.js";
 
 /**
- * This is a class that provides blog-related services.
+ * A class that provides blog-related services.
  */
 export class BlogService {
   /**
@@ -24,7 +27,7 @@ export class BlogService {
   /**
    * Create a new blog post.
    * @param {string|number} userId - ID of the user creating the blog post.
-   * @param {import("../dtos/request/blogPost.req.dto.js").BlogPostReqDto} blogPostReqDto - Blog post request DTO.
+   * @param {BlogPostReqDto} blogPostReqDto - Blog post request DTO.
    * @returns {Promise<BlogResDto>} - Created blog post response DTO.
    */
   async createBlog(userId, blogPostReqDto) {
@@ -88,7 +91,7 @@ export class BlogService {
    * Update a blog post by ID.
    * @param {string|number} userId - ID of the user updating the blog post.
    * @param {string|number} blogId - ID of the blog post.
-   * @param {import("../dtos/request/blogUpdate.req.dto.js").BlogUpdateReqDto} blogUpdateReqDto - Blog update request DTO.
+   * @param {BlogUpdateReqDto} blogUpdateReqDto - Blog update request DTO.
    * @returns {Promise<BlogResDto>} - Updated blog post response DTO.
    * @throws {HttpError} 403 - Forbidden if the user is not allowed to update the blog post.
    */

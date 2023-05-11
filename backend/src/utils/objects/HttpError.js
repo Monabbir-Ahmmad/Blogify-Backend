@@ -1,3 +1,5 @@
+/** @module Utility */
+
 /**
  * An error class for HTTP errors
  * @extends Error

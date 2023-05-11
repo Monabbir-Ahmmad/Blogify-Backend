@@ -1,3 +1,18 @@
+/** @module DTO/Response */
+
+/**
+ * A class that defines the structure of the user response DTO.
+ * @property {string|number} id - The id of the user.
+ * @property {string} name - The name of the user.
+ * @property {string} email - The email of the user.
+ * @property {string} gender - The gender of the user.
+ * @property {Date} birthDate - The birth date of the user.
+ * @property {string} userType - The user type of the user.
+ * @property {string|null} [profileImage] - The profile image of the user.
+ * @property {string|null} [coverImage] - The cover image of the user.
+ * @property {string|null} [bio] - The bio of the user.
+ * @property {Date} createdAt - The date when the user was created.
+ */
 export class UserResDto {
   constructor(
     id,

@@ -1,8 +1,10 @@
+/** @module Utility */
+
 import bcryptjs from "bcryptjs";
 import { environment } from "../../configs/environment.config.js";
 
 /**
- * PasswordUtil is a class that provides utility functions for password hashing and verification.
+ * A class that provides utility functions for password hashing and verification.
  */
 export class PasswordUtil {
   /**

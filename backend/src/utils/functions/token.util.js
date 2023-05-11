@@ -1,8 +1,10 @@
+/** @module Utility */
+
 import { environment } from "../../configs/environment.config.js";
 import jwt from "jsonwebtoken";
 
 /**
- * TokenUtil is a class that provides utility functions for generating and verifying JSON Web Tokens (JWT).
+ * A class that provides utility functions for generating and verifying JSON Web Tokens (JWT).
  */
 export class TokenUtil {
   /**

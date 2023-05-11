@@ -1,14 +1,17 @@
+/** @module Service */
+
 import { HttpError } from "../utils/objects/HttpError.js";
 import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
 import { StatusCode } from "../utils/objects/StatusCode.js";
 import { User } from "../models/user.model.js";
+import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
 import { UserResDto } from "../dtos/response/user.res.dto.js";
 import { mapper } from "../configs/mapper.config.js";
 import { passwordUtil } from "../utils/functions/password.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 
 /**
- * This is a class that provides user-related services.
+ * A class that provides user-related services.
  */
 export class UserService {
   /**
@@ -40,7 +43,7 @@ export class UserService {
   /**
    * Update the profile of a user.
    * @param {string|number} userId - ID of the user.
-   * @param {import("../dtos/request/userProfileUpdate.req.dto.js").UserProfileUpdateReqDto} userProfileUpdateReqDto - User profile update request DTO.
+   * @param {UserProfileUpdateReqDto} userProfileUpdateReqDto - User profile update request DTO.
    * @param {string} password - User's current password.
    * @returns {Promise<UserResDto>} - Updated user response DTO.
    * @throws {HttpError} 404 - User not found.

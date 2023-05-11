@@ -1,9 +1,11 @@
+/** @module Repository/Database */
+
 import { Op } from "sequelize";
 import { User } from "../../../models/user.model.js";
 import { UserType } from "../../../models/userType.model.js";
 
 /**
- * UserDB is a class that provides database operations related to users.
+ * A class that provides database operations related to users.
  */
 export class UserDB {
   /**

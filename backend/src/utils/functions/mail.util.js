@@ -1,10 +1,12 @@
+/** @module Utility */
+
 import ejs from "ejs";
 import { environment } from "../../configs/environment.config.js";
 import nodemailer from "nodemailer";
 import path from "path";
 
 /**
- * MailUtil is a class that provides utility functions for sending emails.
+ * A class that provides utility functions for sending emails.
  */
 export class MailUtil {
   /**

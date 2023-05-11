@@ -1,3 +1,5 @@
+/** @module Utility */
+
 /**
  * HTTP status codes
  * @enum {number} StatusCode

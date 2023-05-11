@@ -1,3 +1,5 @@
+/** @module Utility */
+
 /**
  * A class that provides mapping functionality between objects.
  */
@@ -48,7 +50,7 @@ export class AutoMapper {
    * @template D - The type of the destination class.
    * @param {S} sourceClass - The source class.
    * @param {D} destinationClass - The destination class.
-   * @param {Object} sourceObject - The source object to map.
+   * @param {S} sourceObject - The source object to map.
    * @returns {D} The mapped destination object.
    */
   map(sourceClass, destinationClass, sourceObject) {

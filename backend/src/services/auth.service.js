@@ -1,5 +1,8 @@
+/** @module Service */
+
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
 import { HttpError } from "../utils/objects/HttpError.js";
+import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
 import { StatusCode } from "../utils/objects/StatusCode.js";
 import { environment } from "../configs/environment.config.js";
 import { mailUtil } from "../utils/functions/mail.util.js";
@@ -9,7 +12,7 @@ import { userDB } from "../repositories/database/sequelize/user.db.js";
 import { userService } from "./user.service.js";
 
 /**
- * This is a class that provides authentication services.
+ * A class that provides authentication services.
  */
 export class AuthService {
   /**
@@ -25,8 +28,8 @@ export class AuthService {
 
   /**
    * This is used to signup a user.
-   * @param {import("../dtos/request/signup.req.dto").SignupReqDto} signupReqDto
-   * @returns {Promise<AuthResDto>}
+   * @param {SignupReqDto} signupReqDto - Signup request DTO.
+   * @returns {Promise<AuthResDto>} - Created auth response DTO.
    * @throws {HttpError} 409 - Email already exists.
    */
   async signup(signupReqDto) {
@@ -46,7 +49,7 @@ export class AuthService {
    * This is used to signin a user.
    * @param {string} email - Email of the user.
    * @param {string} password - Password of the user.
-   * @returns {Promise<AuthResDto>}
+   * @returns {Promise<AuthResDto>} - Created auth response DTO.
    * @throws {HttpError} 401 - Wrong email address.
    * @throws {HttpError} 401 - Wrong password.
    */

@@ -1,3 +1,5 @@
+/** @module Service */
+
 import { Comment } from "../models/comment.model.js";
 import { CommentResDto } from "../dtos/response/comment.res.dto.js";
 import { HttpError } from "../utils/objects/HttpError.js";
@@ -9,7 +11,7 @@ import { mapper } from "../configs/mapper.config.js";
 import { userService } from "./user.service.js";
 
 /**
- * This is a class that provides comment-related services.
+ * A class that provides comment-related services.
  */
 export class CommentService {
   /**

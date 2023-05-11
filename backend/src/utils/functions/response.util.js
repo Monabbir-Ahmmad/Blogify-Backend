@@ -1,7 +1,10 @@
+/** @module Utility */
+
+import { JsonWebTokenError } from "jsonwebtoken";
 import js2xmlparser from "js2xmlparser";
 
 /**
- * ResponseUtil is a class that provides utility functions for handling HTTP responses.
+ * A class that provides utility functions for handling HTTP responses.
  */
 export class ResponseUtil {
   /**

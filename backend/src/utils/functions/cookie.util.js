@@ -1,5 +1,7 @@
+/** @module Utility */
+
 /**
- * CookieUtil is a class that provides utility functions for handling cookies.
+ * A class that provides utility functions for handling cookies.
  */
 export class CookieUtil {
   /**

@@ -1,3 +1,5 @@
+/** @module Repository/Database */
+
 import { Op, Sequelize } from "sequelize";
 
 import { Blog } from "../../../models/blog.model.js";
@@ -8,7 +10,7 @@ import { Like } from "../../../models/like.model.js";
 import { User } from "../../../models/user.model.js";
 
 /**
- * BlogDB is a class that provides database operations related to blogs.
+ * A class that provides database operations related to blogs.
  */
 export class BlogDB {
   /**

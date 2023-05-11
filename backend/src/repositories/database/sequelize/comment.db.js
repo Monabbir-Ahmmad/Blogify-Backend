@@ -1,10 +1,12 @@
+/** @module Repository/Database */
+
 import { Comment } from "../../../models/comment.model.js";
 import { CommentLike } from "../../../models/commentLike.model.js";
 import { Sequelize } from "sequelize";
 import { User } from "../../../models/user.model.js";
 
 /**
- * CommentDB is a class that provides database operations related to comments.
+ * A class that provides database operations related to comments.
  */
 export class CommentDB {
   /**
