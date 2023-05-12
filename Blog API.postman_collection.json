@@ -82,6 +82,31 @@
               "response": []
             },
             {
+              "name": "Signout",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.collectionVariables.set(\"accessToken\", null);\r",
+                      "pm.collectionVariables.set(\"refreshToken\", null);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{API}}/auth/signout",
+                  "host": ["{{API}}"],
+                  "path": ["auth", "signout"]
+                }
+              },
+              "response": []
+            },
+            {
               "name": "Refresh token",
               "event": [
                 {
@@ -168,36 +193,6 @@
     {
       "name": "Protected api",
       "item": [
-        {
-          "name": "Auth",
-          "item": [
-            {
-              "name": "Signout",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.collectionVariables.set(\"accessToken\", null);\r",
-                      "pm.collectionVariables.set(\"refreshToken\", null);"
-                    ],
-                    "type": "text/javascript"
-                  }
-                }
-              ],
-              "request": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{API}}/auth/signout",
-                  "host": ["{{API}}"],
-                  "path": ["auth", "signout"]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
         {
           "name": "User",
           "item": [
@@ -370,9 +365,20 @@
             },
             {
               "name": "Get blog list",
+              "protocolProfileBehavior": {
+                "disabledSystemHeaders": {
+                  "accept": true
+                }
+              },
               "request": {
                 "method": "GET",
-                "header": [],
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain",
+                    "type": "default"
+                  }
+                ],
                 "url": {
                   "raw": "{{API}}/blog/?limit=12&page=1",
                   "host": ["{{API}}"],
