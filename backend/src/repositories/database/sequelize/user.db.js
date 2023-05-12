@@ -48,11 +48,11 @@ export class UserDB {
 
   /**
    * Retrieves a user by their ID.
-   * @param {number} id - The ID of the user.
+   * @param {number} userId - The ID of the user.
    * @returns {Promise<User|null>} A promise that resolves to the retrieved user or null if not found.
    */
-  async getUserById(id) {
-    return await User.findByPk(id, {
+  async getUserById(userId) {
+    return await User.findByPk(userId, {
       include: {
         model: UserType,
         attributes: ["name"],
@@ -118,10 +118,10 @@ export class UserDB {
 
   /**
    * Deletes a user.
-   * @param {number} id - The ID of the user to delete.
+   * @param {number} userId - The ID of the user to delete.
    * @returns {Promise<User|null>} A promise that resolves to the deleted user or null if not found.
    */
-  async deleteUser(id) {
+  async deleteUser(userId) {
     const user = await getUserById(userId);
 
     if (!user) return null;

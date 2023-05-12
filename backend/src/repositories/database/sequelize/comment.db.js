@@ -41,11 +41,11 @@ export class CommentDB {
 
   /**
    * Retrieves a comment by its ID.
-   * @param {string|number} id - The ID of the comment.
+   * @param {string|number} commentId - The ID of the comment.
    * @returns {Promise<Comment|null>} A promise that resolves to the retrieved comment or null if not found.
    */
-  async getCommentById(id) {
-    const comment = await Comment.findByPk(id, {
+  async getCommentById(commentId) {
+    const comment = await Comment.findByPk(commentId, {
       attributes: [
         "id",
         "text",
@@ -70,7 +70,7 @@ export class CommentDB {
           as: "replies",
           attributes: [],
           required: false,
-          where: { parentId: id },
+          where: { parentId: commentId },
         },
       ],
     });
@@ -180,12 +180,12 @@ export class CommentDB {
 
   /**
    * Updates a comment.
-   * @param {string|number} id - The ID of the comment to update.
+   * @param {string|number} commentId - The ID of the comment to update.
    * @param {string} text - The updated text content of the comment.
    * @returns {Promise<Comment|null>} A promise that resolves to the updated comment or null if not found.
    */
-  async updateComment(id, text) {
-    const comment = await getCommentById(id);
+  async updateComment(commentId, text) {
+    const comment = await getCommentById(commentId);
 
     if (!comment) return null;
 
@@ -196,11 +196,11 @@ export class CommentDB {
 
   /**
    * Deletes a comment.
-   * @param {string|number} id - The ID of the comment to delete.
+   * @param {string|number} commentId - The ID of the comment to delete.
    * @returns {Promise<boolean>} A promise that resolves to true if the deletion was successful, or false otherwise.
    */
-  async deleteComment(id) {
-    const comment = await getCommentById(id);
+  async deleteComment(commentId) {
+    const comment = await getCommentById(commentId);
 
     if (!comment) return false;
 

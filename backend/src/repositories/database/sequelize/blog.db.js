@@ -43,11 +43,11 @@ export class BlogDB {
 
   /**
    * Retrieves a blog post by its ID.
-   * @param {string|number} id - The ID of the blog post.
+   * @param {string|number} blogId - The ID of the blog post.
    * @returns {Promise<Blog|null>} A promise that resolves to the retrieved blog post or null if not found.
    */
-  async getBlogById(id) {
-    const blog = await Blog.findByPk(id, {
+  async getBlogById(blogId) {
+    const blog = await Blog.findByPk(blogId, {
       attributes: [
         "id",
         "title",
