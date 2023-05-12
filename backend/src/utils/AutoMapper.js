@@ -1,7 +1,6 @@
-/** @module Utility */
-
 /**
- * A class that provides mapping functionality between objects.
+ * @category Utilities
+ * @classdesc A class that provides the functionality to map objects.
  */
 export class AutoMapper {
   /**

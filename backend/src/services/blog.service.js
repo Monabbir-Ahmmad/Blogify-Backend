@@ -1,5 +1,3 @@
-/** @module Service */
-
 import { Blog } from "../models/blog.model.js";
 import { BlogPostReqDto } from "../dtos/request/blogPost.req.dto.js";
 import { BlogResDto } from "../dtos/response/blog.res.dto.js";
@@ -12,7 +10,8 @@ import { mapper } from "../configs/mapper.config.js";
 import { userService } from "./user.service.js";
 
 /**
- * A class that provides blog-related services.
+ * @category Services
+ * @classdesc A class that provides blog-related services.
  */
 export class BlogService {
   /**

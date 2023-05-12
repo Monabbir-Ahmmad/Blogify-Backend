@@ -5,7 +5,10 @@ import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.d
 import { responseUtil } from "../utils/response.util.js";
 import { userService } from "../services/user.service.js";
 
-/** A class that provides controller functions for user-related operations. */
+/**
+ * @category Controllers
+ * @classdesc A class that provides controller functions for user-related operations.
+ */
 class UserController {
   /**
    * Get user controller function.

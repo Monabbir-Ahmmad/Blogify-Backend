@@ -1,5 +1,3 @@
-/** @module Repository/Database */
-
 import { Op } from "sequelize";
 import { SignupReqDto } from "../../../dtos/request/signup.req.dto.js";
 import { User } from "../../../models/user.model.js";
@@ -7,7 +5,9 @@ import { UserProfileUpdateReqDto } from "../../../dtos/request/userProfileUpdate
 import { UserType } from "../../../models/userType.model.js";
 
 /**
- * A class that provides database operations related to users.
+ * @category Repositories
+ * @subcategory Database
+ * @classdesc A class that provides user-related database operations.
  */
 export class UserDB {
   /**

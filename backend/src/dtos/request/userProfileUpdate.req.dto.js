@@ -1,7 +1,7 @@
-/** @module DTO/Request */
-
 /**
- * A class that defines the structure of the user profile update request DTO.
+ * @category DTOs
+ * @subcategory Request
+ * @classdesc A class that defines the structure of the user profile update request DTO.
  * @property {string} name - The name of the user.
  * @property {string} email - The email of the user.
  * @property {string} gender - The gender of the user.

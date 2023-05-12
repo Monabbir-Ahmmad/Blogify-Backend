@@ -1,9 +1,8 @@
-/** @module Utility */
-
 import js2xmlparser from "js2xmlparser";
 
 /**
- * A class that provides utility functions for handling HTTP responses.
+ * @category Utilities
+ * @classdesc A class that provides the functionality to send content-negotiated responses.
  */
 export class ResponseUtil {
   /**

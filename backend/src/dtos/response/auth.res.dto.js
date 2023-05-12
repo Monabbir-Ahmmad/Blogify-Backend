@@ -1,9 +1,9 @@
-/** @module DTO/Response */
-
 import { tokenUtil } from "../../utils/token.util.js";
 
 /**
- * A class that defines the structure of the authentication response DTO.
+ * @category DTOs
+ * @subcategory Response
+ * @classdesc A class that defines the structure of the authentication response DTO.
  * @property {string} refreshToken - The refresh token.
  * @property {string} accessToken - The access token.
  */

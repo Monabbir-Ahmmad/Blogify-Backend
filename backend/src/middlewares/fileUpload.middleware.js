@@ -38,7 +38,8 @@ const fileFilter = (req, file, cb) => {
 };
 
 /**
- * The multer middleware for file upload.
+ * @category Middlewares
+ * @description A middleware function for uploading files.
  * @type {multer.Multer}
  */
 export const filesUpload = multer({

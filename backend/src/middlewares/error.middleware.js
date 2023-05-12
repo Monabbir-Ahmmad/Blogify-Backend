@@ -7,7 +7,8 @@ import { environment } from "../configs/environment.config.js";
 import { responseUtil } from "../utils/response.util.js";
 
 /**
- * A class that provides middleware functions for error handling.
+ * @category Middlewares
+ * @classdesc A class that provides error-related middleware.
  */
 class ErrorMiddleware {
   /**

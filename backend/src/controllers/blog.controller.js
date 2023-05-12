@@ -6,7 +6,10 @@ import { blogService } from "../services/blog.service.js";
 import { commonUtil } from "../utils/common.util.js";
 import { responseUtil } from "../utils/response.util.js";
 
-/** A class that provides controller functions for blog-related operations. */
+/**
+ * @category Controllers
+ * @classdesc A class that provides controller functions for blog-related operations.
+ */
 class BlogController {
   /**
    * Create blog controller function.

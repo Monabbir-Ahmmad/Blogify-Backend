@@ -1,5 +1,3 @@
-/** @module Service */
-
 import { HttpError } from "../utils/HttpError.js";
 import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
 import { StatusCode } from "../utils/StatusCode.js";
@@ -11,7 +9,8 @@ import { passwordUtil } from "../utils/password.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 
 /**
- * A class that provides user-related services.
+ * @category Services
+ * @classdesc A class that provides user-related services.
  */
 export class UserService {
   /**

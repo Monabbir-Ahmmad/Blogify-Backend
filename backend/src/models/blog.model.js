@@ -4,6 +4,19 @@ import { User } from "./user.model.js";
 import { commonUtil } from "../utils/common.util.js";
 import { database } from "../configs/database.config.js";
 
+/**
+ * @category Models
+ * @classdesc A class that defines the blog model.
+ * @property {string|number} id - The id of the blog.
+ * @property {string} title - The title of the blog.
+ * @property {string} content - The content of the blog.
+ * @property {string|null} coverImage - The cover image of the blog.
+ * @property {Date} createdAt - The date when the blog was created.
+ * @property {Date} updatedAt - The date when the blog was updated.
+ * @property {User} user - The user who created the blog.
+ * @property {any[]} likes - The likes of the blog.
+ * @property {any[]} comments - The comments of the blog.
+ */
 export class Blog extends Model {}
 
 Blog.init(

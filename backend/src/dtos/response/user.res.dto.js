@@ -1,7 +1,7 @@
-/** @module DTO/Response */
-
 /**
- * A class that defines the structure of the user response DTO.
+ * @category DTOs
+ * @subcategory Response
+ * @classdesc A class that defines the structure of the user response DTO.
  * @property {string|number} id - The id of the user.
  * @property {string} name - The name of the user.
  * @property {string} email - The email of the user.

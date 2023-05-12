@@ -1,12 +1,11 @@
-/** @module Utility */
-
 import fs from "fs/promises";
 import path from "path";
 
 const rootDir = process.cwd();
 
 /**
- * A class that provides common utility functions.
+ * @category Utilities
+ * @classdesc A class that provides common utility functions.
  */
 export class CommonUtil {
   /**

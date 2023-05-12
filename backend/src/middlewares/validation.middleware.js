@@ -4,7 +4,8 @@ import { StatusCode } from "../utils/StatusCode.js";
 import { validationResult } from "express-validator";
 
 /**
- * Middleware function to check if any validation errors occurred.
+ * @category Middlewares
+ * @description A middleware function for checking validation errors.s
  * @param {Express.Request} req - The HTTP request object.
  * @param {Express.Response} res - The HTTP response object.
  * @param {Express.NextFunction} next - The next middleware function.

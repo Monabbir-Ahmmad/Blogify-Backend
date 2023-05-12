@@ -1,9 +1,9 @@
-/** @module DTO/Response */
-
 import { UserResDto } from "./user.res.dto.js";
 
 /**
- * A class that defines the structure of the blog response DTO.
+ * @category DTOs
+ * @subcategory Response
+ * @classdesc A class that defines the structure of the blog response DTO.
  * @property {string|number} id - The id of the blog post.
  * @property {string} title - The title of the blog post.
  * @property {string} content - The content of the blog post.

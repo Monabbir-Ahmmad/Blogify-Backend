@@ -1,5 +1,3 @@
-/** @module Repository/Database */
-
 import { Op, Sequelize } from "sequelize";
 
 import { Blog } from "../../../models/blog.model.js";
@@ -10,7 +8,9 @@ import { Like } from "../../../models/like.model.js";
 import { User } from "../../../models/user.model.js";
 
 /**
- * A class that provides database operations related to blogs.
+ * @category Repositories
+ * @subcategory Database
+ * @classdesc A class that provides blog-related database operations.
  */
 export class BlogDB {
   /**

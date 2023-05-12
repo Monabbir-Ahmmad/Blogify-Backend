@@ -1,7 +1,6 @@
-/** @module Utility */
-
 /**
- * An error class for HTTP errors
+ * @category Utilities
+ * @classdesc A class that provides the functionality to map objects.
  * @extends Error
  */
 export class HttpError extends Error {

@@ -5,7 +5,10 @@ import { commonUtil } from "../utils/common.util.js";
 import { responseUtil } from "../utils/response.util.js";
 import { userService } from "../services/user.service.js";
 
-/** A class that provides controller functions for search-related operations. */
+/**
+ * @category Controllers
+ * @classdesc A class that provides controller functions for search-related operations.
+ */
 class SearchController {
   /**
    * Search user controller function.

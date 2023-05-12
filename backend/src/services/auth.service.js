@@ -1,5 +1,3 @@
-/** @module Service */
-
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
 import { HttpError } from "../utils/HttpError.js";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
@@ -12,7 +10,8 @@ import { userDB } from "../repositories/database/sequelize/user.db.js";
 import { userService } from "./user.service.js";
 
 /**
- * A class that provides authentication services.
+ * @category Services
+ * @classdesc A class that provides authentication-related services.
  */
 export class AuthService {
   /**

@@ -5,7 +5,10 @@ import { authService } from "../services/auth.service.js";
 import { cookieUtil } from "../utils/cookie.util.js";
 import { responseUtil } from "../utils/response.util.js";
 
-/** A class that provides controller functions for authentication. */
+/** 
+ * @category Controllers
+ * @classdesc A class that provides controller functions for authentication-related operations.
+ */
 class AuthController {
   /**
    * Signup controller function.

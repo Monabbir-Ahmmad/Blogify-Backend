@@ -1,7 +1,7 @@
-/** @module DTO/Request */
-
 /**
- * A class that defines the structure of the blog update request DTO.
+ * @category DTOs
+ * @subcategory Request
+ * @classdesc A class that defines the structure of the blog update request DTO.
  * @property {string} title - The title of the blog post.
  * @property {string} content - The content of the blog post.
  * @property {string|null} coverImage - The cover image of the blog post.

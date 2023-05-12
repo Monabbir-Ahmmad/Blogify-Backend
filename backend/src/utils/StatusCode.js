@@ -1,7 +1,7 @@
-/** @module Utility */
 
 /**
- * HTTP status codes
+ * @category Utilities
+ * @description HTTP status codes
  * @enum {number} StatusCode
  * @readonly
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status

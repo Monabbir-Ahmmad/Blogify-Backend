@@ -1,7 +1,6 @@
-/** @module Utility */
-
 /**
- * A class that provides utility functions for handling cookies.
+ * @category Utilities
+ * @classdesc A class that provides the functionality to map objects.
  */
 export class CookieUtil {
   /**

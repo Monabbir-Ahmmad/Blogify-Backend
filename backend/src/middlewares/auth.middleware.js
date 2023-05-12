@@ -4,7 +4,8 @@ import { StatusCode } from "../utils/StatusCode.js";
 import { tokenUtil } from "../utils/token.util.js";
 
 /**
- * A class that provides middleware functions for authentication and authorization.
+ * @category Middlewares
+ * @classdesc A class that provides authentication-related middleware.
  */
 class AuthMiddleware {
   /**

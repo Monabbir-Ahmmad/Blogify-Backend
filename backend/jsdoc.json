@@ -1,15 +1,15 @@
 {
   "tags": {
-    "allowUnknownTags": false
+    "allowUnknownTags": true
   },
   "source": {
-    "include": "src/",
+    "include": ["src"],
     "includePattern": "\\.js$",
     "excludePattern": "(node_modules/|docs)"
   },
-  "plugins": ["plugins/markdown"],
+  "plugins": ["plugins/markdown", "node_modules/better-docs/category"],
   "opts": {
-    "template": "node_modules/docdash",
+    "template": "node_modules/better-docs",
     "encoding": "utf8",
     "destination": "doc/",
     "recurse": true,

@@ -1,9 +1,9 @@
-/** @module DTO/Response */
-
 import { UserResDto } from "./user.res.dto.js";
 
 /**
- * A class that defines the structure of the comment response DTO.
+ * @category DTOs
+ * @subcategory Response
+ * @classdesc A class that defines the structure of the comment response DTO.
  * @property {string|number} id - The id of the comment.
  * @property {string} text - The text of the comment.
  * @property {string|null} [parentId] - The parent comment id of the comment.

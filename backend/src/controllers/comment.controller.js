@@ -4,7 +4,10 @@ import { commentService } from "../services/comment.service.js";
 import { commonUtil } from "../utils/common.util.js";
 import { responseUtil } from "../utils/response.util.js";
 
-/** A class that provides controller functions for comment-related operations. */
+/**
+ * @category Controllers
+ * @classdesc A class that provides controller functions for comment-related operations.
+ */
 class CommentController {
   /**
    * Post comment controller function.
