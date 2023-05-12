@@ -17,6 +17,11 @@
   },
   "templates": {
     "cleverLinks": true,
-    "monospaceLinks": true
+    "monospaceLinks": true,
+    "search": true,
+    "better-docs": {
+      "name": "API Documentation",
+      "title": "API Documentation"
+    }
   }
 }
