@@ -1,6 +1,5 @@
 /** @module Utility */
 
-import { JsonWebTokenError } from "jsonwebtoken";
 import js2xmlparser from "js2xmlparser";
 
 /**

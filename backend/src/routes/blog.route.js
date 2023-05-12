@@ -1,3 +1,4 @@
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { blogController } from "../controllers/blog.controller.js";
 import { blogRouteValidator } from "../validators/blog.route.validator.js";
 import express from "express";
@@ -10,6 +11,7 @@ blogRouter
   .route("/")
   .get(blogController.getBlogList)
   .post(
+    authMiddleware.verifyToken,
     filesUpload.single("blogCoverImage"),
     blogRouteValidator.post,
     validationCheck,
@@ -18,13 +20,16 @@ blogRouter
 
 blogRouter.route("/user/:userId").get(blogController.getUserBlogList);
 
-blogRouter.route("/like/:blogId").put(blogController.likeBlog);
+blogRouter
+  .route("/like/:blogId")
+  .put(authMiddleware.verifyToken, blogController.likeBlog);
 
 blogRouter
   .route("/:blogId")
   .get(blogController.getBlog)
-  .delete(blogController.deleteBlog)
+  .delete(authMiddleware.verifyToken, blogController.deleteBlog)
   .put(
+    authMiddleware.verifyToken,
     filesUpload.single("blogCoverImage"),
     blogRouteValidator.update,
     validationCheck,

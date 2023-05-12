@@ -1,4 +1,3 @@
-import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { authRouter } from "./auth.route.js";
 import { blogRouter } from "./blog.route.js";
 import { commentRouter } from "./comment.route.js";
@@ -13,10 +12,10 @@ indexRouter.use("/test", testRouter);
 
 indexRouter.use("/auth", authRouter);
 
-indexRouter.use("/user", authMiddleware.verifyToken, userRouter);
+indexRouter.use("/user", userRouter);
 
-indexRouter.use("/blog", authMiddleware.verifyToken, blogRouter);
+indexRouter.use("/blog", blogRouter);
 
-indexRouter.use("/comment", authMiddleware.verifyToken, commentRouter);
+indexRouter.use("/comment", commentRouter);
 
-indexRouter.use("/search", authMiddleware.verifyToken, searchRouter);
+indexRouter.use("/search", searchRouter);

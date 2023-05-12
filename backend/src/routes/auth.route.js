@@ -12,7 +12,7 @@ authRouter
     authMiddleware.checkLoggedin,
     authRouteValidator.signup,
     validationCheck,
-    authController.registerUser
+    authController.signup
   );
 
 authRouter
@@ -21,10 +21,10 @@ authRouter
     authMiddleware.checkLoggedin,
     authRouteValidator.signin,
     validationCheck,
-    authController.loginUser
+    authController.signin
   );
 
-authRouter.route("/signout").get(authController.logoutUser);
+authRouter.route("/signout").post(authController.signout);
 
 authRouter
   .route("/forgot-password")
@@ -45,7 +45,7 @@ authRouter
 authRouter
   .route("/refresh-token")
   .post(
-    authRouteValidator.refreshToken,
+    authRouteValidator.refreshAccessToken,
     validationCheck,
     authController.refreshAccessToken
   );

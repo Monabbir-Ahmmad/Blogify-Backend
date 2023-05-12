@@ -16,9 +16,6 @@ import { userDB } from "../repositories/database/sequelize/user.db.js";
 export class UserService {
   /**
    * @param {Object} dependencies - The dependencies needed by UserService.
-   * @param {typeof mapper} dependencies.mapper - The Mapper class.
-   * @param {typeof userDB} dependencies.userDB - The UserDB class.
-   * @param {typeof passwordUtil} dependencies.passwordUtil - The PasswordUtil class.
    */
   constructor({ mapper, userDB, passwordUtil }) {
     this.mapper = mapper;

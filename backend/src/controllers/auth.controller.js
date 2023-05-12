@@ -10,7 +10,7 @@ import { responseUtil } from "../utils/functions/response.util.js";
  * @param {Express.Request} req The request object
  * @param {Express.Response} res The response object
  */
-const registerUser = errorMiddleware.asyncHandler(async (req, res) => {
+const signup = errorMiddleware.asyncHandler(async (req, res) => {
   const { name, email, password, birthDate, gender } = req.body;
 
   const result = await authService.signup(
@@ -32,7 +32,7 @@ const registerUser = errorMiddleware.asyncHandler(async (req, res) => {
  * @param {Express.Request} req The request object
  * @param {Express.Response} res The response object
  */
-const loginUser = errorMiddleware.asyncHandler(async (req, res) => {
+const signin = errorMiddleware.asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const result = await authService.signin(email, password);
@@ -47,12 +47,10 @@ const loginUser = errorMiddleware.asyncHandler(async (req, res) => {
  * @param {Express.Request} req The request object
  * @param {Express.Response} res The response object
  */
-const logoutUser = errorMiddleware.asyncHandler(async (req, res) => {
+const signout = errorMiddleware.asyncHandler(async (req, res) => {
   cookieUtil.clearAuthCookie(res);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, {
-    message: "Logged out successfully.",
-  });
+  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK);
 });
 
 /**
@@ -98,9 +96,9 @@ const refreshAccessToken = errorMiddleware.asyncHandler(async (req, res) => {
 });
 
 export const authController = {
-  registerUser,
-  loginUser,
-  logoutUser,
+  signup,
+  signin,
+  signout,
   forgotPassword,
   resetPassword,
   refreshAccessToken,

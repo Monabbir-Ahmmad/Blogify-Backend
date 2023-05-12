@@ -35,7 +35,7 @@ export class AutoMapper {
    * @param {Object} [mappingConfig] - The mapping configuration.
    * @param {boolean} [mappingConfig.auto = true] - Whether to automatically map properties with the same name.
    * @param {Object} [mappingConfig.properties] - The mapping configuration between properties.
-   * @param {string | (src: S) => any} mappingConfig.properties.propertyName - The mapping function for the property.
+   * @param {string | function(src): any} mappingConfig.properties.propertyName - The mapping function for the property.
    */
   setMapping(sourceClass, destinationClass, mappingConfig) {
     if (!this.mappings[sourceClass]) {
