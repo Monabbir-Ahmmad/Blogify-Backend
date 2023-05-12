@@ -1,132 +1,127 @@
 import { BlogPostReqDto } from "../dtos/request/blogPost.req.dto.js";
 import { BlogUpdateReqDto } from "../dtos/request/blogUpdate.req.dto.js";
+import Express from "express";
 import { StatusCode } from "../utils/objects/StatusCode.js";
 import { blogService } from "../services/blog.service.js";
 import { commonUtil } from "../utils/functions/common.util.js";
-import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
-/**
- * Creates a new blog post
- * @param {Express.Request} req The request object
- * @param {Express.Response} res The response object
- */
-const createBlog = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.user.id;
-  const { title, content } = req.body;
-  const coverImage = req.file?.filename;
+/** A class that provides controller functions for blog-related operations. */
+class BlogController {
+  /**
+   * Create blog controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async createBlog(req, res) {
+    const userId = req.user.id;
+    const { title, content } = req.body;
+    const coverImage = req.file?.filename;
 
-  const result = await blogService.createBlog(
-    userId,
-    new BlogPostReqDto({
-      title,
-      content,
-      coverImage,
-    })
-  );
+    const result = await blogService.createBlog(
+      userId,
+      new BlogPostReqDto({
+        title,
+        content,
+        coverImage,
+      })
+    );
 
-  responseUtil.sendContentNegotiatedResponse(
-    req,
-    res,
-    StatusCode.CREATED,
-    result
-  );
-});
+    responseUtil.sendContentNegotiatedResponse(
+      req,
+      res,
+      StatusCode.CREATED,
+      result
+    );
+  }
 
-/**
- * Gets a list of blogs
- * @param {Express.Request} req The request object
- * @param {Express.Response} res The response object
- */
-const getBlogList = errorMiddleware.asyncHandler(async (req, res) => {
-  const pagination = commonUtil.getPagination(req.query);
+  /**
+   * Get blog list controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async getBlogList(req, res) {
+    const pagination = commonUtil.getPagination(req.query);
 
-  const result = await blogService.getBlogs(pagination);
+    const result = await blogService.getBlogs(pagination);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-/**
- * Gets a list of blogs by a user
- * @param {Express.Request} req The request object
- * @param {Express.Response} res The response object
- */
-const getUserBlogList = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.params.userId;
-  const pagination = commonUtil.getPagination(req.query);
+  /**
+   * Get user blog list controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async getUserBlogList(req, res) {
+    const userId = req.params.userId;
+    const pagination = commonUtil.getPagination(req.query);
 
-  const result = await blogService.getUserBlogs(userId, pagination);
+    const result = await blogService.getUserBlogs(userId, pagination);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-/**
- * Gets a blog by id
- * @param {Express.Request} req The request object
- * @param {Express.Response} res The response object
- */
-const getBlog = errorMiddleware.asyncHandler(async (req, res) => {
-  const blogId = req.params.blogId;
+  /**
+   * Get blog controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async getBlog(req, res) {
+    const blogId = req.params.blogId;
 
-  const result = await blogService.getBlog(blogId);
+    const result = await blogService.getBlog(blogId);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-/**
- * Updates a blog post
- * @param {Express.Request} req The request object
- * @param {Express.Response} res The response object
- */
-const updateBlog = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.user.id;
-  const blogId = req.params.blogId;
-  const { title, content } = req.body;
-  const coverImage = req.file?.filename || req.body.coverImage;
+  /**
+   * Update blog controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async updateBlog(req, res) {
+    const userId = req.user.id;
+    const blogId = req.params.blogId;
+    const { title, content } = req.body;
+    const coverImage = req.file?.filename || req.body.coverImage;
 
-  const result = await blogService.updateBlog(
-    userId,
-    blogId,
-    new BlogUpdateReqDto({ title, content, coverImage })
-  );
+    const result = await blogService.updateBlog(
+      userId,
+      blogId,
+      new BlogUpdateReqDto({ title, content, coverImage })
+    );
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-/**
- * Deletes a blog post
- * @param {Express.Request} req The request object
- * @param {Express.Response} res The response object
- */
-const deleteBlog = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.user.id;
-  const blogId = req.params.blogId;
+  /**
+   * Delete blog controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async deleteBlog(req, res) {
+    const userId = req.user.id;
+    const blogId = req.params.blogId;
 
-  const result = await blogService.deleteBlog(userId, blogId);
+    const result = await blogService.deleteBlog(userId, blogId);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-/**
- * Likes or removes like from a blog post
- * @param {Express.Request} req The request object
- * @param {Express.Response} res The response object
- */
-const likeBlog = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.user.id;
-  const blogId = req.params.blogId;
+  /**
+   * Like blog controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async likeBlog(req, res) {
+    const userId = req.user.id;
+    const blogId = req.params.blogId;
 
-  const result = await blogService.updateBlogLike(userId, blogId);
+    const result = await blogService.updateBlogLike(userId, blogId);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
+}
 
-export const blogController = {
-  createBlog,
-  getBlogList,
-  getUserBlogList,
-  getBlog,
-  updateBlog,
-  likeBlog,
-  deleteBlog,
-};
+export const blogController = new BlogController();

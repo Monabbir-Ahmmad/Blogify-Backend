@@ -1,10 +1,11 @@
+import { Router } from "express";
 import { authController } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { authRouteValidator } from "../validators/auth.route.validator.js";
-import express from "express";
+import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { validationCheck } from "../middlewares/validation.middleware.js";
 
-export const authRouter = express.Router();
+export const authRouter = Router();
 
 authRouter
   .route("/signup")
@@ -12,7 +13,7 @@ authRouter
     authMiddleware.checkLoggedin,
     authRouteValidator.signup,
     validationCheck,
-    authController.signup
+    errorMiddleware.asyncHandler(authController.signup)
   );
 
 authRouter
@@ -21,17 +22,19 @@ authRouter
     authMiddleware.checkLoggedin,
     authRouteValidator.signin,
     validationCheck,
-    authController.signin
+    errorMiddleware.asyncHandler(authController.signin)
   );
 
-authRouter.route("/signout").post(authController.signout);
+authRouter
+  .route("/signout")
+  .post(errorMiddleware.asyncHandler(authController.signout));
 
 authRouter
   .route("/forgot-password")
   .post(
     authRouteValidator.forgotPassword,
     validationCheck,
-    authController.forgotPassword
+    errorMiddleware.asyncHandler(authController.forgotPassword)
   );
 
 authRouter
@@ -39,7 +42,7 @@ authRouter
   .put(
     authRouteValidator.resetPassword,
     validationCheck,
-    authController.resetPassword
+    errorMiddleware.asyncHandler(authController.resetPassword)
   );
 
 authRouter
@@ -47,5 +50,5 @@ authRouter
   .post(
     authRouteValidator.refreshAccessToken,
     validationCheck,
-    authController.refreshAccessToken
+    errorMiddleware.asyncHandler(authController.refreshAccessToken)
   );

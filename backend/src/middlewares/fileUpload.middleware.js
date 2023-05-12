@@ -1,3 +1,4 @@
+import Express from "express";
 import { HttpError } from "../utils/objects/HttpError.js";
 import { StatusCode } from "../utils/objects/StatusCode.js";
 import multer from "multer";
@@ -19,12 +20,11 @@ const storage = multer.diskStorage({
 
 /**
  * The file filter to use for file upload.
- * @type {multer.FileFilterCallback}
- * @param {Express.Request} req The request object.
- * @param {multer.File} file The file object.
- * @param {multer.FileFilterCallback} cb The callback function.
- * @returns {multer.FileFilterCallback} The callback function.
- * @throws {HttpError} If the file is not an image file.
+ * @param {Express.Request} req - The HTTP request object.
+ * @param {multer.File} file - The file object to be uploaded.
+ * @param {multer.FileFilterCallback} cb - The callback function to be called when the file is accepted or rejected.
+ * @returns {multer.FileFilterCallback} - A callback function that accepts a boolean to indicate if the file should be accepted.
+ * @throws {HttpError} - If the file is not an image file.
  */
 const fileFilter = (req, file, cb) => {
   // Accept image files only

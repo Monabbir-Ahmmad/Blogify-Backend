@@ -1,8 +1,13 @@
-import express from "express";
+import { Router } from "express";
+import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { searchController } from "../controllers/search.controller.js";
 
-export const searchRouter = express.Router();
+export const searchRouter = Router();
 
-searchRouter.route("/user/:keyword").get(searchController.searchUser);
+searchRouter
+  .route("/user/:keyword")
+  .get(errorMiddleware.asyncHandler(searchController.searchUser));
 
-searchRouter.route("/blog/:keyword").get(searchController.searchBlog);
+searchRouter
+  .route("/blog/:keyword")
+  .get(errorMiddleware.asyncHandler(searchController.searchBlog));

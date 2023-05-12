@@ -1,6 +1,6 @@
-import express from "express";
+import { Router } from "express";
 
-export const testRouter = express.Router();
+export const testRouter = Router();
 
 testRouter.route("/").get((req, res) => {
   res.send("Test route");

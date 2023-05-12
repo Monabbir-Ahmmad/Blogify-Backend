@@ -1,88 +1,121 @@
+import Express from "express";
 import { StatusCode } from "../utils/objects/StatusCode.js";
 import { commentService } from "../services/comment.service.js";
 import { commonUtil } from "../utils/functions/common.util.js";
-import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { responseUtil } from "../utils/functions/response.util.js";
 
-const postComment = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.user.id;
-  const { blogId, text, parentId } = req.body;
+/** A class that provides controller functions for comment-related operations. */
+class CommentController {
+  /**
+   * Post comment controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async postComment(req, res) {
+    const userId = req.user.id;
+    const { blogId, text, parentId } = req.body;
 
-  const result = await commentService.postComment(
-    blogId,
-    userId,
-    text,
-    parentId
-  );
+    const result = await commentService.postComment(
+      blogId,
+      userId,
+      text,
+      parentId
+    );
 
-  responseUtil.sendContentNegotiatedResponse(
-    req,
-    res,
-    StatusCode.CREATED,
-    result
-  );
-});
+    responseUtil.sendContentNegotiatedResponse(
+      req,
+      res,
+      StatusCode.CREATED,
+      result
+    );
+  }
 
-const getBlogComments = errorMiddleware.asyncHandler(async (req, res) => {
-  const blogId = req.params.blogId;
-  const pagination = commonUtil.getPagination(req.query);
+  /**
+   * Get blog comments controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async getBlogComments(req, res) {
+    const blogId = req.params.blogId;
+    const pagination = commonUtil.getPagination(req.query);
 
-  const result = await commentService.getComments(blogId, pagination);
+    const result = await commentService.getComments(blogId, pagination);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-const getComment = errorMiddleware.asyncHandler(async (req, res) => {
-  const commentId = req.params.commentId;
+  /**
+   * Get comment controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async getComment(req, res) {
+    const commentId = req.params.commentId;
 
-  const result = await commentService.getComment(commentId);
+    const result = await commentService.getComment(commentId);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-const getCommentReplies = errorMiddleware.asyncHandler(async (req, res) => {
-  const commentId = req.params.commentId;
-  const pagination = commonUtil.getPagination(req.query);
+  /**
+   * Get comment replies controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async getCommentReplies(req, res) {
+    const commentId = req.params.commentId;
+    const pagination = commonUtil.getPagination(req.query);
 
-  const result = await commentService.getCommentReplies(commentId, pagination);
+    const result = await commentService.getCommentReplies(
+      commentId,
+      pagination
+    );
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-const updateComment = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.user.id;
-  const commentId = req.params.commentId;
-  const { text } = req.body;
+  /**
+   * Update comment controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async updateComment(req, res) {
+    const userId = req.user.id;
+    const commentId = req.params.commentId;
+    const { text } = req.body;
 
-  const result = await commentService.updateComment(userId, commentId, text);
+    const result = await commentService.updateComment(userId, commentId, text);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-const deleteComment = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.user.id;
-  const commentId = req.params.commentId;
+  /**
+   * Delete comment controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async deleteComment(req, res) {
+    const userId = req.user.id;
+    const commentId = req.params.commentId;
 
-  const result = await commentService.deleteComment(userId, commentId);
+    const result = await commentService.deleteComment(userId, commentId);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-const likeComment = errorMiddleware.asyncHandler(async (req, res) => {
-  const userId = req.user.id;
-  const commentId = req.params.commentId;
+  /**
+   * Like comment controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async likeComment(req, res) {
+    const userId = req.user.id;
+    const commentId = req.params.commentId;
 
-  const result = await commentService.updateCommentLike(userId, commentId);
+    const result = await commentService.updateCommentLike(userId, commentId);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
+}
 
-export const commentController = {
-  postComment,
-  getBlogComments,
-  getComment,
-  getCommentReplies,
-  updateComment,
-  deleteComment,
-  likeComment,
-};
+export const commentController = new CommentController();

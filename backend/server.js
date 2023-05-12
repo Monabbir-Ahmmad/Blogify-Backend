@@ -6,7 +6,7 @@ import { errorMiddleware } from "./src/middlewares/error.middleware.js";
 import express from "express";
 import http from "http";
 import { indexRouter } from "./src/routes/index.route.js";
-import { loggerMiddleWare } from "./src/middlewares/logger.middleware.js";
+import { loggerMiddleware } from "./src/middlewares/logger.middleware.js";
 import seedDatabase from "./seedDatabase.js";
 
 const app = express();
@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 app.use(express.static("./public/uploads"));
 
-app.use(loggerMiddleWare.consoleLogging);
+app.use(loggerMiddleware.consoleLogging);
 
 app.get("/", (req, res) => {
   res.send("Server is running");
