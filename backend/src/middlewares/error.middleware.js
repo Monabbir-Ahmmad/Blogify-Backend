@@ -1,13 +1,13 @@
 import Express from "express";
-import { HttpError } from "../utils/objects/HttpError.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
-import { commonUtil } from "../utils/functions/common.util.js";
-import { cookieUtil } from "../utils/functions/cookie.util.js";
+import { HttpError } from "../utils/HttpError.js";
+import { StatusCode } from "../utils/StatusCode.js";
+import { commonUtil } from "../utils/common.util.js";
+import { cookieUtil } from "../utils/cookie.util.js";
 import { environment } from "../configs/environment.config.js";
-import { responseUtil } from "../utils/functions/response.util.js";
+import { responseUtil } from "../utils/response.util.js";
 
 /**
- * ErrorMiddleware is a class that provides middleware functions for error handling.
+ * A class that provides middleware functions for error handling.
  */
 class ErrorMiddleware {
   /**

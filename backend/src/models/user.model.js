@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 
 import { UserType } from "./userType.model.js";
-import { commonUtil } from "../utils/functions/common.util.js";
+import { commonUtil } from "../utils/common.util.js";
 import { database } from "../configs/database.config.js";
 
 export class User extends Model {}

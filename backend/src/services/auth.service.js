@@ -1,13 +1,13 @@
 /** @module Service */
 
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
-import { HttpError } from "../utils/objects/HttpError.js";
+import { HttpError } from "../utils/HttpError.js";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { environment } from "../configs/environment.config.js";
-import { mailUtil } from "../utils/functions/mail.util.js";
-import { passwordUtil } from "../utils/functions/password.util.js";
-import { tokenUtil } from "../utils/functions/token.util.js";
+import { mailUtil } from "../utils/mail.util.js";
+import { passwordUtil } from "../utils/password.util.js";
+import { tokenUtil } from "../utils/token.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 import { userService } from "./user.service.js";
 
@@ -16,31 +16,20 @@ import { userService } from "./user.service.js";
  */
 export class AuthService {
   /**
-   * @param {Object} dependencies - The dependencies needed by AuthService.
-   */
-  constructor({ userDB, passwordUtil, tokenUtil, mailUtil, userService }) {
-    this.userDB = userDB;
-    this.passwordUtil = passwordUtil;
-    this.tokenUtil = tokenUtil;
-    this.mailUtil = mailUtil;
-    this.userService = userService;
-  }
-
-  /**
    * This is used to signup a user.
    * @param {SignupReqDto} signupReqDto - Signup request DTO.
    * @returns {Promise<AuthResDto>} - Created auth response DTO.
    * @throws {HttpError} 409 - Email already exists.
    */
   async signup(signupReqDto) {
-    if (await this.userDB.getUserByEmail(signupReqDto.email))
+    if (await userDB.getUserByEmail(signupReqDto.email))
       throw new HttpError(StatusCode.CONFLICT, "Email already exists.");
 
-    signupReqDto.password = await this.passwordUtil.hashPassword(
+    signupReqDto.password = await passwordUtil.hashPassword(
       signupReqDto.password
     );
 
-    const user = await this.userDB.createUser(signupReqDto);
+    const user = await userDB.createUser(signupReqDto);
 
     return new AuthResDto(user.id, user.userType.name);
   }
@@ -54,12 +43,12 @@ export class AuthService {
    * @throws {HttpError} 401 - Wrong password.
    */
   async signin(email, password) {
-    const user = await this.userDB.getUserByEmail(email);
+    const user = await userDB.getUserByEmail(email);
 
     if (!user)
       throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong email address.");
 
-    if (!(await this.passwordUtil.verifyPassword(password, user.password)))
+    if (!(await passwordUtil.verifyPassword(password, user.password)))
       throw new HttpError(StatusCode.UNAUTHORIZED, "Wrong password.");
 
     return new AuthResDto(user.id, user.userType.name);
@@ -72,7 +61,7 @@ export class AuthService {
    * @throws {HttpError} 404 - User with such email not found.
    */
   async forgotPassword(email) {
-    const user = await this.userDB.getUserByEmail(email);
+    const user = await userDB.getUserByEmail(email);
 
     if (!user)
       throw new HttpError(
@@ -80,12 +69,12 @@ export class AuthService {
         "User with such email not found."
       );
 
-    const resetToken = this.tokenUtil.generateResetToken(user.id);
+    const resetToken = tokenUtil.generateResetToken(user.id);
 
-    await this.mailUtil.sendEmail({
+    await mailUtil.sendEmail({
       to: user.email,
       subject: "Password Reset Request",
-      html: await this.mailUtil.getResetPasswordMailTemplate(
+      html: await mailUtil.getResetPasswordMailTemplate(
         environment.APP_NAME,
         user.name,
         resetToken
@@ -100,11 +89,11 @@ export class AuthService {
    * @returns {Promise<void>}
    */
   async resetPassword(resetToken, newPassword) {
-    const decodedToken = this.tokenUtil.verifyResetToken(resetToken);
-    const user = await this.userService.getUser(decodedToken.id);
-    newPassword = await this.passwordUtil.hashPassword(newPassword);
+    const decodedToken = tokenUtil.verifyResetToken(resetToken);
+    const user = await userService.getUser(decodedToken.id);
+    newPassword = await passwordUtil.hashPassword(newPassword);
 
-    await this.userDB.updatePassword(user.id, newPassword);
+    await userDB.updatePassword(user.id, newPassword);
   }
 
   /**
@@ -115,9 +104,9 @@ export class AuthService {
    */
   async refreshAccessToken(refreshToken) {
     try {
-      const decodedToken = this.tokenUtil.verifyRefreshToken(refreshToken);
+      const decodedToken = tokenUtil.verifyRefreshToken(refreshToken);
 
-      const accessToken = this.tokenUtil.generateAccessToken(
+      const accessToken = tokenUtil.generateAccessToken(
         decodedToken.id,
         decodedToken.userType
       );
@@ -130,10 +119,4 @@ export class AuthService {
   }
 }
 
-export const authService = new AuthService({
-  userDB,
-  passwordUtil,
-  tokenUtil,
-  mailUtil,
-  userService,
-});
+export const authService = new AuthService();

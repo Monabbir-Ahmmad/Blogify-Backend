@@ -1,10 +1,10 @@
 import Express from "express";
-import { HttpError } from "../utils/objects/HttpError.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
-import { tokenUtil } from "../utils/functions/token.util.js";
+import { HttpError } from "../utils/HttpError.js";
+import { StatusCode } from "../utils/StatusCode.js";
+import { tokenUtil } from "../utils/token.util.js";
 
 /**
- * AuthMiddleware is a class that provides middleware functions for authentication and authorization.
+ * A class that provides middleware functions for authentication and authorization.
  */
 class AuthMiddleware {
   /**

@@ -1,9 +1,9 @@
 import Express from "express";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { authService } from "../services/auth.service.js";
-import { cookieUtil } from "../utils/functions/cookie.util.js";
-import { responseUtil } from "../utils/functions/response.util.js";
+import { cookieUtil } from "../utils/cookie.util.js";
+import { responseUtil } from "../utils/response.util.js";
 
 /** A class that provides controller functions for authentication. */
 class AuthController {

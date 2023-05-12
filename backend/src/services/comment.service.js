@@ -2,9 +2,9 @@
 
 import { Comment } from "../models/comment.model.js";
 import { CommentResDto } from "../dtos/response/comment.res.dto.js";
-import { HttpError } from "../utils/objects/HttpError.js";
+import { HttpError } from "../utils/HttpError.js";
 import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { blogService } from "./blog.service.js";
 import { commentDB } from "../repositories/database/sequelize/comment.db.js";
 import { mapper } from "../configs/mapper.config.js";
@@ -15,28 +15,18 @@ import { userService } from "./user.service.js";
  */
 export class CommentService {
   /**
-   * @param {Object} dependencies - The dependencies needed by CommentService.
-   */
-  constructor({ blogService, commentDB, mapper, userService }) {
-    this.blogService = blogService;
-    this.commentDB = commentDB;
-    this.mapper = mapper;
-    this.userService = userService;
-  }
-
-  /**
    * Get a comment by ID.
    * @param {string|number} commentId - ID of the comment.
    * @returns {Promise<CommentResDto>} - Retrieved comment response DTO.
    * @throws {HttpError} 404 - Comment not found.
    */
   async getComment(commentId) {
-    const comment = await this.commentDB.getCommentById(commentId);
+    const comment = await commentDB.getCommentById(commentId);
 
     if (!comment)
       throw new HttpError(StatusCode.NOT_FOUND, "Comment not found.");
 
-    return this.mapper.map(Comment, CommentResDto, comment);
+    return mapper.map(Comment, CommentResDto, comment);
   }
 
   /**
@@ -48,18 +38,18 @@ export class CommentService {
    * @returns {Promise<CommentResDto>} - Created comment response DTO.
    */
   async postComment(blogId, userId, text, parentId) {
-    await this.blogService.getBlog(blogId);
+    await blogService.getBlog(blogId);
 
-    if (parentId) await this.getComment(parentId);
+    if (parentId) await getComment(parentId);
 
-    const comment = await this.commentDB.createComment(
+    const comment = await commentDB.createComment(
       blogId,
       userId,
       text,
       parentId
     );
 
-    return this.mapper.map(Comment, CommentResDto, comment);
+    return mapper.map(Comment, CommentResDto, comment);
   }
 
   /**
@@ -69,9 +59,9 @@ export class CommentService {
    * @returns {Promise<PaginatedResDto<CommentResDto>>} - Paginated comment response DTO.
    */
   async getComments(blogId, { offset, limit }) {
-    await this.blogService.getBlog(blogId);
+    await blogService.getBlog(blogId);
 
-    const { pageCount, comments } = await this.commentDB.getCommentsByBlogId(
+    const { pageCount, comments } = await commentDB.getCommentsByBlogId(
       blogId,
       offset,
       limit
@@ -79,7 +69,7 @@ export class CommentService {
 
     return new PaginatedResDto(
       pageCount,
-      this.mapper.mapArray(Comment, CommentResDto, comments)
+      mapper.mapArray(Comment, CommentResDto, comments)
     );
   }
 
@@ -90,9 +80,9 @@ export class CommentService {
    * @returns {Promise<PaginatedResDto<CommentResDto>>} - Paginated comment response DTO.
    */
   async getCommentReplies(commentId, { offset, limit }) {
-    await this.getComment(commentId);
+    await getComment(commentId);
 
-    const { pageCount, comments } = await this.commentDB.getRepliesByCommentId(
+    const { pageCount, comments } = await commentDB.getRepliesByCommentId(
       commentId,
       offset,
       limit
@@ -100,7 +90,7 @@ export class CommentService {
 
     return new PaginatedResDto(
       pageCount,
-      this.mapper.mapArray(Comment, CommentResDto, comments)
+      mapper.mapArray(Comment, CommentResDto, comments)
     );
   }
 
@@ -113,7 +103,7 @@ export class CommentService {
    * @throws {HttpError} 403 - You are not allowed to update this comment.
    */
   async updateComment(userId, commentId, text) {
-    const comment = await this.getComment(commentId);
+    const comment = await getComment(commentId);
 
     if (comment.user.id !== userId)
       throw new HttpError(
@@ -121,9 +111,9 @@ export class CommentService {
         "You are not allowed to update this comment."
       );
 
-    const updatedComment = await this.commentDB.updateComment(commentId, text);
+    const updatedComment = await commentDB.updateComment(commentId, text);
 
-    return this.mapper.map(Comment, CommentResDto, updatedComment);
+    return mapper.map(Comment, CommentResDto, updatedComment);
   }
 
   /**
@@ -134,7 +124,7 @@ export class CommentService {
    * @throws {HttpError} 403 - You are not allowed to delete this comment.
    */
   async deleteComment(userId, commentId) {
-    const comment = await this.getComment(commentId);
+    const comment = await getComment(commentId);
 
     if (comment.user.id !== userId)
       throw new HttpError(
@@ -142,7 +132,7 @@ export class CommentService {
         "You are not allowed to delete this comment."
       );
 
-    await this.commentDB.deleteComment(commentId);
+    await commentDB.deleteComment(commentId);
   }
 
   /**
@@ -152,19 +142,14 @@ export class CommentService {
    * @returns {Promise<CommentResDto>} - Updated comment response DTO.
    */
   async updateCommentLike(userId, commentId) {
-    await this.userService.getUser(userId);
+    await userService.getUser(userId);
 
-    await this.getComment(commentId);
+    await getComment(commentId);
 
-    await this.commentDB.updateCommentLike(userId, commentId);
+    await commentDB.updateCommentLike(userId, commentId);
 
-    return await this.getComment(commentId);
+    return await getComment(commentId);
   }
 }
 
-export const commentService = new CommentService({
-  blogService,
-  commentDB,
-  mapper,
-  userService,
-});
+export const commentService = new CommentService();

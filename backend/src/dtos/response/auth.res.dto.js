@@ -1,9 +1,9 @@
 /** @module DTO/Response */
 
-import { tokenUtil } from "../../utils/functions/token.util.js";
+import { tokenUtil } from "../../utils/token.util.js";
 
 /**
- * AuthResDto is a class that defines the structure of the authentication response DTO.
+ * A class that defines the structure of the authentication response DTO.
  * @property {string} refreshToken - The refresh token.
  * @property {string} accessToken - The access token.
  */

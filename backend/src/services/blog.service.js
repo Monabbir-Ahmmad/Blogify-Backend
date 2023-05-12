@@ -4,9 +4,9 @@ import { Blog } from "../models/blog.model.js";
 import { BlogPostReqDto } from "../dtos/request/blogPost.req.dto.js";
 import { BlogResDto } from "../dtos/response/blog.res.dto.js";
 import { BlogUpdateReqDto } from "../dtos/request/blogUpdate.req.dto.js";
-import { HttpError } from "../utils/objects/HttpError.js";
+import { HttpError } from "../utils/HttpError.js";
 import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { blogDB } from "../repositories/database/sequelize/blog.db.js";
 import { mapper } from "../configs/mapper.config.js";
 import { userService } from "./user.service.js";
@@ -16,26 +16,17 @@ import { userService } from "./user.service.js";
  */
 export class BlogService {
   /**
-   * @param {Object} dependencies - The dependencies needed by BlogService.
-   */
-  constructor({ userService, blogDB, mapper }) {
-    this.userService = userService;
-    this.blogDB = blogDB;
-    this.mapper = mapper;
-  }
-
-  /**
    * Create a new blog post.
    * @param {string|number} userId - ID of the user creating the blog post.
    * @param {BlogPostReqDto} blogPostReqDto - Blog post request DTO.
    * @returns {Promise<BlogResDto>} - Created blog post response DTO.
    */
   async createBlog(userId, blogPostReqDto) {
-    await this.userService.getUser(userId);
+    await userService.getUser(userId);
 
-    const blog = await this.blogDB.createBlog(userId, blogPostReqDto);
+    const blog = await blogDB.createBlog(userId, blogPostReqDto);
 
-    return this.mapper.map(Blog, BlogResDto, blog);
+    return mapper.map(Blog, BlogResDto, blog);
   }
 
   /**
@@ -45,11 +36,11 @@ export class BlogService {
    * @throws {HttpError} 404 - Blog not found.
    */
   async getBlog(id) {
-    const blog = await this.blogDB.getBlogById(id);
+    const blog = await blogDB.getBlogById(id);
 
     if (!blog) throw new HttpError(StatusCode.NOT_FOUND, "Blog not found.");
 
-    return this.mapper.map(Blog, BlogResDto, blog);
+    return mapper.map(Blog, BlogResDto, blog);
   }
 
   /**
@@ -58,11 +49,11 @@ export class BlogService {
    * @returns {Promise<PaginatedResDto<BlogResDto>>} - Paginated blog response DTO.
    */
   async getBlogs({ offset, limit }) {
-    const { pageCount, blogs } = await this.blogDB.getBlogs(offset, limit);
+    const { pageCount, blogs } = await blogDB.getBlogs(offset, limit);
 
     return new PaginatedResDto(
       pageCount,
-      this.mapper.mapArray(Blog, BlogResDto, blogs)
+      mapper.mapArray(Blog, BlogResDto, blogs)
     );
   }
 
@@ -73,9 +64,9 @@ export class BlogService {
    * @returns {Promise<PaginatedResDto<BlogResDto>>} - Paginated blog response DTO.
    */
   async getUserBlogs(userId, { offset, limit }) {
-    await this.userService.getUser(userId);
+    await userService.getUser(userId);
 
-    const { pageCount, blogs } = await this.blogDB.getUserBlogs(
+    const { pageCount, blogs } = await blogDB.getUserBlogs(
       userId,
       offset,
       limit
@@ -83,7 +74,7 @@ export class BlogService {
 
     return new PaginatedResDto(
       pageCount,
-      this.mapper.mapArray(Blog, BlogResDto, blogs)
+      mapper.mapArray(Blog, BlogResDto, blogs)
     );
   }
 
@@ -96,7 +87,7 @@ export class BlogService {
    * @throws {HttpError} 403 - Forbidden if the user is not allowed to update the blog post.
    */
   async updateBlog(userId, blogId, blogUpdateReqDto) {
-    const blog = await this.getBlog(blogId);
+    const blog = await getBlog(blogId);
 
     if (blog.user.id !== userId) {
       throw new HttpError(
@@ -105,9 +96,9 @@ export class BlogService {
       );
     }
 
-    const updatedBlog = await this.blogDB.updateBlog(blogId, blogUpdateReqDto);
+    const updatedBlog = await blogDB.updateBlog(blogId, blogUpdateReqDto);
 
-    return this.mapper.map(Blog, BlogResDto, updatedBlog);
+    return mapper.map(Blog, BlogResDto, updatedBlog);
   }
 
   /**
@@ -118,7 +109,7 @@ export class BlogService {
    * @throws {HttpError} 403 - Forbidden if the user is not allowed to delete the blog post.
    */
   async deleteBlog(userId, blogId) {
-    const blog = await this.getBlog(blogId);
+    const blog = await getBlog(blogId);
 
     if (blog.user.id !== userId) {
       throw new HttpError(
@@ -127,7 +118,7 @@ export class BlogService {
       );
     }
 
-    await this.blogDB.deleteBlog(blogId);
+    await blogDB.deleteBlog(blogId);
   }
 
   /**
@@ -137,13 +128,13 @@ export class BlogService {
    * @returns {Promise<BlogResDto>} - Updated blog post response DTO.
    */
   async updateBlogLike(userId, blogId) {
-    await this.userService.getUser(userId);
+    await userService.getUser(userId);
 
-    await this.getBlog(blogId);
+    await getBlog(blogId);
 
-    await this.blogDB.updateBlogLike(userId, blogId);
+    await blogDB.updateBlogLike(userId, blogId);
 
-    return await this.getBlog(blogId);
+    return await getBlog(blogId);
   }
 
   /**
@@ -153,7 +144,7 @@ export class BlogService {
    * @returns {Promise<PaginatedResDto<BlogResDto>>} - Paginated blog response DTO.
    */
   async searchBlog(keyword, { offset, limit }) {
-    const { pageCount, blogs } = await this.blogDB.searchBlogByTitle(
+    const { pageCount, blogs } = await blogDB.searchBlogByTitle(
       keyword,
       offset,
       limit
@@ -161,13 +152,9 @@ export class BlogService {
 
     return new PaginatedResDto(
       pageCount,
-      this.mapper.mapArray(Blog, BlogResDto, blogs)
+      mapper.mapArray(Blog, BlogResDto, blogs)
     );
   }
 }
 
-export const blogService = new BlogService({
-  userService,
-  blogDB,
-  mapper,
-});
+export const blogService = new BlogService();

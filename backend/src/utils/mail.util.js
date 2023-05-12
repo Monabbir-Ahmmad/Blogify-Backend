@@ -1,7 +1,7 @@
 /** @module Utility */
 
 import ejs from "ejs";
-import { environment } from "../../configs/environment.config.js";
+import { environment } from "../configs/environment.config.js";
 import nodemailer from "nodemailer";
 import path from "path";
 

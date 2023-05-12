@@ -1,10 +1,10 @@
 import { BlogPostReqDto } from "../dtos/request/blogPost.req.dto.js";
 import { BlogUpdateReqDto } from "../dtos/request/blogUpdate.req.dto.js";
 import Express from "express";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { blogService } from "../services/blog.service.js";
-import { commonUtil } from "../utils/functions/common.util.js";
-import { responseUtil } from "../utils/functions/response.util.js";
+import { commonUtil } from "../utils/common.util.js";
+import { responseUtil } from "../utils/response.util.js";
 
 /** A class that provides controller functions for blog-related operations. */
 class BlogController {

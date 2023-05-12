@@ -1,7 +1,7 @@
 import Express from "express";
 
 /**
- * LoggerMiddleware is a class that provides middleware functions for logging.
+ * A class that provides middleware functions for logging.
  */
 class LoggerMiddleware {
   /**

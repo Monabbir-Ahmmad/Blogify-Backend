@@ -1,8 +1,8 @@
 import Express from "express";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { commentService } from "../services/comment.service.js";
-import { commonUtil } from "../utils/functions/common.util.js";
-import { responseUtil } from "../utils/functions/response.util.js";
+import { commonUtil } from "../utils/common.util.js";
+import { responseUtil } from "../utils/response.util.js";
 
 /** A class that provides controller functions for comment-related operations. */
 class CommentController {

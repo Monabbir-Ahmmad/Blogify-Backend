@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { commonUtil } from "../utils/functions/common.util.js";
+import { commonUtil } from "../utils/common.util.js";
 
 const profileUpdate = [
   body("name").notEmpty().withMessage("Name is required."),

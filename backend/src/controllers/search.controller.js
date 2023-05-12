@@ -1,8 +1,8 @@
 import Express from "express";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { blogService } from "../services/blog.service.js";
-import { commonUtil } from "../utils/functions/common.util.js";
-import { responseUtil } from "../utils/functions/response.util.js";
+import { commonUtil } from "../utils/common.util.js";
+import { responseUtil } from "../utils/response.util.js";
 import { userService } from "../services/user.service.js";
 
 /** A class that provides controller functions for search-related operations. */

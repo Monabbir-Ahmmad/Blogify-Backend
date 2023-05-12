@@ -1,13 +1,13 @@
 /** @module Service */
 
-import { HttpError } from "../utils/objects/HttpError.js";
+import { HttpError } from "../utils/HttpError.js";
 import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { User } from "../models/user.model.js";
 import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
 import { UserResDto } from "../dtos/response/user.res.dto.js";
 import { mapper } from "../configs/mapper.config.js";
-import { passwordUtil } from "../utils/functions/password.util.js";
+import { passwordUtil } from "../utils/password.util.js";
 import { userDB } from "../repositories/database/sequelize/user.db.js";
 
 /**
@@ -15,26 +15,17 @@ import { userDB } from "../repositories/database/sequelize/user.db.js";
  */
 export class UserService {
   /**
-   * @param {Object} dependencies - The dependencies needed by UserService.
-   */
-  constructor({ mapper, userDB, passwordUtil }) {
-    this.mapper = mapper;
-    this.userDB = userDB;
-    this.passwordUtil = passwordUtil;
-  }
-
-  /**
    * Get a user by ID.
    * @param {string|number} userId - ID of the user.
    * @returns {Promise<UserResDto>} - Retrieved user response DTO.
    * @throws {HttpError} 404 - User not found.
    */
   async getUser(userId) {
-    const user = await this.userDB.getUserById(userId);
+    const user = await userDB.getUserById(userId);
 
     if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-    return this.mapper.map(User, UserResDto, user);
+    return mapper.map(User, UserResDto, user);
   }
 
   /**
@@ -48,25 +39,25 @@ export class UserService {
    * @throws {HttpError} 409 - Email already in use.
    */
   async updateProfile(userId, userProfileUpdateReqDto, password) {
-    const user = await this.userDB.getUserById(userId);
+    const user = await userDB.getUserById(userId);
 
     if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-    if (!(await this.passwordUtil.verifyPassword(password, user.password)))
+    if (!(await passwordUtil.verifyPassword(password, user.password)))
       throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 
     if (
-      (await this.userDB.getUserByEmail(userProfileUpdateReqDto.email))?.id !==
+      (await userDB.getUserByEmail(userProfileUpdateReqDto.email))?.id !==
       userId
     )
       throw new HttpError(StatusCode.CONFLICT, "Email already in use.");
 
-    const updatedUser = await this.userDB.updateUser(
+    const updatedUser = await userDB.updateUser(
       userId,
       userProfileUpdateReqDto
     );
 
-    return this.mapper.map(User, UserResDto, updatedUser);
+    return mapper.map(User, UserResDto, updatedUser);
   }
 
   /**
@@ -80,11 +71,11 @@ export class UserService {
    * @throws {HttpError} 403 - New password cannot be the same as the old password.
    */
   async updatePassword(userId, oldPassword, newPassword) {
-    const user = await this.userDB.getUserById(userId);
+    const user = await userDB.getUserById(userId);
 
     if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
-    if (!(await this.passwordUtil.verifyPassword(oldPassword, user.password)))
+    if (!(await passwordUtil.verifyPassword(oldPassword, user.password)))
       throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 
     if (oldPassword === newPassword)
@@ -93,9 +84,9 @@ export class UserService {
         "New password cannot be the same as the old password."
       );
 
-    newPassword = await this.passwordUtil.hashPassword(newPassword);
+    newPassword = await passwordUtil.hashPassword(newPassword);
 
-    await this.userDB.updatePassword(userId, newPassword);
+    await userDB.updatePassword(userId, newPassword);
   }
 
   /**
@@ -106,14 +97,11 @@ export class UserService {
    * @throws {HttpError} 404 - User not found.
    */
   async updateProfileImage(userId, profileImage = null) {
-    await this.getUser(userId);
+    await getUser(userId);
 
-    const updatedUser = await this.userDB.updateProfileImage(
-      userId,
-      profileImage
-    );
+    const updatedUser = await userDB.updateProfileImage(userId, profileImage);
 
-    return this.mapper.map(User, UserResDto, updatedUser);
+    return mapper.map(User, UserResDto, updatedUser);
   }
 
   /**
@@ -124,11 +112,11 @@ export class UserService {
    * @throws {HttpError} 404 - User not found.
    */
   async updateCoverImage(userId, coverImage = null) {
-    await this.getUser(userId);
+    await getUser(userId);
 
-    const updatedUser = await this.userDB.updateCoverImage(userId, coverImage);
+    const updatedUser = await userDB.updateCoverImage(userId, coverImage);
 
-    return this.mapper.map(User, UserResDto, updatedUser);
+    return mapper.map(User, UserResDto, updatedUser);
   }
 
   /**
@@ -139,12 +127,12 @@ export class UserService {
    * @throws {HttpError} 403 - Wrong password.
    */
   async deleteUser(userId, password) {
-    const user = await this.getUser(userId);
+    const user = await getUser(userId);
 
-    if (!(await this.passwordUtil.verifyPassword(password, user.password)))
+    if (!(await passwordUtil.verifyPassword(password, user.password)))
       throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 
-    await this.userDB.deleteUser(userId);
+    await userDB.deleteUser(userId);
   }
 
   /**
@@ -154,7 +142,7 @@ export class UserService {
    * @returns {Promise<PaginatedResDto<UserResDto>>} - Paginated user response DTO.
    */
   async searchUser(keyword, { offset, limit }) {
-    const { pageCount, users } = await this.userDB.searchUserByName(
+    const { pageCount, users } = await userDB.searchUserByName(
       keyword,
       offset,
       limit
@@ -162,13 +150,9 @@ export class UserService {
 
     return new PaginatedResDto(
       pageCount,
-      this.mapper.mapArray(User, UserResDto, users)
+      mapper.mapArray(User, UserResDto, users)
     );
   }
 }
 
-export const userService = new UserService({
-  mapper,
-  userDB,
-  passwordUtil,
-});
+export const userService = new UserService();

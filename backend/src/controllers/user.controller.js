@@ -1,8 +1,8 @@
 import Express from "express";
-import { HttpError } from "../utils/objects/HttpError.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { HttpError } from "../utils/HttpError.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
-import { responseUtil } from "../utils/functions/response.util.js";
+import { responseUtil } from "../utils/response.util.js";
 import { userService } from "../services/user.service.js";
 
 /** A class that provides controller functions for user-related operations. */

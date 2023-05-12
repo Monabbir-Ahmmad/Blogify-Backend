@@ -1,7 +1,7 @@
 /** @module Utility */
 
 import bcryptjs from "bcryptjs";
-import { environment } from "../../configs/environment.config.js";
+import { environment } from "../configs/environment.config.js";
 
 /**
  * A class that provides utility functions for password hashing and verification.

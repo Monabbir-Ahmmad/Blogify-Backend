@@ -1,6 +1,6 @@
 import Express from "express";
-import { HttpError } from "../utils/objects/HttpError.js";
-import { StatusCode } from "../utils/objects/StatusCode.js";
+import { HttpError } from "../utils/HttpError.js";
+import { StatusCode } from "../utils/StatusCode.js";
 import { validationResult } from "express-validator";
 
 /**

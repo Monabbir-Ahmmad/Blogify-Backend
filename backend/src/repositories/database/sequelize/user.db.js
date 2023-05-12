@@ -1,7 +1,9 @@
 /** @module Repository/Database */
 
 import { Op } from "sequelize";
+import { SignupReqDto } from "../../../dtos/request/signup.req.dto.js";
 import { User } from "../../../models/user.model.js";
+import { UserProfileUpdateReqDto } from "../../../dtos/request/userProfileUpdate.req.dto.js";
 import { UserType } from "../../../models/userType.model.js";
 
 /**
@@ -10,7 +12,7 @@ import { UserType } from "../../../models/userType.model.js";
 export class UserDB {
   /**
    * Creates a new user.
-   * @param {Object} signupReqDto - The signup request data transfer object.
+   * @param {SignupReqDto} signupReqDto - The signup request data transfer object.
    * @returns {Promise<User|null>} A promise that resolves to the created user or null if unsuccessful.
    */
   async createUser(signupReqDto) {
@@ -63,7 +65,7 @@ export class UserDB {
   /**
    * Updates a user's profile.
    * @param {number} userId - The ID of the user to update.
-   * @param {Object} userProfileUpdateReqDto - The user profile update request data transfer object.
+   * @param {UserProfileUpdateReqDto} userProfileUpdateReqDto - The user profile update request data transfer object.
    * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
    */
   async updateUser(userId, userProfileUpdateReqDto) {

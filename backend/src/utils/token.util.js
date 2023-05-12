@@ -1,6 +1,6 @@
 /** @module Utility */
 
-import { environment } from "../../configs/environment.config.js";
+import { environment } from "../configs/environment.config.js";
 import jwt from "jsonwebtoken";
 
 /**
