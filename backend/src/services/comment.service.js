@@ -1,8 +1,8 @@
 import { Comment } from "../models/comment.model.js";
 import { CommentResDto } from "../dtos/response/comment.res.dto.js";
-import { HttpError } from "../utils/HttpError.js";
+import { HttpError } from "../utils/httpError.js";
 import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
-import { StatusCode } from "../utils/StatusCode.js";
+import { StatusCode } from "../utils/statusCode.js";
 import { blogService } from "./blog.service.js";
 import { commentDB } from "../repositories/database/sequelize/comment.db.js";
 import { mapper } from "../configs/mapper.config.js";

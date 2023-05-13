@@ -1,6 +1,6 @@
 import Express from "express";
-import { HttpError } from "../utils/HttpError.js";
-import { StatusCode } from "../utils/StatusCode.js";
+import { HttpError } from "../utils/httpError.js";
+import { StatusCode } from "../utils/statusCode.js";
 import { commonUtil } from "../utils/common.util.js";
 import { cookieUtil } from "../utils/cookie.util.js";
 import { environment } from "../configs/environment.config.js";

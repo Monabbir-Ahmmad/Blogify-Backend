@@ -33,9 +33,7 @@ app.use(errorMiddleware.notFound);
 
 app.use(errorMiddleware.errorHandler);
 
-connectToDatabase()
-  .then(() => seedDatabase())
-  .catch((error) => console.error(error));
+connectToDatabase().then(() => seedDatabase());
 
 server.listen(
   environment.PORT,

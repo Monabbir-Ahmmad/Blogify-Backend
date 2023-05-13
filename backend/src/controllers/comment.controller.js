@@ -1,5 +1,5 @@
 import Express from "express";
-import { StatusCode } from "../utils/StatusCode.js";
+import { StatusCode } from "../utils/statusCode.js";
 import { commentService } from "../services/comment.service.js";
 import { commonUtil } from "../utils/common.util.js";
 import { responseUtil } from "../utils/response.util.js";

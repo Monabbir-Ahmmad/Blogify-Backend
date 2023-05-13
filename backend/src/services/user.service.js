@@ -1,6 +1,6 @@
-import { HttpError } from "../utils/HttpError.js";
+import { HttpError } from "../utils/httpError.js";
 import { PaginatedResDto } from "../dtos/response/paginated.res.dto.js";
-import { StatusCode } from "../utils/StatusCode.js";
+import { StatusCode } from "../utils/statusCode.js";
 import { User } from "../models/user.model.js";
 import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
 import { UserResDto } from "../dtos/response/user.res.dto.js";
