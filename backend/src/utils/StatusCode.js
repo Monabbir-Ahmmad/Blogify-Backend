@@ -1,4 +1,12 @@
-const StatusCode = {
+
+/**
+ * @category Utilities
+ * @description HTTP status codes
+ * @enum {number} StatusCode
+ * @readonly
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+ */
+export const StatusCode = {
   // 1xx Informational
   CONTINUE: 100,
   SWITCHING_PROTOCOLS: 101,
@@ -72,4 +80,4 @@ const StatusCode = {
   NETWORK_AUTHENTICATION_REQUIRED: 511,
 };
 
-export default StatusCode;
+Object.freeze(StatusCode);

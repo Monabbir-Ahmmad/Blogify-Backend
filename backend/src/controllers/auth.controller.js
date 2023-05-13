@@ -1,77 +1,104 @@
-import asyncHandler from "express-async-handler";
-import { authService } from "../services/auth.service.js";
+import Express from "express";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
-import StatusCode from "../utils/objects/StatusCode.js";
-import { authUtil } from "../utils/functions/auth.util.js";
-import { responseUtil } from "../utils/functions/response.util.js";
+import { StatusCode } from "../utils/StatusCode.js";
+import { authService } from "../services/auth.service.js";
+import { cookieUtil } from "../utils/cookie.util.js";
+import { responseUtil } from "../utils/response.util.js";
 
-const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, birthDate, gender, bio } = req.body;
+/** 
+ * @category Controllers
+ * @classdesc A class that provides controller functions for authentication-related operations.
+ */
+class AuthController {
+  /**
+   * Signup controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async signup(req, res) {
+    const { name, email, password, birthDate, gender } = req.body;
 
-  const result = await authService.signup(
-    new SignupReqDto({ name, email, password, gender, birthDate, bio })
-  );
+    const result = await authService.signup(
+      new SignupReqDto({ name, email, password, gender, birthDate })
+    );
 
-  authUtil.setAuthCookie(res, result.accessToken);
+    cookieUtil.setAuthCookie(res, result.accessToken);
 
-  responseUtil.sendContentNegotiatedResponse(
-    req,
-    res,
-    StatusCode.CREATED,
-    result
-  );
-});
+    responseUtil.sendContentNegotiatedResponse(
+      req,
+      res,
+      StatusCode.CREATED,
+      result
+    );
+  }
 
-const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  /**
+   * Signin controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async signin(req, res) {
+    const { email, password } = req.body;
 
-  const result = await authService.signin(email, password);
+    const result = await authService.signin(email, password);
 
-  authUtil.setAuthCookie(res, result.accessToken);
+    cookieUtil.setAuthCookie(res, result.accessToken);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-const logoutUser = asyncHandler(async (req, res) => {
-  authUtil.clearAuthCookie(res);
+  /**
+   * Signout controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async signout(req, res) {
+    cookieUtil.clearAuthCookie(res);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, {
-    message: "Logged out successfully.",
-  });
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK);
+  }
 
-const forgotPassword = asyncHandler(async (req, res) => {
-  const { email } = req.body;
+  /**
+   * Forgot password controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async forgotPassword(req, res) {
+    const { email } = req.body;
 
-  const result = await authService.forgotPassword(email);
+    const result = await authService.forgotPassword(email);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-const resetPassword = asyncHandler(async (req, res) => {
-  const resetToken = req.params.resetToken;
-  const { newPassword } = req.body;
+  /**
+   * Reset password controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async resetPassword(req, res) {
+    const resetToken = req.params.resetToken;
+    const { newPassword } = req.body;
 
-  const result = await authService.resetPassword(resetToken, newPassword);
+    const result = await authService.resetPassword(resetToken, newPassword);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
 
-const refreshAccessToken = asyncHandler(async (req, res) => {
-  const { refreshToken } = req.body;
+  /**
+   * Refresh access token controller function.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   */
+  async refreshAccessToken(req, res) {
+    const { refreshToken } = req.body;
 
-  const result = await authService.refreshAccessToken(refreshToken);
+    const result = await authService.refreshAccessToken(refreshToken);
 
-  authUtil.setAuthCookie(res, result.accessToken);
+    cookieUtil.setAuthCookie(res, result.accessToken);
 
-  responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
-});
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+  }
+}
 
-export const authController = {
-  registerUser,
-  loginUser,
-  logoutUser,
-  forgotPassword,
-  resetPassword,
-  refreshAccessToken,
-};
+export const authController = new AuthController();

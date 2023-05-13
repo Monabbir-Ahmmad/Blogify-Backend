@@ -1,15 +1,39 @@
-const consoleLogging = (req, res, next) => {
-  const { method, url, body } = req;
+import Express from "express";
 
-  console.log("Request: ", {
-    method,
-    url,
-    body,
-  });
+/**
+ * @category Middlewares
+ * @classdesc A class that provides logging-related middleware.
+ */
+class LoggerMiddleware {
+  /**
+   * Middleware function for console logging.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   * @param {Express.NextFunction} next - The next middleware function.
+   */
+  consoleLogging(req, res, next) {
+    const { method, url, body } = req;
 
-  next();
-};
+    console.log("Request: ", {
+      method,
+      url,
+      body,
+    });
 
-const fileLogging = (req, res, next) => {};
+    next();
+  }
 
-export const loggerMiddleWare = { consoleLogging, fileLogging };
+  /**
+   * Middleware function for logging into a file.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   * @param {Express.NextFunction} next - The next middleware function.
+   */
+  fileLogging(req, res, next) {
+    // Implement file logging logic here
+    // This function is currently empty
+    next();
+  }
+}
+
+export const loggerMiddleware = new LoggerMiddleware();

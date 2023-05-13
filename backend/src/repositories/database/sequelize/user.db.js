@@ -1,131 +1,160 @@
-import { UserResDto } from "../../../dtos/response/user.res.dto.js";
+import { Op } from "sequelize";
+import { SignupReqDto } from "../../../dtos/request/signup.req.dto.js";
 import { User } from "../../../models/user.model.js";
+import { UserProfileUpdateReqDto } from "../../../dtos/request/userProfileUpdate.req.dto.js";
 import { UserType } from "../../../models/userType.model.js";
 
-const createUser = async (signupReqDto) => {
-  const userType = await UserType.findOne({
-    where: { name: "Normal" },
-  });
+/**
+ * @category Repositories
+ * @subcategory Database
+ * @classdesc A class that provides user-related database operations.
+ */
+export class UserDB {
+  /**
+   * Creates a new user.
+   * @param {SignupReqDto} signupReqDto - The signup request data transfer object.
+   * @returns {Promise<User|null>} A promise that resolves to the created user or null if unsuccessful.
+   */
+  async createUser(signupReqDto) {
+    const userType = await UserType.findOne({
+      where: { name: "Normal" },
+    });
 
-  const user = await User.create(signupReqDto);
+    if (!userType) return null;
 
-  await user.setUserType(userType);
+    const user = await User.create(signupReqDto);
 
-  if (!user) return null;
+    if (!user) return null;
 
-  return new UserResDto({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    gender: user.gender,
-    birthDate: user.birthDate,
-    profileImage: user.profileImage,
-    coverImage: user.coverImage,
-    bio: user.bio,
-    createdAt: user.createdAt,
-    userType: userType.name,
-  });
-};
+    await user.setUserType(userType);
 
-const getUserByEmail = async (email) => {
-  const user = await User.findOne({
-    where: { email },
-    include: {
-      model: UserType,
-      attributes: ["name"],
-    },
-  });
+    user.userType = userType;
 
-  if (!user) return null;
+    return user;
+  }
 
-  return new UserResDto({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    gender: user.gender,
-    birthDate: user.birthDate,
-    profileImage: user.profileImage,
-    coverImage: user.coverImage,
-    bio: user.bio,
-    createdAt: user.createdAt,
-    userType: user.userType.name,
-    password: user.password,
-  });
-};
+  /**
+   * Retrieves a user by their email address.
+   * @param {string} email - The email address of the user.
+   * @returns {Promise<User|null>} A promise that resolves to the retrieved user or null if not found.
+   */
+  async getUserByEmail(email) {
+    return await User.findOne({
+      where: { email },
+      include: {
+        model: UserType,
+        attributes: ["name"],
+      },
+    });
+  }
 
-const getUserById = async (id) => {
-  const user = await User.findByPk(id, {
-    include: {
-      model: UserType,
-      attributes: ["name"],
-    },
-  });
+  /**
+   * Retrieves a user by their ID.
+   * @param {number} userId - The ID of the user.
+   * @returns {Promise<User|null>} A promise that resolves to the retrieved user or null if not found.
+   */
+  async getUserById(userId) {
+    return await User.findByPk(userId, {
+      include: {
+        model: UserType,
+        attributes: ["name"],
+      },
+    });
+  }
 
-  if (!user) return null;
+  /**
+   * Updates a user's profile.
+   * @param {number} userId - The ID of the user to update.
+   * @param {UserProfileUpdateReqDto} userProfileUpdateReqDto - The user profile update request data transfer object.
+   * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
+   */
+  async updateUser(userId, userProfileUpdateReqDto) {
+    const user = await getUserById(userId);
 
-  return new UserResDto({
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    gender: user.gender,
-    birthDate: user.birthDate,
-    profileImage: user.profileImage,
-    coverImage: user.coverImage,
-    bio: user.bio,
-    createdAt: user.createdAt,
-    userType: user.userType.name,
-    password: user.password,
-  });
-};
+    if (!user) return null;
 
-const updateUser = async (userId, userProfileUpdateReqDto) => {
-  const [updatedRows] = await User.update(userProfileUpdateReqDto, {
-    where: { id: userId },
-  });
+    return await user.update(userProfileUpdateReqDto);
+  }
 
-  return updatedRows === 1;
-};
+  /**
+   * Updates a user's password.
+   * @param {number} userId - The ID of the user to update.
+   * @param {string} password - The new password.
+   * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
+   */
+  async updatePassword(userId, password) {
+    const user = await getUserById(userId);
 
-const updatePassword = async (userId, password) => {
-  const [updatedRows] = await User.update(
-    { password },
-    { where: { id: userId } }
-  );
+    if (!user) return null;
 
-  return updatedRows === 1;
-};
+    return await user.update({ password });
+  }
 
-const updateProfileImage = async (userId, profileImage = null) => {
-  const [updatedRows] = await User.update(
-    { profileImage },
-    { where: { id: userId } }
-  );
+  /**
+   * Updates a user's profile image.
+   * @param {number} userId - The ID of the user to update.
+   * @param {string|null} profileImage - The new profile image URL.
+   * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
+   */
+  async updateProfileImage(userId, profileImage = null) {
+    const user = await getUserById(userId);
 
-  return updatedRows === 1;
-};
+    if (!user) return null;
 
-const updateCoverImage = async (userId, coverImage = null) => {
-  const [updatedRows] = await User.update(
-    { coverImage },
-    { where: { id: userId } }
-  );
+    return await user.update({ profileImage });
+  }
 
-  return updatedRows === 1;
-};
+  /**
+   * Updates a user's cover image.
+   * @param {number} userId - The ID of the user to update.
+   * @param {string|null} coverImage - The new cover image URL.
+   * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
+   */
+  async updateCoverImage(userId, coverImage = null) {
+    const user = await getUserById(userId);
 
-const deleteUser = async (id) => {
-  const deletedRows = await User.destroy({ where: { id } });
+    if (!user) return null;
 
-  return deletedRows === 1;
-};
+    return await user.update({ coverImage });
+  }
 
-export const userDB = {
-  createUser,
-  getUserByEmail,
-  getUserById,
-  updateUser,
-  updatePassword,
-  updateProfileImage,
-  updateCoverImage,
-  deleteUser,
-};
+  /**
+   * Deletes a user.
+   * @param {number} userId - The ID of the user to delete.
+   * @returns {Promise<User|null>} A promise that resolves to the deleted user or null if not found.
+   */
+  async deleteUser(userId) {
+    const user = await getUserById(userId);
+
+    if (!user) return null;
+
+    return await user.destroy();
+  }
+
+  /**
+   * Searches users by name with pagination support.
+   * @param {string} keyword - The keyword to search for in the user names.
+   * @param {number} offset - The offset for pagination.
+   * @param {number} limit - The maximum number of users to retrieve.
+   * @returns {Promise<{pageCount: number, users: User[]}>} A promise that resolves to an object containing the page count and the retrieved users.
+   */
+  async searchUserByName(keyword, offset, limit) {
+    const { rows: users, count } = await User.findAndCountAll({
+      where: {
+        name: {
+          [Op.substring]: keyword,
+        },
+      },
+      offset,
+      limit,
+      attributes: ["id", "name", "profileImage"],
+    });
+
+    return {
+      pageCount: Math.ceil(count / limit),
+      users,
+    };
+  }
+}
+
+export const userDB = new UserDB();

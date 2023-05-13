@@ -1,33 +1,40 @@
-import express from "express";
+import { Router } from "express";
 import { authController } from "../controllers/auth.controller.js";
-import { authRouteValidator } from "../validators/routeValidators/auth.route.validator.js";
-import { validationCheck } from "../middlewares/validation.middleware.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { authRouteValidator } from "../validators/auth.route.validator.js";
+import { errorMiddleware } from "../middlewares/error.middleware.js";
+import { validationCheck } from "../middlewares/validation.middleware.js";
 
-export const authRouter = express.Router();
+export const authRouter = Router();
 
 authRouter
   .route("/signup")
   .post(
+    authMiddleware.checkLoggedin,
     authRouteValidator.signup,
     validationCheck,
-    authController.registerUser
+    errorMiddleware.asyncHandler(authController.signup)
   );
 
 authRouter
   .route("/signin")
-  .post(authRouteValidator.signin, validationCheck, authController.loginUser);
+  .post(
+    authMiddleware.checkLoggedin,
+    authRouteValidator.signin,
+    validationCheck,
+    errorMiddleware.asyncHandler(authController.signin)
+  );
 
 authRouter
   .route("/signout")
-  .get(authMiddleware.verifyToken, authController.logoutUser);
+  .post(errorMiddleware.asyncHandler(authController.signout));
 
 authRouter
   .route("/forgot-password")
   .post(
     authRouteValidator.forgotPassword,
     validationCheck,
-    authController.forgotPassword
+    errorMiddleware.asyncHandler(authController.forgotPassword)
   );
 
 authRouter
@@ -35,13 +42,13 @@ authRouter
   .put(
     authRouteValidator.resetPassword,
     validationCheck,
-    authController.resetPassword
+    errorMiddleware.asyncHandler(authController.resetPassword)
   );
 
 authRouter
   .route("/refresh-token")
   .post(
-    authRouteValidator.refreshToken,
+    authRouteValidator.refreshAccessToken,
     validationCheck,
-    authController.refreshAccessToken
+    errorMiddleware.asyncHandler(authController.refreshAccessToken)
   );

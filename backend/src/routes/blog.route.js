@@ -1,34 +1,46 @@
-import express from "express";
+import { Router } from "express";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { blogController } from "../controllers/blog.controller.js";
+import { blogRouteValidator } from "../validators/blog.route.validator.js";
+import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { filesUpload } from "../middlewares/fileUpload.middleware.js";
-import { blogRouteValidator } from "../validators/routeValidators/blog.route.validator.js";
 import { validationCheck } from "../middlewares/validation.middleware.js";
 
-export const blogRouter = express.Router();
+export const blogRouter = Router();
 
 blogRouter
   .route("/")
-  .get(blogController.getBlogList)
+  .get(errorMiddleware.asyncHandler(blogController.getBlogList))
   .post(
+    authMiddleware.verifyToken,
     filesUpload.single("blogCoverImage"),
     blogRouteValidator.post,
     validationCheck,
-    blogController.createBlog
+    errorMiddleware.asyncHandler(blogController.createBlog)
   );
 
-blogRouter.route("/user/:userId").get(blogController.getUserBlogList);
+blogRouter
+  .route("/user/:userId")
+  .get(errorMiddleware.asyncHandler(blogController.getUserBlogList));
 
 blogRouter
   .route("/like/:blogId")
-  .post(blogRouteValidator.like, validationCheck, blogController.likeBlog);
+  .put(
+    authMiddleware.verifyToken,
+    errorMiddleware.asyncHandler(blogController.likeBlog)
+  );
 
 blogRouter
   .route("/:blogId")
-  .get(blogController.getBlog)
-  .delete(blogController.deleteBlog)
+  .get(errorMiddleware.asyncHandler(blogController.getBlog))
+  .delete(
+    authMiddleware.verifyToken,
+    errorMiddleware.asyncHandler(blogController.deleteBlog)
+  )
   .put(
+    authMiddleware.verifyToken,
     filesUpload.single("blogCoverImage"),
     blogRouteValidator.update,
     validationCheck,
-    blogController.updateBlog
+    errorMiddleware.asyncHandler(blogController.updateBlog)
   );

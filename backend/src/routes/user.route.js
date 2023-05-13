@@ -1,35 +1,45 @@
-import express from "express";
-import { userController } from "../controllers/user.controller.js";
+import { Router } from "express";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { filesUpload } from "../middlewares/fileUpload.middleware.js";
-import { userRouteValidator } from "../validators/routeValidators/user.route.validator.js";
+import { userController } from "../controllers/user.controller.js";
+import { userRouteValidator } from "../validators/user.route.validator.js";
 import { validationCheck } from "../middlewares/validation.middleware.js";
 
-export const userRouter = express.Router();
+export const userRouter = Router();
 
 userRouter
   .route("/profile-image/:userId")
   .put(
+    authMiddleware.verifyToken,
     filesUpload.single("userProfileImage"),
-    userController.updateProfileImage
+    errorMiddleware.asyncHandler(userController.updateProfileImage)
   );
 
 userRouter
   .route("/cover-image/:userId")
-  .put(filesUpload.single("userCoverImage"), userController.updateCoverImage);
+  .put(
+    authMiddleware.verifyToken,
+    filesUpload.single("userCoverImage"),
+    errorMiddleware.asyncHandler(userController.updateCoverImage)
+  );
 
 userRouter
   .route("/password/:userId")
   .put(
+    authMiddleware.verifyToken,
     userRouteValidator.passwordUpdate,
     validationCheck,
-    userController.updatePassword
+    authMiddleware.verifyToken,
+    errorMiddleware.asyncHandler(userController.updatePassword)
   );
 
 userRouter
   .route("/:userId")
-  .get(userController.getUser)
+  .get(errorMiddleware.asyncHandler(userController.getUser))
   .put(
+    authMiddleware.verifyToken,
     userRouteValidator.profileUpdate,
     validationCheck,
-    userController.updateProfile
+    errorMiddleware.asyncHandler(userController.updateProfile)
   );

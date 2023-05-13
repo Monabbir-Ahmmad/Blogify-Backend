@@ -1,31 +1,65 @@
-import { authUtil } from "../utils/functions/auth.util.js";
-import { commonUtil } from "../utils/functions/common.util.js";
-import { responseUtil } from "../utils/functions/response.util.js";
-import HttpError from "../utils/objects/HttpError.js";
-import StatusCode from "../utils/objects/StatusCode.js";
+import Express from "express";
+import { HttpError } from "../utils/HttpError.js";
+import { StatusCode } from "../utils/StatusCode.js";
+import { commonUtil } from "../utils/common.util.js";
+import { cookieUtil } from "../utils/cookie.util.js";
+import { environment } from "../configs/environment.config.js";
+import { responseUtil } from "../utils/response.util.js";
 
-const notFound = (req, res, next) => {
-  const error = new Error(`Not found - ${req.originalUrl}`);
-  error.statusCode = StatusCode.NOT_FOUND;
-
-  next(error);
-};
-
-const errorHandler = (err, req, res, next) => {
-  if (!(err instanceof HttpError)) {
-    console.error(err);
-    err.statusCode = StatusCode.INTERNAL_SERVER_ERROR;
+/**
+ * @category Middlewares
+ * @classdesc A class that provides error-related middleware.
+ */
+class ErrorMiddleware {
+  /**
+   * Middleware function to handle not found errors.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   * @param {Express.NextFunction} next - The next middleware function.
+   */
+  notFound(req, res, next) {
+    throw new HttpError(StatusCode.NOT_FOUND, `Not found - ${req.originalUrl}`);
   }
 
-  if (req.file) commonUtil.deleteUploadedFile(req.file.filename);
+  /**
+   * Asynchronous error handler middleware function.
+   * @param {function} fn - The asynchronous function to be handled.
+   * @returns {function} - The middleware function.
+   */
+  asyncHandler(fn) {
+    return (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+  }
 
-  if (err.statusCode === StatusCode.UNAUTHORIZED) authUtil.clearAuthCookie(res);
+  /**
+   * Error handler middleware function.
+   * @param {Error} err - The error object.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   * @param {Express.NextFunction} next - The next middleware function.
+   */
+  errorHandler(err, req, res, next) {
+    if (!(err instanceof HttpError)) {
+      console.error(err);
+      err.statusCode = StatusCode.INTERNAL_SERVER_ERROR;
+    }
 
-  responseUtil.sendContentNegotiatedResponse(req, res, err.statusCode, {
-    statusCode: err.statusCode,
-    message: err.message,
-    stack: process.env.NODE_ENV === "development" ? err.stack : null,
-  });
-};
+    if (req.file) {
+      commonUtil.deleteUploadedFile(req.file.filename);
+    }
 
-export const errorMiddleware = { notFound, errorHandler };
+    if (err.statusCode === StatusCode.UNAUTHORIZED) {
+      cookieUtil.clearAuthCookie(res);
+    }
+
+    responseUtil.sendContentNegotiatedResponse(req, res, err.statusCode, {
+      statusCode: err.statusCode,
+      message:
+        environment.NODE_ENV === "development"
+          ? err.message
+          : "Internal server error.",
+      stack: environment.NODE_ENV === "development" ? err.stack : null,
+    });
+  }
+}
+
+export const errorMiddleware = new ErrorMiddleware();

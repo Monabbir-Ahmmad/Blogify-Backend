@@ -1,32 +1,72 @@
-import asyncHandler from "express-async-handler";
-import HttpError from "../utils/objects/HttpError.js";
-import StatusCode from "../utils/objects/StatusCode.js";
-import { authUtil } from "../utils/functions/auth.util.js";
+import Express from "express";
+import { HttpError } from "../utils/HttpError.js";
+import { StatusCode } from "../utils/StatusCode.js";
+import { tokenUtil } from "../utils/token.util.js";
 
-const verifyToken = asyncHandler(async (req, res, next) => {
-  const token = req.cookies.authorization || req.headers.authorization;
+/**
+ * @category Middlewares
+ * @classdesc A class that provides authentication-related middleware.
+ */
+class AuthMiddleware {
+  /**
+   * Middleware function to check if a user is already logged in.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   * @param {Express.NextFunction} next - The next middleware function.
+   * @throws {HttpError} - Throws an error if the user is already logged in.
+   */
+  async checkLoggedin(req, res, next) {
+    const token = req.cookies.authorization;
 
-  if (!token)
-    throw new HttpError(
-      StatusCode.UNAUTHORIZED,
-      "Not authorized. No token found."
-    );
+    if (token) {
+      next(
+        new HttpError(
+          StatusCode.FORBIDDEN,
+          "Already logged in. Please log out first."
+        )
+      );
+    }
 
-  try {
-    const decodedToken = authUtil.verifyAccessToken(token);
-
-    req.user = {
-      id: decodedToken.id,
-    };
     next();
-  } catch (error) {
-    if (error instanceof HttpError) throw error;
-
-    throw new HttpError(
-      StatusCode.UNAUTHORIZED,
-      "Not authorized. Token failed."
-    );
   }
-});
 
-export const authMiddleware = { verifyToken };
+  /**
+   * Middleware function to verify the access token and set the authenticated user in the request object.
+   * @param {Express.Request} req - The HTTP request object.
+   * @param {Express.Response} res - The HTTP response object.
+   * @param {Express.NextFunction} next - The next middleware function.
+   * @throws {HttpError} - Throws an error if the token is invalid.
+   * @throws {HttpError} - Throws an error if the token is expired.
+   * @throws {HttpError} - Throws an error if the token is not found.
+   */
+  async verifyToken(req, res, next) {
+    try {
+      const token = req.cookies.authorization;
+
+      if (!token) {
+        throw new HttpError(
+          StatusCode.UNAUTHORIZED,
+          "Not authorized. No token found."
+        );
+      }
+      const decodedToken = tokenUtil.verifyAccessToken(token);
+
+      req.user = {
+        id: decodedToken.id,
+      };
+
+      next();
+    } catch (error) {
+      if (!(error instanceof HttpError)) {
+        error = new HttpError(
+          StatusCode.UNAUTHORIZED,
+          "Not authorized. Token failed."
+        );
+      }
+
+      next(error);
+    }
+  }
+}
+
+export const authMiddleware = new AuthMiddleware();
