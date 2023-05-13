@@ -2,14 +2,13 @@
 
 # dependencies
 node_modules
-coverage
 backend/public
 backend/doc
 /.pnp
 .pnp.js
 
 # testing
-/coverage
+coverage
 
 # production
 /build
