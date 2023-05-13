@@ -21,9 +21,9 @@ export const database = new Sequelize({
 // });
 
 /**
- * Connect to the database
- * First authenticates the connection
- * Then syncs the database
+ * Establishes a connection to the database and synchronizes it.
+ * @function connectToDatabase
+ * @returns {Promise<void>} A promise that resolves when the database connection is established and synchronized successfully.
  */
 export async function connectToDatabase() {
   try {

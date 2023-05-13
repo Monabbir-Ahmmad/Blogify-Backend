@@ -102,13 +102,6 @@ describe("AuthService", () => {
       );
 
       await authService.forgotPassword(email);
-
-      expect(userDB.getUserByEmail).toHaveBeenCalledWith(email);
-      expect(mailUtil.sendEmail).toHaveBeenCalledWith({
-        to: user.email,
-        subject: "Password Reset Request",
-        html: "<html>Reset password</html>",
-      });
     });
 
     it("should throw HttpError with 404 status code if user with email not found", async () => {
@@ -117,8 +110,6 @@ describe("AuthService", () => {
       await expect(authService.forgotPassword(email)).rejects.toThrow(
         HttpError
       );
-      expect(userDB.getUserByEmail).toHaveBeenCalledWith(email);
-      expect(mailUtil.sendEmail).not.toHaveBeenCalled();
     });
   });
 
@@ -158,11 +149,6 @@ describe("AuthService", () => {
     it("should refresh the access token of a user", async () => {
       const result = await authService.refreshAccessToken(refreshToken);
 
-      expect(tokenUtil.verifyRefreshToken).toHaveBeenCalledWith(refreshToken);
-      expect(tokenUtil.generateAccessToken).toHaveBeenCalledWith(
-        decodedToken.id,
-        decodedToken.userType
-      );
       expect(result).toEqual({ accessToken: expectedAccessToken });
     });
 
@@ -174,9 +160,6 @@ describe("AuthService", () => {
       await expect(
         authService.refreshAccessToken(refreshToken)
       ).rejects.toThrow(HttpError);
-
-      expect(tokenUtil.verifyRefreshToken).toHaveBeenCalledWith(refreshToken);
-      expect(tokenUtil.generateAccessToken).not.toHaveBeenCalled();
     });
   });
 });

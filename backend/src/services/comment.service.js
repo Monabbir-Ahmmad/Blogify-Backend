@@ -39,7 +39,7 @@ export class CommentService {
   async postComment(blogId, userId, text, parentId) {
     await blogService.getBlog(blogId);
 
-    if (parentId) await getComment(parentId);
+    if (parentId) await this.getComment(parentId);
 
     const comment = await commentDB.createComment(
       blogId,
@@ -79,7 +79,7 @@ export class CommentService {
    * @returns {Promise<PaginatedResDto<CommentResDto>>} - Paginated comment response DTO.
    */
   async getCommentReplies(commentId, { offset, limit }) {
-    await getComment(commentId);
+    await this.getComment(commentId);
 
     const { pageCount, comments } = await commentDB.getRepliesByCommentId(
       commentId,
@@ -102,7 +102,7 @@ export class CommentService {
    * @throws {HttpError} 403 - You are not allowed to update this comment.
    */
   async updateComment(userId, commentId, text) {
-    const comment = await getComment(commentId);
+    const comment = await this.getComment(commentId);
 
     if (comment.user.id !== userId)
       throw new HttpError(
@@ -123,7 +123,7 @@ export class CommentService {
    * @throws {HttpError} 403 - You are not allowed to delete this comment.
    */
   async deleteComment(userId, commentId) {
-    const comment = await getComment(commentId);
+    const comment = await this.getComment(commentId);
 
     if (comment.user.id !== userId)
       throw new HttpError(
@@ -143,11 +143,11 @@ export class CommentService {
   async updateCommentLike(userId, commentId) {
     await userService.getUser(userId);
 
-    await getComment(commentId);
+    await this.getComment(commentId);
 
     await commentDB.updateCommentLike(userId, commentId);
 
-    return await getComment(commentId);
+    return await this.getComment(commentId);
   }
 }
 

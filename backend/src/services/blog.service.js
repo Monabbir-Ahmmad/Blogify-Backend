@@ -86,7 +86,7 @@ export class BlogService {
    * @throws {HttpError} 403 - Forbidden if the user is not allowed to update the blog post.
    */
   async updateBlog(userId, blogId, blogUpdateReqDto) {
-    const blog = await getBlog(blogId);
+    const blog = await this.getBlog(blogId);
 
     if (blog.user.id !== userId) {
       throw new HttpError(
@@ -108,7 +108,7 @@ export class BlogService {
    * @throws {HttpError} 403 - Forbidden if the user is not allowed to delete the blog post.
    */
   async deleteBlog(userId, blogId) {
-    const blog = await getBlog(blogId);
+    const blog = await this.getBlog(blogId);
 
     if (blog.user.id !== userId) {
       throw new HttpError(
@@ -129,11 +129,11 @@ export class BlogService {
   async updateBlogLike(userId, blogId) {
     await userService.getUser(userId);
 
-    await getBlog(blogId);
+    await this.getBlog(blogId);
 
     await blogDB.updateBlogLike(userId, blogId);
 
-    return await getBlog(blogId);
+    return await this.getBlog(blogId);
   }
 
   /**
