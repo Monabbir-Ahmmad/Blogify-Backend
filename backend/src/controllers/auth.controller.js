@@ -1,11 +1,11 @@
 import Express from "express";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
-import { StatusCode } from "../utils/StatusCode.js";
+import { StatusCode } from "../utils/statusCode.js";
 import { authService } from "../services/auth.service.js";
 import { cookieUtil } from "../utils/cookie.util.js";
 import { responseUtil } from "../utils/response.util.js";
 
-/** 
+/**
  * @category Controllers
  * @classdesc A class that provides controller functions for authentication-related operations.
  */

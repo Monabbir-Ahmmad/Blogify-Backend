@@ -1,7 +1,7 @@
 import { BlogPostReqDto } from "../dtos/request/blogPost.req.dto.js";
 import { BlogUpdateReqDto } from "../dtos/request/blogUpdate.req.dto.js";
 import Express from "express";
-import { StatusCode } from "../utils/StatusCode.js";
+import { StatusCode } from "../utils/statusCode.js";
 import { blogService } from "../services/blog.service.js";
 import { commonUtil } from "../utils/common.util.js";
 import { responseUtil } from "../utils/response.util.js";

@@ -1,7 +1,7 @@
 import { AuthResDto } from "../dtos/response/auth.res.dto.js";
-import { HttpError } from "../utils/HttpError.js";
+import { HttpError } from "../utils/httpError.js";
 import { SignupReqDto } from "../dtos/request/signup.req.dto.js";
-import { StatusCode } from "../utils/StatusCode.js";
+import { StatusCode } from "../utils/statusCode.js";
 import { environment } from "../configs/environment.config.js";
 import { mailUtil } from "../utils/mail.util.js";
 import { passwordUtil } from "../utils/password.util.js";
@@ -113,7 +113,10 @@ export class AuthService {
       return { accessToken };
     } catch (error) {
       console.error(error);
-      throw new HttpError(StatusCode.UNAUTHORIZED, "Token failed.");
+      throw new HttpError(
+        StatusCode.UNAUTHORIZED,
+        "Token verification failed."
+      );
     }
   }
 }

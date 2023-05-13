@@ -1,4 +1,4 @@
-import { AutoMapper } from "../utils/AutoMapper.js";
+import { AutoMapper } from "../utils/autoMapper.js";
 import { Blog } from "../models/blog.model.js";
 import { BlogResDto } from "../dtos/response/blog.res.dto.js";
 import { Comment } from "../models/comment.model.js";
