@@ -2,10 +2,12 @@
 
 # dependencies
 node_modules
-backend/public
-backend/doc
 /.pnp
 .pnp.js
+
+# folders
+backend/public
+backend/docs
 
 # testing
 coverage
