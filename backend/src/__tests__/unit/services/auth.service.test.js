@@ -2,6 +2,7 @@ import { AuthResDto } from "../../../dtos/response/auth.res.dto.js";
 import { AuthService } from "../../../services/auth.service.js";
 import { HttpError } from "../../../utils/httpError.js";
 import { SignupReqDto } from "../../../dtos/request/signup.req.dto.js";
+import { StatusCode } from "../../../utils/statusCode.js";
 import { mailUtil } from "../../../utils/mail.util.js";
 import { passwordUtil } from "../../../utils/password.util.js";
 import { tokenUtil } from "../../../utils/token.util.js";
@@ -16,10 +17,6 @@ jest.mock("../../../services/user.service.js");
 
 describe("AuthService", () => {
   const authService = new AuthService();
-  const email = "test@example.com";
-  const password = "password";
-  const resetToken = "resetToken";
-  const newPassword = "newPassword";
   const user = {
     id: 123,
     email: "test@example.com",
@@ -63,6 +60,9 @@ describe("AuthService", () => {
   });
 
   describe("signin", () => {
+    const email = "test@example.com";
+    const password = "password";
+
     beforeEach(() => {
       userDB.getUserByEmail.mockResolvedValue(user);
       passwordUtil.verifyPassword.mockResolvedValue(true);
@@ -78,7 +78,7 @@ describe("AuthService", () => {
       userDB.getUserByEmail.mockResolvedValue(null);
 
       await expect(authService.signin(email, password)).rejects.toThrow(
-        HttpError
+        new HttpError(StatusCode.UNAUTHORIZED, "Wrong email address.")
       );
     });
 
@@ -86,12 +86,14 @@ describe("AuthService", () => {
       passwordUtil.verifyPassword.mockResolvedValue(false);
 
       await expect(authService.signin(email, password)).rejects.toThrow(
-        HttpError
+        new HttpError(StatusCode.UNAUTHORIZED, "Wrong password.")
       );
     });
   });
 
   describe("forgotPassword", () => {
+    const email = "test@example.com";
+
     beforeEach(() => {
       userDB.getUserByEmail.mockResolvedValue(user);
     });
@@ -108,12 +110,15 @@ describe("AuthService", () => {
       userDB.getUserByEmail.mockResolvedValue(null);
 
       await expect(authService.forgotPassword(email)).rejects.toThrow(
-        HttpError
+        new HttpError(StatusCode.NOT_FOUND, "User with such email not found.")
       );
     });
   });
 
   describe("resetPassword", () => {
+    const resetToken = "resetToken";
+    const newPassword = "newPassword";
+
     beforeEach(() => {
       tokenUtil.verifyResetToken.mockReturnValue({ id: user.id });
       userService.getUser.mockResolvedValue(user);

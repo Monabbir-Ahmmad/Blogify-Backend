@@ -9,7 +9,7 @@ import { userService } from "../services/user.service.js";
  * @category Controllers
  * @classdesc A class that provides controller functions for user-related operations.
  */
-class UserController {
+export class UserController {
   /**
    * Get user controller function.
    * @param {Express.Request} req - The HTTP request object.

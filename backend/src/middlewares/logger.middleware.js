@@ -4,7 +4,7 @@ import Express from "express";
  * @category Middlewares
  * @classdesc A class that provides logging-related middleware.
  */
-class LoggerMiddleware {
+export class LoggerMiddleware {
   /**
    * Middleware function for console logging.
    * @param {Express.Request} req - The HTTP request object.

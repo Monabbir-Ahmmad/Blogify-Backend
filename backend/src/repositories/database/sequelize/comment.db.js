@@ -197,16 +197,14 @@ export class CommentDB {
   /**
    * Deletes a comment.
    * @param {string|number} commentId - The ID of the comment to delete.
-   * @returns {Promise<boolean>} A promise that resolves to true if the deletion was successful, or false otherwise.
+   * @returns {Promise<Comment|null>} A promise that resolves to the deleted comment or null if not found.
    */
   async deleteComment(commentId) {
     const comment = await getCommentById(commentId);
 
-    if (!comment) return false;
+    if (!comment) return null;
 
-    await comment.destroy();
-
-    return true;
+    return await comment.destroy();
   }
 
   /**
