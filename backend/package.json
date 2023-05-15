@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage --watchAll=false",
     "start": "nodemon server",
     "debug": "nodemon --inspect server",
     "doc": "jsdoc -c jsdoc.json"
