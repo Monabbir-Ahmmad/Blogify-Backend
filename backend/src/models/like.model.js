@@ -40,9 +40,3 @@ Like.init(
     modelName: "like",
   }
 );
-
-Blog.hasMany(Like, { onDelete: "CASCADE" });
-Like.belongsTo(Blog, { onDelete: "CASCADE" });
-
-User.hasMany(Like, { onDelete: "CASCADE" });
-Like.belongsTo(User, { onDelete: "CASCADE" });

@@ -1,6 +1,7 @@
 import { connectToDatabase } from "./src/configs/database.config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { createModelAssociations } from "./src/models/model.associations.js";
 import { environment } from "./src/configs/environment.config.js";
 import { errorMiddleware } from "./src/middlewares/error.middleware.js";
 import express from "express";
@@ -32,6 +33,8 @@ app.use("/api", indexRouter);
 app.use(errorMiddleware.notFound);
 
 app.use(errorMiddleware.errorHandler);
+
+createModelAssociations();
 
 connectToDatabase().then(() => seedDatabase());
 

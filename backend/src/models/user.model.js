@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 
-import { UserType } from "./userType.model.js";
 import { commonUtil } from "../utils/common.util.js";
 import { database } from "../configs/database.config.js";
 
@@ -68,9 +67,6 @@ User.init(
     modelName: "user",
   }
 );
-
-UserType.hasMany(User, { onDelete: "CASCADE" });
-User.belongsTo(UserType, { onDelete: "CASCADE" });
 
 User.afterUpdate(async (user) => {
   const previousUser = user._previousDataValues;

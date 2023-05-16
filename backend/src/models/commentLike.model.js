@@ -40,9 +40,3 @@ CommentLike.init(
     modelName: "commentLike",
   }
 );
-
-Comment.hasMany(CommentLike, { onDelete: "CASCADE" });
-CommentLike.belongsTo(Comment, { onDelete: "CASCADE" });
-
-User.hasMany(CommentLike, { onDelete: "CASCADE" });
-CommentLike.belongsTo(User, { onDelete: "CASCADE" });

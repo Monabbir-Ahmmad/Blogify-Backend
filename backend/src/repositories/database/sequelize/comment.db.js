@@ -185,7 +185,7 @@ export class CommentDB {
    * @returns {Promise<Comment|null>} A promise that resolves to the updated comment or null if not found.
    */
   async updateComment(commentId, text) {
-    const comment = await getCommentById(commentId);
+    const comment = await this.getCommentById(commentId);
 
     if (!comment) return null;
 
@@ -200,7 +200,7 @@ export class CommentDB {
    * @returns {Promise<Comment|null>} A promise that resolves to the deleted comment or null if not found.
    */
   async deleteComment(commentId) {
-    const comment = await getCommentById(commentId);
+    const comment = await this.getCommentById(commentId);
 
     if (!comment) return null;
 

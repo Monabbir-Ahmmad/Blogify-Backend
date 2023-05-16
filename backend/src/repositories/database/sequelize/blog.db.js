@@ -182,7 +182,7 @@ export class BlogDB {
    * @returns {Promise<Blog|null>} A promise that resolves to the updated blog post or null if not found.
    */
   async updateBlog(blogId, blogUpdateReqDto) {
-    const blog = await getBlogById(blogId);
+    const blog = await this.getBlogById(blogId);
 
     if (!blog) return null;
 
@@ -197,7 +197,7 @@ export class BlogDB {
    * @returns {Promise<Blog|null>} A promise that resolves to the deleted blog post or null if not found.
    */
   async deleteBlog(blogId) {
-    const blog = await getBlogById(blogId);
+    const blog = await this.getBlogById(blogId);
 
     if (!blog) return null;
 
