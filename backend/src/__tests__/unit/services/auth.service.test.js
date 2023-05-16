@@ -1,8 +1,8 @@
 import { AuthResDto } from "../../../dtos/response/auth.res.dto.js";
-import { AuthService } from "../../../services/auth.service.js";
 import { HttpError } from "../../../utils/httpError.js";
 import { SignupReqDto } from "../../../dtos/request/signup.req.dto.js";
 import { StatusCode } from "../../../utils/statusCode.js";
+import { authService } from "../../../services/auth.service.js";
 import { mailUtil } from "../../../utils/mail.util.js";
 import { passwordUtil } from "../../../utils/password.util.js";
 import { tokenUtil } from "../../../utils/token.util.js";
@@ -16,7 +16,6 @@ jest.mock("../../../utils/mail.util.js");
 jest.mock("../../../services/user.service.js");
 
 describe("AuthService", () => {
-  const authService = new AuthService();
   const user = {
     id: 123,
     email: "test@example.com",

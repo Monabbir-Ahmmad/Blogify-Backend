@@ -1,10 +1,10 @@
 import { BlogPostReqDto } from "../../../dtos/request/blogPost.req.dto.js";
 import { BlogResDto } from "../../../dtos/response/blog.res.dto.js";
-import { BlogService } from "../../../services/blog.service.js";
 import { BlogUpdateReqDto } from "../../../dtos/request/blogUpdate.req.dto.js";
 import { HttpError } from "../../../utils/httpError.js";
 import { PaginatedResDto } from "../../../dtos/response/paginated.res.dto.js";
 import { blogDB } from "../../../repositories/database/sequelize/blog.db.js";
+import { blogService } from "../../../services/blog.service.js";
 import { mapper } from "../../../configs/mapper.config.js";
 import { userService } from "../../../services/user.service.js";
 
@@ -13,8 +13,6 @@ jest.mock("../../../configs/mapper.config.js");
 jest.mock("../../../services/user.service.js");
 
 describe("BlogService", () => {
-  const blogService = new BlogService();
-
   const userId = 1;
   const blogId = 1;
 

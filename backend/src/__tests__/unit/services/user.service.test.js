@@ -3,17 +3,16 @@ import { PaginatedResDto } from "../../../dtos/response/paginated.res.dto.js";
 import { StatusCode } from "../../../utils/statusCode.js";
 import { UserProfileUpdateReqDto } from "../../../dtos/request/userProfileUpdate.req.dto.js";
 import { UserResDto } from "../../../dtos/response/user.res.dto.js";
-import { UserService } from "../../../services/user.service.js";
 import { mapper } from "../../../configs/mapper.config.js";
 import { passwordUtil } from "../../../utils/password.util.js";
 import { userDB } from "../../../repositories/database/sequelize/user.db.js";
+import { userService } from "../../../services/user.service.js";
 
 jest.mock("../../../repositories/database/sequelize/user.db.js");
 jest.mock("../../../utils/password.util.js");
 jest.mock("../../../configs/mapper.config.js");
 
 describe("UserService", () => {
-  const userService = new UserService();
   const userId = 1;
   const user = {
     id: userId,

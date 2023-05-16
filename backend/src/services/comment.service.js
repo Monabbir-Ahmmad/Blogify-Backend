@@ -115,7 +115,7 @@ export class CommentService {
    * Delete a comment by ID.
    * @param {string|number} userId - ID of the user deleting the comment.
    * @param {string|number} commentId - ID of the comment.
-   * @returns {Promise<void>} - Deletion success message.
+   * @returns {Promise<CommentResDto>} - Deleted comment response DTO.
    * @throws {HttpError} 403 - You are not allowed to delete this comment.
    */
   async deleteComment(userId, commentId) {

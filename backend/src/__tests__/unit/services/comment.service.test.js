@@ -1,10 +1,10 @@
 import { CommentResDto } from "../../../dtos/response/comment.res.dto.js";
-import { CommentService } from "../../../services/comment.service.js";
 import { HttpError } from "../../../utils/httpError.js";
 import { PaginatedResDto } from "../../../dtos/response/paginated.res.dto.js";
 import { StatusCode } from "../../../utils/statusCode.js";
 import { blogService } from "../../../services/blog.service.js";
 import { commentDB } from "../../../repositories/database/sequelize/comment.db.js";
+import { commentService } from "../../../services/comment.service.js";
 import { mapper } from "../../../configs/mapper.config.js";
 import { userService } from "../../../services/user.service.js";
 
@@ -14,8 +14,6 @@ jest.mock("../../../services/blog.service.js");
 jest.mock("../../../services/user.service.js");
 
 describe("CommentService", () => {
-  const commentService = new CommentService();
-
   const commentId = 1;
   const blogId = 1;
   const userId = 1;
