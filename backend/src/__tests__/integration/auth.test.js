@@ -1,19 +1,16 @@
 import { StatusCode } from "../../utils/statusCode.js";
 import { User } from "../../models/user.model.js";
-import { app } from "../../../server.js";
+import { createModelAssociations } from "../../models/model.associations.js";
 import supertest from "supertest";
 
-const request = supertest(app);
+const request = supertest("http://localhost:5000");
 
 describe("Auth", () => {
   beforeAll(async () => {
-    try {
-      await User.truncate({
-        cascade: true,
-        restartIdentity: true,
-      });
-    } catch (error) {}
+    createModelAssociations();
+    await User.sync({ force: true });
   });
+
 
   describe("POST /api/auth/signup", () => {
     const url = "/api/auth/signup";
@@ -32,14 +29,11 @@ describe("Auth", () => {
         .split(";")[0]
         .split("=")[1];
 
-      expect(token).toBeTruthy();
       expect(response.status).toBe(StatusCode.CREATED);
-      expect(response.body).toEqual(
-        expect.objectContaining({
-          refreshToken: expect.any(String),
-          accessToken: expect.any(String),
-        })
-      );
+      expect(token).toBeTruthy();
+      expect(response.body).toHaveProperty("userId");
+      expect(response.body).toHaveProperty("refreshToken");
+      expect(response.body).toHaveProperty("accessToken");
     });
   });
 
@@ -57,14 +51,11 @@ describe("Auth", () => {
         .split(";")[0]
         .split("=")[1];
 
-      expect(token).toBeTruthy();
       expect(response.status).toBe(StatusCode.OK);
-      expect(response.body).toEqual(
-        expect.objectContaining({
-          refreshToken: expect.any(String),
-          accessToken: expect.any(String),
-        })
-      );
+      expect(token).toBeTruthy();
+      expect(response.body).toHaveProperty("userId");
+      expect(response.body).toHaveProperty("refreshToken");
+      expect(response.body).toHaveProperty("accessToken");
     });
   });
 
@@ -99,13 +90,9 @@ describe("Auth", () => {
         .split(";")[0]
         .split("=")[1];
 
-      expect(token).toBeTruthy();
       expect(response.status).toBe(StatusCode.OK);
-      expect(response.body).toEqual(
-        expect.objectContaining({
-          accessToken: expect.any(String),
-        })
-      );
+      expect(token).toBeTruthy();
+      expect(response.body).toHaveProperty("accessToken");
     });
   });
 

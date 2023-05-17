@@ -2,6 +2,7 @@ import Express from "express";
 import { HttpError } from "../utils/httpError.js";
 import { StatusCode } from "../utils/statusCode.js";
 import { UserProfileUpdateReqDto } from "../dtos/request/userProfileUpdate.req.dto.js";
+import { cookieUtil } from "../utils/cookie.util.js";
 import { responseUtil } from "../utils/response.util.js";
 import { userService } from "../services/user.service.js";
 
@@ -32,7 +33,7 @@ export class UserController {
     const userId = req.user.id;
     const { name, email, birthDate, gender, bio, password } = req.body;
 
-    if (userId !== req.params.userId) {
+    if (userId != req.params.userId) {
       throw new HttpError(
         StatusCode.FORBIDDEN,
         "You are not allowed to update this user's profile."
@@ -57,7 +58,7 @@ export class UserController {
     const userId = req.user.id;
     const { oldPassword, newPassword } = req.body;
 
-    if (userId !== req.params.userId) {
+    if (userId != req.params.userId) {
       throw new HttpError(
         StatusCode.FORBIDDEN,
         "You are not allowed to update this user's password."
@@ -82,7 +83,7 @@ export class UserController {
     const userId = req.user.id;
     const profileImage = req.file?.filename;
 
-    if (userId !== req.params.userId) {
+    if (userId != req.params.userId) {
       throw new HttpError(
         StatusCode.FORBIDDEN,
         "You are not allowed to update this user's profile image."
@@ -103,7 +104,7 @@ export class UserController {
     const userId = req.user.id;
     const coverImage = req.file?.filename;
 
-    if (userId !== req.params.userId) {
+    if (userId != req.params.userId) {
       throw new HttpError(
         StatusCode.FORBIDDEN,
         "You are not allowed to update this user's cover image."
@@ -111,6 +112,7 @@ export class UserController {
     }
 
     const result = await userService.updateCoverImage(userId, coverImage);
+
     responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
   }
 
@@ -121,15 +123,18 @@ export class UserController {
    */
   async deleteUser(req, res) {
     const userId = req.user.id;
+    const { password } = req.body;
 
-    if (userId !== req.params.userId) {
+    if (userId != req.params.userId) {
       throw new HttpError(
         StatusCode.FORBIDDEN,
         "You are not allowed to delete this user."
       );
     }
 
-    const result = await userService.deleteUser(userId);
+    const result = await userService.deleteUser(userId, password);
+
+    cookieUtil.clearAuthCookie(res);
 
     responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
   }

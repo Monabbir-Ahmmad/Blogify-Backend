@@ -49,4 +49,17 @@ const passwordUpdate = [
     ),
 ];
 
-export const userRouteValidator = { profileUpdate, passwordUpdate };
+const profileDelete = [
+  body("password")
+    .notEmpty()
+    .withMessage("Password is required.")
+    .bail()
+    .isStrongPassword()
+    .withMessage("Invalid password."),
+];
+
+export const userRouteValidator = {
+  profileUpdate,
+  passwordUpdate,
+  profileDelete,
+};

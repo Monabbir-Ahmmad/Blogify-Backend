@@ -131,6 +131,8 @@ export class UserService {
   async deleteUser(userId, password) {
     const user = await userDB.getUserById(userId);
 
+    if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
+
     if (!(await passwordUtil.verifyPassword(password, user.password)))
       throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
 

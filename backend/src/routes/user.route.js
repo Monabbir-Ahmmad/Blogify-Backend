@@ -42,4 +42,10 @@ userRouter
     userRouteValidator.profileUpdate,
     validationCheck,
     errorMiddleware.asyncHandler(userController.updateProfile)
+  )
+  .post(
+    authMiddleware.verifyToken,
+    userRouteValidator.profileDelete,
+    validationCheck,
+    errorMiddleware.asyncHandler(userController.deleteUser)
   );

@@ -9,7 +9,7 @@ import { indexRouter } from "./src/routes/index.route.js";
 import { loggerMiddleware } from "./src/middlewares/logger.middleware.js";
 import seedDatabase from "./seedDatabase.js";
 
-export const app = express();
+const app = express();
 
 app.use(cors());
 
@@ -37,6 +37,6 @@ connectToDatabase().then(() => seedDatabase());
 
 app.listen(environment.PORT, () => {
   console.log(
-    `Server is running in ${environment.NODE_ENV} mode on port ${environment.PORT}`
+    `Server is running in ${environment.NODE_ENV} environment on port ${environment.PORT}`
   );
 });

@@ -38,8 +38,9 @@ export class ErrorMiddleware {
    * @param {Express.NextFunction} next - The next middleware function.
    */
   errorHandler(err, req, res, next) {
+    console.error(err);
+
     if (!(err instanceof HttpError)) {
-      console.error(err);
       err.statusCode = StatusCode.INTERNAL_SERVER_ERROR;
       err.message = "Internal server error.";
     }
