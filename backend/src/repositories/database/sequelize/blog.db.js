@@ -186,9 +186,7 @@ export class BlogDB {
 
     if (!blog) return null;
 
-    await blog.update(blogUpdateReqDto);
-
-    return blog;
+    return await blog.update(blogUpdateReqDto);
   }
 
   /**
