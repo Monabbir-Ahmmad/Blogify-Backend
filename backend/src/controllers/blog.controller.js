@@ -10,7 +10,7 @@ import { responseUtil } from "../utils/response.util.js";
  * @category Controllers
  * @classdesc A class that provides controller functions for blog-related operations.
  */
-class BlogController {
+export class BlogController {
   /**
    * Create blog controller function.
    * @param {Express.Request} req - The HTTP request object.

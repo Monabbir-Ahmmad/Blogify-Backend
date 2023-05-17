@@ -1,39 +1,36 @@
 import { HttpError } from "../../../utils/httpError.js";
 import { PaginatedResDto } from "../../../dtos/response/paginated.res.dto.js";
+import { StatusCode } from "../../../utils/statusCode.js";
 import { UserProfileUpdateReqDto } from "../../../dtos/request/userProfileUpdate.req.dto.js";
 import { UserResDto } from "../../../dtos/response/user.res.dto.js";
-import { UserService } from "../../../services/user.service.js";
 import { mapper } from "../../../configs/mapper.config.js";
 import { passwordUtil } from "../../../utils/password.util.js";
 import { userDB } from "../../../repositories/database/sequelize/user.db.js";
+import { userService } from "../../../services/user.service.js";
 
 jest.mock("../../../repositories/database/sequelize/user.db.js");
 jest.mock("../../../utils/password.util.js");
 jest.mock("../../../configs/mapper.config.js");
 
 describe("UserService", () => {
-  const userService = new UserService();
-  const userId = 123;
-  const userProfileUpdateReqDto = new UserProfileUpdateReqDto({
-    email: "updated@example.com",
-    name: "Updated User",
-  });
-  const password = "password";
-  const oldPassword = "oldPassword";
-  const newPassword = "newPassword";
-  const profileImage = "profile_image.jpg";
-  const coverImage = "cover_image.jpg";
+  const userId = 1;
+  const user = {
+    id: userId,
+    email: "test@example.com",
+    name: "Test User",
+    password: "hashedPassword",
+    gender: "Male",
+    birthDate: new Date().toISOString(),
+    profileImage: "profile_image.jpg",
+    coverImage: "cover_image.jpg",
+    bio: "Test bio.",
+  };
 
   afterEach(() => {
     jest.resetAllMocks();
   });
 
   describe("getUser", () => {
-    const user = {
-      id: userId,
-      email: "test@example.com",
-      name: "Test User",
-    };
     const expectedUserResDto = new UserResDto(user.id, user.name, user.email);
 
     it("should get a user by ID", async () => {
@@ -48,21 +45,21 @@ describe("UserService", () => {
     it("should throw HttpError with 404 status code if user not found", async () => {
       userDB.getUserById.mockResolvedValue(null);
 
-      await expect(userService.getUser(userId)).rejects.toThrow(HttpError);
+      await expect(userService.getUser(userId)).rejects.toThrow(
+        new HttpError(StatusCode.NOT_FOUND, "User not found.")
+      );
     });
   });
 
   describe("updateProfile", () => {
-    const user = {
-      id: userId,
-      email: "test@example.com",
-      name: "Test User",
-      password: "hashedPassword",
-    };
+    const userProfileUpdateReqDto = new UserProfileUpdateReqDto({
+      email: "updated@example.com",
+      name: "Updated User",
+    });
+    const password = "password";
     const updatedUser = {
-      id: userId,
-      email: userProfileUpdateReqDto.email,
-      name: userProfileUpdateReqDto.name,
+      ...user,
+      ...userProfileUpdateReqDto,
     };
     const existingUser = {
       id: 456,
@@ -98,7 +95,7 @@ describe("UserService", () => {
 
       await expect(
         userService.updateProfile(userId, userProfileUpdateReqDto, password)
-      ).rejects.toThrow(HttpError);
+      ).rejects.toThrow(new HttpError(StatusCode.NOT_FOUND, "User not found."));
     });
 
     it("should throw HttpError with 403 status code if wrong password provided", async () => {
@@ -106,7 +103,7 @@ describe("UserService", () => {
 
       await expect(
         userService.updateProfile(userId, userProfileUpdateReqDto, password)
-      ).rejects.toThrow(HttpError);
+      ).rejects.toThrow(new HttpError(StatusCode.FORBIDDEN, "Wrong password."));
     });
 
     it("should throw HttpError with 409 status code if email already in use", async () => {
@@ -114,24 +111,22 @@ describe("UserService", () => {
 
       await expect(
         userService.updateProfile(userId, userProfileUpdateReqDto, password)
-      ).rejects.toThrow(HttpError);
+      ).rejects.toThrow(
+        new HttpError(StatusCode.CONFLICT, "Email already in use.")
+      );
     });
   });
 
   describe("updatePassword", () => {
-    const user = {
-      id: userId,
-      email: "test@example.com",
-      name: "Test User",
-      password: "hashedPassword",
-    };
     const updatedUser = {
       id: userId,
       email: user.email,
       name: user.name,
       password: "newHashedPassword",
     };
-    const newPasswordSameAsOld = "oldPassword";
+    const oldPassword = "oldPassword";
+    const newPassword = "newPassword";
+    const newPasswordSameAsOld = oldPassword;
 
     beforeEach(() => {
       userDB.getUserById.mockResolvedValue(user);
@@ -160,7 +155,7 @@ describe("UserService", () => {
 
       await expect(
         userService.updatePassword(userId, oldPassword, newPassword)
-      ).rejects.toThrow(HttpError);
+      ).rejects.toThrow(new HttpError(StatusCode.NOT_FOUND, "User not found."));
     });
 
     it("should throw HttpError with 403 status code if wrong password provided", async () => {
@@ -168,32 +163,34 @@ describe("UserService", () => {
 
       await expect(
         userService.updatePassword(userId, oldPassword, newPassword)
-      ).rejects.toThrow(HttpError);
+      ).rejects.toThrow(new HttpError(StatusCode.FORBIDDEN, "Wrong password."));
     });
 
     it("should throw HttpError with 403 status code if new password is the same as the old password", async () => {
       await expect(
         userService.updatePassword(userId, oldPassword, newPasswordSameAsOld)
-      ).rejects.toThrow(HttpError);
+      ).rejects.toThrow(
+        new HttpError(
+          StatusCode.FORBIDDEN,
+          "New password cannot be the same as the old password."
+        )
+      );
     });
   });
 
   describe("updateProfileImage", () => {
-    const user = {
-      id: userId,
-      email: "test@example.com",
-      name: "Test User",
-    };
+    const profileImage = "profile_image.jpg";
     const updatedUser = {
-      id: userId,
-      email: user.email,
-      name: user.name,
+      ...user,
       profileImage,
     };
     const expectedUserResDto = new UserResDto(
       updatedUser.id,
       updatedUser.email,
       updatedUser.name,
+      undefined,
+      undefined,
+      undefined,
       updatedUser.profileImage
     );
 
@@ -220,26 +217,23 @@ describe("UserService", () => {
 
       await expect(
         userService.updateProfileImage(userId, profileImage)
-      ).rejects.toThrow(HttpError);
+      ).rejects.toThrow(new HttpError(StatusCode.NOT_FOUND, "User not found."));
     });
   });
 
   describe("updateCoverImage", () => {
-    const user = {
-      id: userId,
-      email: "test@example.com",
-      name: "Test User",
-    };
+    const coverImage = "cover_image.jpg";
     const updatedUser = {
-      id: userId,
-      email: user.email,
-      name: user.name,
+      ...user,
       coverImage,
     };
     const expectedUserResDto = new UserResDto(
       updatedUser.id,
       updatedUser.email,
       updatedUser.name,
+      undefined,
+      undefined,
+      undefined,
       undefined,
       updatedUser.coverImage
     );
@@ -267,21 +261,14 @@ describe("UserService", () => {
 
       await expect(
         userService.updateCoverImage(userId, coverImage)
-      ).rejects.toThrow(HttpError);
+      ).rejects.toThrow(new HttpError(StatusCode.NOT_FOUND, "User not found."));
     });
   });
 
   describe("deleteUser", () => {
-    const user = {
-      id: userId,
-      email: "test@example.com",
-      name: "Test User",
-      password: "hashedPassword",
-    };
+    const password = "password";
     const deletedUser = {
-      id: userId,
-      email: user.email,
-      name: user.name,
+      ...user,
     };
     const expectedUserResDto = new UserResDto(
       deletedUser.id,
@@ -306,7 +293,7 @@ describe("UserService", () => {
       passwordUtil.verifyPassword.mockResolvedValue(false);
 
       await expect(userService.deleteUser(userId, password)).rejects.toThrow(
-        HttpError
+        new HttpError(StatusCode.FORBIDDEN, "Wrong password.")
       );
     });
   });
@@ -316,20 +303,12 @@ describe("UserService", () => {
     const offset = 0;
     const limit = 10;
     const users = [
-      {
-        id: 1,
-        email: "test1@example.com",
-        name: "Test User 1",
-      },
-      {
-        id: 2,
-        email: "test2@example.com",
-        name: "Test User 2",
-      },
+      { ...user, id: 1 },
+      { ...user, id: 2 },
     ];
     const pageCount = 2;
     const expectedUsersResDto = users.map(
-      (user) => new UserResDto(user.id, user.email, user.name)
+      (user) => new UserResDto(user.id, user.name, user.email)
     );
     const expectedPaginatedResDto = new PaginatedResDto(
       pageCount,

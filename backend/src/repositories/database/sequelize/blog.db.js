@@ -182,28 +182,24 @@ export class BlogDB {
    * @returns {Promise<Blog|null>} A promise that resolves to the updated blog post or null if not found.
    */
   async updateBlog(blogId, blogUpdateReqDto) {
-    const blog = await getBlogById(blogId);
+    const blog = await this.getBlogById(blogId);
 
     if (!blog) return null;
 
-    await blog.update(blogUpdateReqDto);
-
-    return blog;
+    return await blog.update(blogUpdateReqDto);
   }
 
   /**
    * Deletes a blog post.
    * @param {string|number} blogId - The ID of the blog post to delete.
-   * @returns {Promise<boolean>} A promise that resolves to true if the deletion was successful, or false otherwise.
+   * @returns {Promise<Blog|null>} A promise that resolves to the deleted blog post or null if not found.
    */
   async deleteBlog(blogId) {
-    const blog = await getBlogById(blogId);
+    const blog = await this.getBlogById(blogId);
 
-    if (!blog) return false;
+    if (!blog) return null;
 
-    await blog.destroy();
-
-    return true;
+    return await blog.destroy();
   }
 
   /**

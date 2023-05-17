@@ -69,7 +69,7 @@ export class UserDB {
    * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
    */
   async updateUser(userId, userProfileUpdateReqDto) {
-    const user = await getUserById(userId);
+    const user = await this.getUserById(userId);
 
     if (!user) return null;
 
@@ -83,7 +83,7 @@ export class UserDB {
    * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
    */
   async updatePassword(userId, password) {
-    const user = await getUserById(userId);
+    const user = await this.getUserById(userId);
 
     if (!user) return null;
 
@@ -97,7 +97,7 @@ export class UserDB {
    * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
    */
   async updateProfileImage(userId, profileImage = null) {
-    const user = await getUserById(userId);
+    const user = await this.getUserById(userId);
 
     if (!user) return null;
 
@@ -111,7 +111,7 @@ export class UserDB {
    * @returns {Promise<User|null>} A promise that resolves to the updated user or null if not found.
    */
   async updateCoverImage(userId, coverImage = null) {
-    const user = await getUserById(userId);
+    const user = await this.getUserById(userId);
 
     if (!user) return null;
 
@@ -124,7 +124,7 @@ export class UserDB {
    * @returns {Promise<User|null>} A promise that resolves to the deleted user or null if not found.
    */
   async deleteUser(userId) {
-    const user = await getUserById(userId);
+    const user = await this.getUserById(userId);
 
     if (!user) return null;
 

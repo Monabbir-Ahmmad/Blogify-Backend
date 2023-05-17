@@ -9,7 +9,7 @@ import { responseUtil } from "../utils/response.util.js";
  * @category Controllers
  * @classdesc A class that provides controller functions for authentication-related operations.
  */
-class AuthController {
+export class AuthController {
   /**
    * Signup controller function.
    * @param {Express.Request} req - The HTTP request object.

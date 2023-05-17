@@ -3,6 +3,8 @@ import { environment } from "../configs/environment.config.js";
 import nodemailer from "nodemailer";
 import path from "path";
 
+const rootDir = process.cwd();
+
 /**
  * @category Utilities
  * @classdesc A class that provides the functionality to send emails.

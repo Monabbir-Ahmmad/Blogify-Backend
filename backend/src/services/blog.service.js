@@ -30,12 +30,12 @@ export class BlogService {
 
   /**
    * Get a blog post by ID.
-   * @param {string|number} id - ID of the blog post.
+   * @param {string|number} blogId - ID of the blog post.
    * @returns {Promise<BlogResDto>} - Retrieved blog post response DTO.
    * @throws {HttpError} 404 - Blog not found.
    */
-  async getBlog(id) {
-    const blog = await blogDB.getBlogById(id);
+  async getBlog(blogId) {
+    const blog = await blogDB.getBlogById(blogId);
 
     if (!blog) throw new HttpError(StatusCode.NOT_FOUND, "Blog not found.");
 
@@ -63,8 +63,6 @@ export class BlogService {
    * @returns {Promise<PaginatedResDto<BlogResDto>>} - Paginated blog response DTO.
    */
   async getUserBlogs(userId, { offset, limit }) {
-    await userService.getUser(userId);
-
     const { pageCount, blogs } = await blogDB.getUserBlogs(
       userId,
       offset,
@@ -117,7 +115,9 @@ export class BlogService {
       );
     }
 
-    await blogDB.deleteBlog(blogId);
+    const deletedBlog = await blogDB.deleteBlog(blogId);
+
+    return mapper.map(Blog, BlogResDto, deletedBlog);
   }
 
   /**

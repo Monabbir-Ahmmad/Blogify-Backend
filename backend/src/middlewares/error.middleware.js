@@ -10,7 +10,7 @@ import { responseUtil } from "../utils/response.util.js";
  * @category Middlewares
  * @classdesc A class that provides error-related middleware.
  */
-class ErrorMiddleware {
+export class ErrorMiddleware {
   /**
    * Middleware function to handle not found errors.
    * @param {Express.Request} req - The HTTP request object.

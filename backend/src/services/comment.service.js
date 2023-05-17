@@ -58,8 +58,6 @@ export class CommentService {
    * @returns {Promise<PaginatedResDto<CommentResDto>>} - Paginated comment response DTO.
    */
   async getComments(blogId, { offset, limit }) {
-    await blogService.getBlog(blogId);
-
     const { pageCount, comments } = await commentDB.getCommentsByBlogId(
       blogId,
       offset,
@@ -79,8 +77,6 @@ export class CommentService {
    * @returns {Promise<PaginatedResDto<CommentResDto>>} - Paginated comment response DTO.
    */
   async getCommentReplies(commentId, { offset, limit }) {
-    await this.getComment(commentId);
-
     const { pageCount, comments } = await commentDB.getRepliesByCommentId(
       commentId,
       offset,
@@ -119,7 +115,7 @@ export class CommentService {
    * Delete a comment by ID.
    * @param {string|number} userId - ID of the user deleting the comment.
    * @param {string|number} commentId - ID of the comment.
-   * @returns {Promise<void>} - Deletion success message.
+   * @returns {Promise<CommentResDto>} - Deleted comment response DTO.
    * @throws {HttpError} 403 - You are not allowed to delete this comment.
    */
   async deleteComment(userId, commentId) {
@@ -131,7 +127,9 @@ export class CommentService {
         "You are not allowed to delete this comment."
       );
 
-    await commentDB.deleteComment(commentId);
+    const deletedComment = await commentDB.deleteComment(commentId);
+
+    return mapper.map(Comment, CommentResDto, deletedComment);
   }
 
   /**

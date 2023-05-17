@@ -7,7 +7,7 @@ import { tokenUtil } from "../utils/token.util.js";
  * @category Middlewares
  * @classdesc A class that provides authentication-related middleware.
  */
-class AuthMiddleware {
+export class AuthMiddleware {
   /**
    * Middleware function to check if a user is already logged in.
    * @param {Express.Request} req - The HTTP request object.

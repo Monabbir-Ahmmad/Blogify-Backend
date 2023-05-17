@@ -4,7 +4,7 @@ import Express from "express";
  * @category Middlewares
  * @classdesc A class that provides logging-related middleware.
  */
-class LoggerMiddleware {
+export class LoggerMiddleware {
   /**
    * Middleware function for console logging.
    * @param {Express.Request} req - The HTTP request object.
@@ -20,18 +20,6 @@ class LoggerMiddleware {
       body,
     });
 
-    next();
-  }
-
-  /**
-   * Middleware function for logging into a file.
-   * @param {Express.Request} req - The HTTP request object.
-   * @param {Express.Response} res - The HTTP response object.
-   * @param {Express.NextFunction} next - The next middleware function.
-   */
-  fileLogging(req, res, next) {
-    // Implement file logging logic here
-    // This function is currently empty
     next();
   }
 }

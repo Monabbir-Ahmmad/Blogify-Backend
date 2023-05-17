@@ -8,7 +8,7 @@ import { responseUtil } from "../utils/response.util.js";
  * @category Controllers
  * @classdesc A class that provides controller functions for comment-related operations.
  */
-class CommentController {
+export class CommentController {
   /**
    * Post comment controller function.
    * @param {Express.Request} req - The HTTP request object.
