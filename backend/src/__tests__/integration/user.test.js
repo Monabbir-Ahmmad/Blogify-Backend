@@ -1,15 +1,14 @@
 import { StatusCode } from "../../utils/statusCode.js";
 import { User } from "../../models/user.model.js";
-import { createModelAssociations } from "../../models/model.associations.js";
+import { server } from "../../../server.js";
 import supertest from "supertest";
 
-const request = supertest("http://localhost:5000");
+const request = supertest(server);
 
 describe("User", () => {
   let cookie;
   let userId;
   beforeAll(async () => {
-    createModelAssociations();
     await User.sync({ force: true });
 
     const signupReq = {
@@ -28,6 +27,10 @@ describe("User", () => {
 
     cookie = res.headers["set-cookie"];
     userId = res.body.userId;
+  });
+
+  afterAll(() => {
+    server.close();
   });
 
   describe("GET /api/user/:userId", () => {

@@ -35,7 +35,7 @@ createModelAssociations();
 
 connectToDatabase().then(() => seedDatabase());
 
-app.listen(environment.PORT, () => {
+export const server = app.listen(environment.PORT, () => {
   console.log(
     `Server is running in ${environment.NODE_ENV} environment on port ${environment.PORT}`
   );

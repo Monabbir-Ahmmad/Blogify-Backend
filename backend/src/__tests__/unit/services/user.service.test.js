@@ -267,19 +267,12 @@ describe("UserService", () => {
 
   describe("deleteUser", () => {
     const password = "password";
-    const deletedUser = {
-      ...user,
-    };
-    const expectedUserResDto = new UserResDto(
-      deletedUser.id,
-      deletedUser.email,
-      deletedUser.name
-    );
+    const expectedUserResDto = new UserResDto(user.id, user.name, user.email);
 
     beforeEach(() => {
       userDB.getUserById.mockResolvedValue(user);
       passwordUtil.verifyPassword.mockResolvedValue(true);
-      userDB.deleteUser.mockResolvedValue(deletedUser);
+      userDB.deleteUser.mockResolvedValue(user);
       mapper.map.mockReturnValue(expectedUserResDto);
     });
 
@@ -287,6 +280,14 @@ describe("UserService", () => {
       const result = await userService.deleteUser(userId, password);
 
       expect(result).toEqual(expectedUserResDto);
+    });
+
+    it("should throw HttpError with 404 status code if user not found", async () => {
+      userDB.getUserById.mockResolvedValue(null);
+
+      await expect(userService.deleteUser(userId, password)).rejects.toThrow(
+        new HttpError(StatusCode.NOT_FOUND, "User not found.")
+      );
     });
 
     it("should throw HttpError with 403 status code if wrong password provided", async () => {

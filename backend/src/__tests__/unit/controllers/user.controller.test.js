@@ -2,11 +2,13 @@ import { HttpError } from "../../../utils/httpError.js";
 import { StatusCode } from "../../../utils/statusCode.js";
 import { UserProfileUpdateReqDto } from "../../../dtos/request/userProfileUpdate.req.dto.js";
 import { UserResDto } from "../../../dtos/response/user.res.dto.js";
+import { cookieUtil } from "../../../utils/cookie.util.js";
 import { responseUtil } from "../../../utils/response.util.js";
 import { userController } from "../../../controllers/user.controller.js";
 import { userService } from "../../../services/user.service.js";
 
 jest.mock("../../../services/user.service.js");
+jest.mock("../../../utils/cookie.util.js");
 jest.mock("../../../utils/response.util.js");
 
 describe("UserController", () => {
@@ -219,10 +221,10 @@ describe("UserController", () => {
     it("should throw Forbidden error when attempting to update another user's profile image", async () => {
       req = {
         user: {
-          id: "user-id-1",
+          id: 1,
         },
         params: {
-          userId: "user-id-2",
+          userId: 2,
         },
         file: {
           filename: "profile-image.jpg",
@@ -275,10 +277,10 @@ describe("UserController", () => {
     it("should throw Forbidden error when attempting to update another user's cover image", async () => {
       req = {
         user: {
-          id: "user-id-1",
+          id: 1,
         },
         params: {
-          userId: "user-id-2",
+          userId: 2,
         },
         file: {
           filename: "cover-image.jpg",
@@ -301,19 +303,28 @@ describe("UserController", () => {
     it("should delete the user and return the result", async () => {
       req = {
         user: {
-          id: "user-id",
+          id: 1,
         },
         params: {
-          userId: "user-id",
+          userId: 1,
+        },
+        body: {
+          password: "12345Aa!",
         },
       };
-      const expectedResult = { message: "User deleted successfully" };
+      const expectedResult = {
+        id: req.user.id,
+      };
 
       userService.deleteUser.mockResolvedValueOnce(expectedResult);
+      cookieUtil.setAuthCookie.mockImplementationOnce();
 
       await userController.deleteUser(req, res);
 
-      expect(userService.deleteUser).toHaveBeenCalledWith(req.user.id);
+      expect(userService.deleteUser).toHaveBeenCalledWith(
+        req.user.id,
+        req.body.password
+      );
       expect(responseUtil.sendContentNegotiatedResponse).toHaveBeenCalledWith(
         req,
         res,
@@ -325,10 +336,13 @@ describe("UserController", () => {
     it("should throw Forbidden error when attempting to delete another user", async () => {
       req = {
         user: {
-          id: "user-id-1",
+          id: 1,
         },
         params: {
-          userId: "user-id-2",
+          userId: 2,
+        },
+        body: {
+          password: "12345Aa!",
         },
       };
 

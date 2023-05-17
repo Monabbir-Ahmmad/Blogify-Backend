@@ -5,9 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "jest --coverage --watchAll=false",
-    "start": "nodemon server",
-    "debug": "nodemon --inspect server",
+    "start": "set \"NODE_ENV=development\" && nodemon server",
+    "debug": "set \"NODE_ENV=development\" && nodemon --inspect server",
+    "test": "set \"NODE_ENV=test\" && jest --coverage --watchAll=false --forceExit --detectOpenHandles",
     "doc": "jsdoc -c jsdoc.json"
   },
   "author": "",
