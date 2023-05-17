@@ -7,7 +7,7 @@ export const database = new Sequelize({
   password: environment.DB_PASSWORD,
   dialect: environment.DB_DIALECT,
   storage: "database.sqlite",
-  logging: console.log,
+  logging: environment.NODE_ENV === "development" ? console.log : false,
 });
 
 // export const database = new Sequelize({

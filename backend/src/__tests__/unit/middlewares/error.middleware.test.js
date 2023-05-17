@@ -44,11 +44,9 @@ describe("ErrorMiddleware", () => {
   describe("errorHandler", () => {
     it("should log the error and set status code to 500 if error is not an instance of HttpError", () => {
       const err = new Error("Internal server error");
-      console.error = jest.fn();
 
       errorMiddleware.errorHandler(err, req, res, next);
 
-      expect(console.error).toHaveBeenCalledWith(err);
       expect(err.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
     });
 

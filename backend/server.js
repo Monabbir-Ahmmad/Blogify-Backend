@@ -5,14 +5,11 @@ import { createModelAssociations } from "./src/models/model.associations.js";
 import { environment } from "./src/configs/environment.config.js";
 import { errorMiddleware } from "./src/middlewares/error.middleware.js";
 import express from "express";
-import http from "http";
 import { indexRouter } from "./src/routes/index.route.js";
 import { loggerMiddleware } from "./src/middlewares/logger.middleware.js";
 import seedDatabase from "./seedDatabase.js";
 
-const app = express();
-
-const server = http.createServer(app);
+export const app = express();
 
 app.use(cors());
 
@@ -38,9 +35,8 @@ createModelAssociations();
 
 connectToDatabase().then(() => seedDatabase());
 
-server.listen(
-  environment.PORT,
+app.listen(environment.PORT, () => {
   console.log(
-    `Server started in ${environment.NODE_ENV} mode on port: ${environment.PORT}`
-  )
-);
+    `Server is running in ${environment.NODE_ENV} mode on port ${environment.PORT}`
+  );
+});

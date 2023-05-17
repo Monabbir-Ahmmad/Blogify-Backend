@@ -41,6 +41,7 @@ export class ErrorMiddleware {
     if (!(err instanceof HttpError)) {
       console.error(err);
       err.statusCode = StatusCode.INTERNAL_SERVER_ERROR;
+      err.message = "Internal server error.";
     }
 
     if (req.file) {
@@ -53,10 +54,7 @@ export class ErrorMiddleware {
 
     responseUtil.sendContentNegotiatedResponse(req, res, err.statusCode, {
       statusCode: err.statusCode,
-      message:
-        environment.NODE_ENV === "development"
-          ? err.message
-          : "Internal server error.",
+      message: err.message,
       stack: environment.NODE_ENV === "development" ? err.stack : null,
     });
   }
