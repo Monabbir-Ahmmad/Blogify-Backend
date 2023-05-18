@@ -1,5 +1,6 @@
 import { StatusCode } from "../../utils/statusCode.js";
 import { User } from "../../models/user.model.js";
+import { database } from "../../configs/database.config.js";
 import { server } from "../../../server.js";
 import supertest from "supertest";
 
@@ -10,8 +11,9 @@ describe("Auth", () => {
     await User.sync({ force: true });
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     server.close();
+    await database.close();
   });
 
   describe("POST /api/auth/signup", () => {

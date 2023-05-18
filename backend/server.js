@@ -17,8 +17,6 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(express.static("./public/uploads"));
-
 app.use(loggerMiddleware.consoleLogging);
 
 app.get("/", (req, res) => {

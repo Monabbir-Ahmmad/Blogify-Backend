@@ -1,5 +1,6 @@
 import { StatusCode } from "../../utils/statusCode.js";
 import { User } from "../../models/user.model.js";
+import { database } from "../../configs/database.config.js";
 import { server } from "../../../server.js";
 import supertest from "supertest";
 
@@ -8,6 +9,7 @@ const request = supertest(server);
 describe("User", () => {
   let cookie;
   let userId;
+
   beforeAll(async () => {
     await User.sync({ force: true });
 
@@ -29,8 +31,9 @@ describe("User", () => {
     userId = res.body.userId;
   });
 
-  afterAll(() => {
+  afterAll(async () => {
     server.close();
+    await database.close();
   });
 
   describe("GET /api/user/:userId", () => {
@@ -88,7 +91,7 @@ describe("User", () => {
     it("should return 200 and with updated user data with new profile image", async () => {
       const response = await request
         .put(`/api/user/profile-image/${userId}`)
-        .attach("userProfileImage", "src/__tests__/testFiles/test.png")
+        .attach("profileImage", "src/__tests__/testFiles/test.png")
         .set("Cookie", cookie);
 
       expect(response.status).toBe(StatusCode.OK);
@@ -100,7 +103,7 @@ describe("User", () => {
     it("should return 200 and with updated user data with new cover image", async () => {
       const response = await request
         .put(`/api/user/cover-image/${userId}`)
-        .attach("userCoverImage", "src/__tests__/testFiles/test.png")
+        .attach("coverImage", "src/__tests__/testFiles/test.png")
         .set("Cookie", cookie);
 
       expect(response.status).toBe(StatusCode.OK);

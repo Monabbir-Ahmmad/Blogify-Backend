@@ -5,9 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "set \"NODE_ENV=development\" && nodemon server",
-    "debug": "set \"NODE_ENV=development\" && nodemon --inspect server",
-    "test": "set \"NODE_ENV=test\" && jest --coverage --watchAll=false --forceExit --detectOpenHandles",
+    "start": "set \"NODE_ENV=development\" & nodemon server",
+    "debug": "set \"NODE_ENV=development\" & nodemon --inspect server",
+    "test": "set \"NODE_ENV=test\" & jest --coverage --watchAll=false --forceExit --detectOpenHandles",
     "doc": "jsdoc -c jsdoc.json"
   },
   "author": "",
@@ -15,6 +15,7 @@
   "dependencies": {
     "automapper-ts": "^1.9.0",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.37.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

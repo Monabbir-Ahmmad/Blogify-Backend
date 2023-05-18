@@ -1,103 +1,88 @@
-import { commonUtil } from "../../../utils/common.util";
-import fs from "fs/promises";
-import path from "path";
+import { v2 as cloudinary } from "cloudinary";
+import { commonUtil } from "../../../utils/common.util.js";
 
-jest.mock("fs/promises", () => ({
-  unlink: jest.fn().mockResolvedValue(),
-}));
-
-jest.spyOn(console, "info").mockImplementation(() => {});
-jest.spyOn(console, "error").mockImplementation(() => {});
+jest.mock("cloudinary");
 
 describe("CommonUtil", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
+  describe("getPublicIdFromUrl", () => {
+    const url = "http://example/image.jpg";
+    const expectedPublicId = "example/image";
+
+    it("should extract the public ID from a file URL", () => {
+      const publicId = commonUtil.getPublicIdFromUrl(url);
+
+      expect(publicId).toEqual(expectedPublicId);
+    });
+  });
+
   describe("deleteUploadedFile", () => {
-    it("should delete the uploaded file and return true if deletion is successful", async () => {
-      const fileName = "example.jpg";
-      const fileFullPath = path.join(
-        process.cwd(),
-        "public",
-        "uploads",
-        fileName
-      );
+    const url = "http://example/image.jpg";
+    const publicId = "example/image";
+    it("should delete an uploaded file and return true", async () => {
+      cloudinary.uploader.destroy.mockResolvedValueOnce();
+      commonUtil.getPublicIdFromUrl = jest.fn().mockReturnValueOnce(publicId);
 
-      await commonUtil.deleteUploadedFile(fileName);
+      const result = await commonUtil.deleteUploadedFile(url);
 
-      expect(fs.unlink).toHaveBeenCalledWith(fileFullPath);
-      expect(console.info).toHaveBeenCalledWith(`${fileFullPath} was deleted`);
-      expect(console.error).not.toHaveBeenCalled();
+      expect(result).toEqual(true);
     });
 
-    it("should return false if an error occurs during file deletion", async () => {
-      const fileName = "example.jpg";
-      const fileFullPath = path.join(
-        process.cwd(),
-        "public",
-        "uploads",
-        fileName
-      );
-      const error = new Error("Failed to delete file");
-      fs.unlink.mockRejectedValueOnce(error);
+    it("should log error and return false if file deletion fails", async () => {
+      cloudinary.uploader.destroy.mockRejectedValueOnce();
+      commonUtil.getPublicIdFromUrl = jest.fn().mockReturnValueOnce(publicId);
 
-      const result = await commonUtil.deleteUploadedFile(fileName);
+      const result = await commonUtil.deleteUploadedFile(url);
 
-      expect(fs.unlink).toHaveBeenCalledWith(fileFullPath);
-      expect(console.error).toHaveBeenCalledWith(
-        "Error while deleting file: ",
-        error
-      );
-      expect(result).toBe(false);
+      expect(result).toEqual(false);
     });
   });
 
   describe("calculateAge", () => {
-    it("should calculate the age based on a given date of birth", () => {
+    it("should calculate the age based on the given date of birth", () => {
       const dateString = "1990-01-01";
+      const today = new Date();
+      const birthDate = new Date(dateString);
+      const expectedAge = today.getFullYear() - birthDate.getFullYear();
 
       const age = commonUtil.calculateAge(dateString);
 
-      expect(age).toBeGreaterThan(0);
-      expect(typeof age).toBe("number");
+      expect(age).toEqual(expectedAge);
     });
   });
 
   describe("getPagination", () => {
-    it("should generate the pagination offsets based on page and limit values", () => {
+    it("should generate the offset and limit values based on the given page and limit", () => {
       const options = { page: 2, limit: 10 };
+      const expectResult = { offset: 10, limit: 10 };
 
-      const pagination = commonUtil.getPagination(options);
+      const result = commonUtil.getPagination(options);
 
-      expect(pagination.offset).toBe(10);
-      expect(pagination.limit).toBe(10);
+      expect(result).toEqual(expectResult);
     });
 
-    it("should use default values if page or limit is not provided", () => {
-      const options = {};
+    it("should default to page 1 and limit 12 if invalid values are provided", () => {
+      const options = { page: 0, limit: -5 };
+      const expectResult = { offset: 0, limit: 12 };
 
-      const pagination = commonUtil.getPagination(options);
+      const result = commonUtil.getPagination(options);
 
-      expect(pagination.offset).toBe(0);
-      expect(pagination.limit).toBe(12);
+      expect(result).toEqual(expectResult);
     });
   });
 
   describe("removeInvalidFields", () => {
-    it("should remove invalid fields from an object", () => {
-      const obj = {
-        name: "John Doe",
-        age: 25,
-        email: null,
-        address: undefined,
-        phone: "",
-      };
-      const ignoreProperties = ["email"];
+    it("should remove invalid fields from the object", () => {
+      const obj = { name: "John", age: 0, address: null };
+      const ignoreProperties = ["address"];
+      const expectedObj = { name: "John", address: null };
 
       commonUtil.removeInvalidFields(obj, ignoreProperties);
 
-      expect(obj).toEqual({ name: "John Doe", email: null, age: 25 });
+      expect(obj).toEqual(expectedObj);
     });
   });
 });

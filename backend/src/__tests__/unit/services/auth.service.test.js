@@ -26,7 +26,7 @@ describe("AuthService", () => {
   const expectedAuthResDto = new AuthResDto(user.id, user.userType);
 
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   describe("signup", () => {

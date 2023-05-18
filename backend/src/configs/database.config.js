@@ -2,23 +2,15 @@ import { Sequelize } from "sequelize";
 import { environment } from "./environment.config.js";
 
 export const database = new Sequelize({
+  host: environment.DB_HOST,
+  port: environment.DB_PORT,
   database: environment.DB_NAME,
-  username: environment.DB_USERNAME,
+  username: environment.DB_USER,
   password: environment.DB_PASSWORD,
   dialect: environment.DB_DIALECT,
-  storage: "database.sqlite",
+  storage: environment.DB_STORAGE,
   logging: environment.NODE_ENV === "development" ? console.log : false,
 });
-
-// export const database = new Sequelize({
-//   host: "ve3.h.filess.io",
-//   port: 3307,
-//   database: "cefaloBlog_dealschool",
-//   username: "cefaloBlog_dealschool",
-//   password: "74ca1a07dfb5ae35a18b4cd3d9e54c97964389a7",
-//   dialect: "mysql",
-//   logging: console.log,
-// });
 
 /**
  * Establishes a connection to the database and synchronizes it.

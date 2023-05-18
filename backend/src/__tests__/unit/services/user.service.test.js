@@ -27,7 +27,7 @@ describe("UserService", () => {
   };
 
   afterEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   describe("getUser", () => {

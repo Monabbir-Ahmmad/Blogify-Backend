@@ -1,22 +1,9 @@
 import Express from "express";
 import { HttpError } from "../utils/httpError.js";
 import { StatusCode } from "../utils/statusCode.js";
+import { cloudinary } from "../configs/cloudinary.config.js";
+import { environment } from "../configs/environment.config.js";
 import multer from "multer";
-import path from "path";
-
-/**
- * The storage engine to use for file upload.
- * @type {multer.StorageEngine}
- */
-const storage = multer.diskStorage({
-  destination: "./public/uploads",
-  filename: (req, file, callback) => {
-    callback(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
 
 /**
  * The file filter to use for file upload.
@@ -30,7 +17,17 @@ const fileFilter = (req, file, cb) => {
   // Accept image files only
   if (!file.mimetype.startsWith("image/"))
     return cb(
-      new HttpError(StatusCode.FORBIDDEN, "Only image files are allowed."),
+      new HttpError(
+        StatusCode.FORBIDDEN,
+        "Only jpg, jpeg and png files are allowed."
+      ),
+      false
+    );
+
+  if (file.size > 5 * 1024 * 1024)
+    // 5 MB
+    return cb(
+      new HttpError(StatusCode.FORBIDDEN, "File size must be less than 5 MB."),
       false
     );
 
@@ -38,11 +35,47 @@ const fileFilter = (req, file, cb) => {
 };
 
 /**
+ * Middleware for uploading an image to Cloudinary.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {Function} next - Next function to pass control to the next middleware.
+ * @returns {Promise<void>}
+ */
+export const uploadImage = async (req, res, next) => {
+  if (!req.file) return next();
+
+  cloudinary.uploader
+    .upload_stream(
+      {
+        folder: environment.CLOUDINARY_FOLDER,
+        resource_type: "image",
+        transformation: [{ width: 1000, height: 1000, crop: "limit" }],
+      },
+      (error, result) => {
+        if (error) {
+          console.error(error);
+          return next(
+            new HttpError(
+              StatusCode.INTERNAL_SERVER_ERROR,
+              "Error while uploading image."
+            )
+          );
+        }
+
+        req.file = result;
+        next();
+      }
+    )
+    .end(req.file.buffer);
+};
+
+/**
  * @category Middlewares
  * @description A middleware function for uploading files.
  * @type {multer.Multer}
  */
-export const filesUpload = multer({
-  storage: storage,
+export const upload = multer({
+  storage: multer.memoryStorage(),
   fileFilter: fileFilter,
 });

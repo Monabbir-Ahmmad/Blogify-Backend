@@ -57,7 +57,7 @@ describe("BlogController", () => {
           content: "This is a test blog",
         },
         file: {
-          filename: "cover-image.jpg",
+          url: "https://blogify/cover-image.jpg",
         },
       };
 
@@ -70,7 +70,7 @@ describe("BlogController", () => {
         expect.objectContaining({
           title: req.body.title,
           content: req.body.content,
-          coverImage: req.file.filename,
+          coverImage: req.file.url,
         })
       );
       expect(responseUtil.sendContentNegotiatedResponse).toHaveBeenCalledWith(
@@ -173,10 +173,10 @@ describe("BlogController", () => {
         body: {
           title: "Updated Blog",
           content: "This is an updated blog",
-          coverImage: "updated-cover-image.jpg",
+          coverImage: "https://blogify/updated-cover-image.jpg",
         },
         file: {
-          filename: "new-cover-image.jpg",
+          url: "https://blogify/updated-cover-image.jpg",
         },
       };
 
@@ -190,7 +190,7 @@ describe("BlogController", () => {
         expect.objectContaining({
           title: req.body.title,
           content: req.body.content,
-          coverImage: req.file.filename || req.body.coverImage,
+          coverImage: req.file.url || req.body.coverImage,
         })
       );
       expect(responseUtil.sendContentNegotiatedResponse).toHaveBeenCalledWith(

@@ -1,7 +1,8 @@
+import { upload, uploadImage } from "../middlewares/fileUpload.middleware.js";
+
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { errorMiddleware } from "../middlewares/error.middleware.js";
-import { filesUpload } from "../middlewares/fileUpload.middleware.js";
 import { userController } from "../controllers/user.controller.js";
 import { userRouteValidator } from "../validators/user.route.validator.js";
 import { validationCheck } from "../middlewares/validation.middleware.js";
@@ -12,7 +13,8 @@ userRouter
   .route("/profile-image/:userId")
   .put(
     authMiddleware.verifyToken,
-    filesUpload.single("userProfileImage"),
+    upload.single("profileImage"),
+    uploadImage,
     errorMiddleware.asyncHandler(userController.updateProfileImage)
   );
 
@@ -20,7 +22,8 @@ userRouter
   .route("/cover-image/:userId")
   .put(
     authMiddleware.verifyToken,
-    filesUpload.single("userCoverImage"),
+    upload.single("coverImage"),
+    uploadImage,
     errorMiddleware.asyncHandler(userController.updateCoverImage)
   );
 

@@ -1,7 +1,4 @@
-import fs from "fs/promises";
-import path from "path";
-
-const rootDir = process.cwd();
+import { cloudinary } from "../configs/cloudinary.config.js";
 
 /**
  * @category Utilities
@@ -9,19 +6,29 @@ const rootDir = process.cwd();
  */
 export class CommonUtil {
   /**
+   * Gets the public ID from a given file url.
+   * @param {string} url - The file path.
+   * @returns {string} The public ID.
+   */
+  getPublicIdFromUrl(url) {
+    const [folder, id] = url.split("/").slice(-2);
+    const publicId = folder + "/" + id.split(".")[0];
+    return publicId;
+  }
+
+  /**
    * Deletes an uploaded file.
-   * @param {string} fileName - The name of the file to delete.
+   * @param {string} url - The name of the file to delete.
    * @returns {Promise<boolean>} A promise that resolves to true if the deletion was successful, or false otherwise.
    */
-  async deleteUploadedFile(fileName) {
-    const fileFullPath = path.join(rootDir, "public", "uploads", fileName);
-
+  async deleteUploadedFile(url) {
+    const publicId = this.getPublicIdFromUrl(url);
     try {
-      await fs.unlink(fileFullPath);
-      console.info(`${fileFullPath} was deleted`);
+      await cloudinary.uploader.destroy(publicId);
+      console.info(`${url} was deleted`);
       return true;
-    } catch (err) {
-      console.error("Error while deleting file: ", err);
+    } catch (error) {
+      console.error("Error while deleting file: ", error);
       return false;
     }
   }
