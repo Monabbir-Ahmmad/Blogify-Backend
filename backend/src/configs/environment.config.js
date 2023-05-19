@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 
-let envFileName;
+let envFileName = ".env";
 
 switch (process.env.NODE_ENV) {
   case "production":
