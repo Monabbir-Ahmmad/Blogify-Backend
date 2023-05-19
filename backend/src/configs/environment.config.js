@@ -48,3 +48,6 @@ export const environment = {
   CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET ?? "CLOUDINARY_SECRET",
   CLOUDINARY_FOLDER: process.env.CLOUDINARY_FOLDER ?? "CLOUDINARY_FOLDER",
 };
+
+console.warn("NODE_ENV: ", process.env.NODE_ENV);
+console.warn("Environment: ", environment);
