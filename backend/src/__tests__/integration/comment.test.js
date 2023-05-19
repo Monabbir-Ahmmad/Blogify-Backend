@@ -1,8 +1,4 @@
-import { Blog } from "../../models/blog.model.js";
-import { Comment } from "../../models/comment.model.js";
 import { StatusCode } from "../../utils/statusCode.js";
-import { User } from "../../models/user.model.js";
-import { database } from "../../configs/database.config.js";
 import { server } from "../../../server.js";
 import supertest from "supertest";
 
@@ -14,10 +10,6 @@ describe("Comment", () => {
   let commentId;
 
   beforeAll(async () => {
-    await User.sync({ force: true });
-    await Blog.sync({ force: true });
-    await Comment.sync({ force: true });
-
     const signupReq = {
       name: "John Doe",
       email: "john.doe@email.com",
@@ -48,9 +40,8 @@ describe("Comment", () => {
     blogId = res.body.id;
   });
 
-  afterAll(async () => {
+  afterAll(() => {
     server.close();
-    await database.close();
   });
 
   describe("POST /api/comment", () => {

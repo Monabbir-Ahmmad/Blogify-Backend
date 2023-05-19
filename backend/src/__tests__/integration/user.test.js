@@ -1,6 +1,4 @@
 import { StatusCode } from "../../utils/statusCode.js";
-import { User } from "../../models/user.model.js";
-import { database } from "../../configs/database.config.js";
 import { server } from "../../../server.js";
 import supertest from "supertest";
 
@@ -11,8 +9,6 @@ describe("User", () => {
   let userId;
 
   beforeAll(async () => {
-    await User.sync({ force: true });
-
     const signupReq = {
       name: "John Doe",
       email: "john.doe@email.com",
@@ -31,9 +27,8 @@ describe("User", () => {
     userId = res.body.userId;
   });
 
-  afterAll(async () => {
+  afterAll(() => {
     server.close();
-    await database.close();
   });
 
   describe("GET /api/user/:userId", () => {

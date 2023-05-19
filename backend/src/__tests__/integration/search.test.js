@@ -1,17 +1,12 @@
-import { Blog } from "../../models/blog.model.js";
-import { Comment } from "../../models/comment.model.js";
 import { StatusCode } from "../../utils/statusCode.js";
-import { User } from "../../models/user.model.js";
-import { database } from "../../configs/database.config.js";
 import { server } from "../../../server.js";
 import supertest from "supertest";
 
 const request = supertest(server);
 
 describe("Search", () => {
-  afterAll(async () => {
+  afterAll(() => {
     server.close();
-    await database.close();
   });
 
   describe("GET /api/search/user/:keyword", () => {

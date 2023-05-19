@@ -12,6 +12,9 @@ backend/docs
 # testing
 coverage
 
+# local database
+*.sqlite
+
 # production
 /build
 
