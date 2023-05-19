@@ -19,7 +19,7 @@ switch (process.env.NODE_ENV) {
 }
 
 dotenv.config({
-  path: path.resolve(process.cwd(), envFileName),
+  path: envFileName,
 });
 
 export const environment = {
