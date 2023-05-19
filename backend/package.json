@@ -28,6 +28,8 @@
     "mysql2": "^3.2.3",
     "nodemailer": "^6.9.1",
     "nodemon": "^2.0.22",
+    "pg": "^8.11.0",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.31.0"
   },
   "devDependencies": {
