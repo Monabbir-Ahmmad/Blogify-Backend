@@ -53,11 +53,19 @@ export class ErrorMiddleware {
       cookieUtil.clearAuthCookie(res);
     }
 
-    responseUtil.sendContentNegotiatedResponse(req, res, err.statusCode, {
+    const errorResponse = {
       statusCode: err.statusCode,
       message: err.message,
-      stack: environment.NODE_ENV === "development" ? err.stack : null,
-    });
+    };
+
+    if (environment.NODE_ENV === "development") errorResponse.stack = err.stack;
+
+    responseUtil.sendContentNegotiatedResponse(
+      req,
+      res,
+      err.statusCode,
+      errorResponse
+    );
   }
 }
 
