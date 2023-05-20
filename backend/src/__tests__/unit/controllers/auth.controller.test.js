@@ -28,8 +28,6 @@ describe("AuthController", () => {
           name: "John Doe",
           email: "john.doe@example.com",
           password: "password123",
-          birthDate: "1990-01-01",
-          gender: "male",
         },
       };
 

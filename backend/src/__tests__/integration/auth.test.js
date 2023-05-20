@@ -14,8 +14,6 @@ describe("Auth", () => {
     const signupReq = {
       name: "John Doe",
       email: "john.doe@email.com",
-      gender: "male",
-      birthDate: "1990-01-01",
       password: "12345Aa!",
     };
 

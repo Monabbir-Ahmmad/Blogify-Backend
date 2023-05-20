@@ -8,11 +8,11 @@ describe("LoggerMiddleware", () => {
   beforeEach(() => {});
 
   test("consoleLogging should log request details and call next", () => {
-    const consoleLogSpy = jest.spyOn(console, "log");
+    const consoleSpy = jest.spyOn(console, "info");
 
     loggerMiddleware.consoleLogging(req, res, next);
 
-    expect(consoleLogSpy).toHaveBeenCalledWith("Request: ", {
+    expect(consoleSpy).toHaveBeenCalledWith("Request: ", {
       method: undefined,
       url: undefined,
       body: undefined,

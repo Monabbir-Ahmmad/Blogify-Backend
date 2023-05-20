@@ -15,8 +15,12 @@ const profileUpdate = [
     .bail()
     .isStrongPassword()
     .withMessage("Invalid password."),
-  body("gender").notEmpty().withMessage("Gender is required."),
+  body("gender")
+    .optional({ nullable: true })
+    .notEmpty()
+    .withMessage("Gender is required."),
   body("birthDate")
+    .optional({ nullable: true })
     .notEmpty()
     .withMessage("Date of birth is required.")
     .bail()
@@ -24,8 +28,8 @@ const profileUpdate = [
     .isDate()
     .withMessage("Date of birth must be a valid date.")
     .bail()
-    .custom((birthDate) => commonUtil.calculateAge(birthDate) >= 13)
-    .withMessage("Must be at least 13 years old."),
+    .custom((birthDate) => commonUtil.calculateAge(birthDate) >= 10)
+    .withMessage("Must be at least 10 years old."),
   body("bio")
     .optional({ nullable: true })
     .notEmpty()

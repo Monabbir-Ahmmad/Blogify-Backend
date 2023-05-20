@@ -13,8 +13,6 @@ describe("Comment", () => {
     const signupReq = {
       name: "John Doe",
       email: "john.doe@email.com",
-      gender: "male",
-      birthDate: "1990-01-01",
       password: "12345Aa!",
     };
 
@@ -54,8 +52,6 @@ describe("Comment", () => {
         .post("/api/comment")
         .set("Cookie", cookie)
         .send(createCommentReq);
-
-      console.log("Response: ", createCommentReq);
 
       expect(response.status).toBe(StatusCode.CREATED);
       expect(response.body).toHaveProperty("id");

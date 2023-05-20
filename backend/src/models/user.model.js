@@ -9,8 +9,8 @@ import { database } from "../configs/database.config.js";
  * @property {string|number} id - The id of the user.
  * @property {string} name - The name of the user.
  * @property {string} email - The email of the user.
- * @property {Date} birthDate - The birth date of the user.
- * @property {string} gender - The gebder of the user.
+ * @property {Date|null} [birthDate] - The birth date of the user.
+ * @property {string|null} [gender] - The gebder of the user.
  * @property {string} password - The password of the user.
  * @property {string|null} [profileImage] - The profile image of the user.
  * @property {string|null} [coverImage] - The cover image of the user.
@@ -34,20 +34,18 @@ User.init(
       unique: true,
       validate: { notEmpty: true },
     },
-    birthDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      validate: { notEmpty: true },
-    },
-    gender: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: { notEmpty: true },
-    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: { notEmpty: true },
+    },
+    birthDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     profileImage: {
       type: DataTypes.STRING,

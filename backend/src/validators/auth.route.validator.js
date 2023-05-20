@@ -1,5 +1,4 @@
 import { body } from "express-validator";
-import { commonUtil } from "../utils/common.util.js";
 
 const signup = [
   body("name").notEmpty().withMessage("Name is required."),
@@ -17,17 +16,6 @@ const signup = [
     .withMessage(
       "Password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
     ),
-  body("gender").notEmpty().withMessage("Gender is required."),
-  body("birthDate")
-    .notEmpty()
-    .withMessage("Date of birth is required.")
-    .bail()
-    .trim()
-    .isDate()
-    .withMessage("Date of birth must be a valid date.")
-    .bail()
-    .custom((birthDate) => commonUtil.calculateAge(birthDate) >= 13)
-    .withMessage("Must be at least 13 years old."),
 ];
 
 const signin = [

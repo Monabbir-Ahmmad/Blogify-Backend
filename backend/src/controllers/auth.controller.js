@@ -16,10 +16,10 @@ export class AuthController {
    * @param {Express.Response} res - The HTTP response object.
    */
   async signup(req, res) {
-    const { name, email, password, birthDate, gender } = req.body;
+    const { name, email, password } = req.body;
 
     const result = await authService.signup(
-      new SignupReqDto({ name, email, password, gender, birthDate })
+      new SignupReqDto({ name, email, password })
     );
 
     cookieUtil.setAuthCookie(res, result.accessToken);

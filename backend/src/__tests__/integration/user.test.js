@@ -12,8 +12,6 @@ describe("User", () => {
     const signupReq = {
       name: "John Doe",
       email: "john.doe@email.com",
-      gender: "male",
-      birthDate: "1990-01-01",
       password: "12345Aa!",
     };
 
@@ -50,6 +48,7 @@ describe("User", () => {
       email: "john.doe@email.com",
       gender: "Male",
       birthDate: "1990-01-01",
+      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       password: "12345Aa!",
     };
 

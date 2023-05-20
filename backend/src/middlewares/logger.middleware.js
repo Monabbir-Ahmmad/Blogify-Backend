@@ -14,7 +14,7 @@ export class LoggerMiddleware {
   consoleLogging(req, res, next) {
     const { method, url, body } = req;
 
-    console.log("Request: ", {
+    console.info("Request: ", {
       method,
       url,
       body,
