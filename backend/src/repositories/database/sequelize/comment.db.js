@@ -57,6 +57,7 @@ export class CommentDB {
         "user.name",
         "user.profileImage",
         "commentLikes.userId",
+        "commentLikes.commentId",
       ],
       attributes: [
         "id",
@@ -116,6 +117,7 @@ export class CommentDB {
         "user.name",
         "user.profileImage",
         "commentLikes.userId",
+        "commentLikes.commentId",
       ],
       attributes: [
         "id",
@@ -141,7 +143,9 @@ export class CommentDB {
           as: "replies",
           attributes: [],
           required: false,
-          where: { parentId: Sequelize.col("comment.id") },
+          where: {
+            parentId: Sequelize.literal('comment.id = "replies"."parentId"'),
+          },
         },
       ],
     });
@@ -176,6 +180,7 @@ export class CommentDB {
         "user.name",
         "user.profileImage",
         "commentLikes.userId",
+        "commentLikes.commentId",
       ],
       attributes: [
         "id",
@@ -201,7 +206,9 @@ export class CommentDB {
           as: "replies",
           attributes: [],
           required: false,
-          where: { parentId: Sequelize.col("comment.id") },
+          where: {
+            parentId: Sequelize.literal('comment.id = "replies"."parentId"'),
+          },
         },
       ],
     });
@@ -238,7 +245,9 @@ export class CommentDB {
 
     if (!comment) return null;
 
-    return await comment.destroy();
+    await comment.destroy();
+
+    return comment;
   }
 
   /**

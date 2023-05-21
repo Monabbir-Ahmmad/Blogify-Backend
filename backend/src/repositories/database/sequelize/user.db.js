@@ -128,7 +128,9 @@ export class UserDB {
 
     if (!user) return null;
 
-    return await user.destroy();
+    await user.destroy();
+
+    return user;
   }
 
   /**

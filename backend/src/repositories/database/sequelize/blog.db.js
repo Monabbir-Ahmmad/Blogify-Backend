@@ -59,6 +59,7 @@ export class BlogDB {
         "user.name",
         "user.profileImage",
         "likes.userId",
+        "likes.blogId",
       ],
       attributes: [
         "id",
@@ -115,6 +116,7 @@ export class BlogDB {
         "user.name",
         "user.profileImage",
         "likes.userId",
+        "likes.blogId",
       ],
       attributes: [
         "id",
@@ -172,6 +174,7 @@ export class BlogDB {
         "user.name",
         "user.profileImage",
         "likes.userId",
+        "likes.blogId",
       ],
       offset,
       limit,
@@ -233,7 +236,9 @@ export class BlogDB {
 
     if (!blog) return null;
 
-    return await blog.destroy();
+    await blog.destroy();
+
+    return blog;
   }
 
   /**
@@ -275,6 +280,7 @@ export class BlogDB {
         "user.name",
         "user.profileImage",
         "likes.userId",
+        "likes.blogId",
       ],
       offset,
       limit,

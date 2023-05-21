@@ -23,7 +23,7 @@ mapper.setMapping(User, UserResDto, {
 mapper.setMapping(Blog, BlogResDto, {
   properties: {
     user: (blog) => mapper.map(User, UserResDto, blog.user),
-    commentCount: (blog) => blog.get("commentCount") ?? 0,
+    commentCount: (blog) => parseInt(blog.get("commentCount")) ?? 0,
   },
 });
 
@@ -32,6 +32,6 @@ mapper.setMapping(Comment, CommentResDto, {
   properties: {
     user: (comment) => mapper.map(User, UserResDto, comment.user),
     likes: (comment) => comment.commentLikes ?? [],
-    replyCount: (comment) => comment.get("replyCount") ?? 0,
+    replyCount: (comment) => parseInt(comment.get("replyCount")) ?? 0,
   },
 });
