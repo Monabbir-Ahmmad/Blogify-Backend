@@ -67,8 +67,7 @@ export class UserService {
    * @param {string} newPassword - User's new password.
    * @returns {Promise<void>}
    * @throws {HttpError} 404 - User not found.
-   * @throws {HttpError} 403 - Wrong password.
-   * @throws {HttpError} 403 - New password cannot be the same as the old password.
+   * @throws {HttpError} 403 - Wrong old password.
    */
   async updatePassword(userId, oldPassword, newPassword) {
     const user = await userDB.getUserById(userId);
@@ -76,13 +75,7 @@ export class UserService {
     if (!user) throw new HttpError(StatusCode.NOT_FOUND, "User not found.");
 
     if (!(await passwordUtil.verifyPassword(oldPassword, user.password)))
-      throw new HttpError(StatusCode.FORBIDDEN, "Wrong password.");
-
-    if (oldPassword === newPassword)
-      throw new HttpError(
-        StatusCode.FORBIDDEN,
-        "New password cannot be the same as the old password."
-      );
+      throw new HttpError(StatusCode.FORBIDDEN, "Wrong old password.");
 
     newPassword = await passwordUtil.hashPassword(newPassword);
 

@@ -158,22 +158,13 @@ describe("UserService", () => {
       ).rejects.toThrow(new HttpError(StatusCode.NOT_FOUND, "User not found."));
     });
 
-    it("should throw HttpError with 403 status code if wrong password provided", async () => {
+    it("should throw HttpError with 403 status code if wrong old password provided", async () => {
       passwordUtil.verifyPassword.mockResolvedValue(false);
 
       await expect(
         userService.updatePassword(userId, oldPassword, newPassword)
-      ).rejects.toThrow(new HttpError(StatusCode.FORBIDDEN, "Wrong password."));
-    });
-
-    it("should throw HttpError with 403 status code if new password is the same as the old password", async () => {
-      await expect(
-        userService.updatePassword(userId, oldPassword, newPasswordSameAsOld)
       ).rejects.toThrow(
-        new HttpError(
-          StatusCode.FORBIDDEN,
-          "New password cannot be the same as the old password."
-        )
+        new HttpError(StatusCode.FORBIDDEN, "Wrong old password.")
       );
     });
   });

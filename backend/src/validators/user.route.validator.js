@@ -50,7 +50,13 @@ const passwordUpdate = [
     .isStrongPassword()
     .withMessage(
       "New password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
-    ),
+    )
+    .custom((newPassword, { req }) => {
+      if (newPassword === req.body.oldPassword) {
+        throw new Error("New password and old password should not be same.");
+      }
+      return true;
+    }),
 ];
 
 const profileDelete = [
