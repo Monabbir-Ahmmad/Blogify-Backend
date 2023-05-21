@@ -48,6 +48,18 @@ export class BlogDB {
    */
   async getBlogById(blogId) {
     const blog = await Blog.findByPk(blogId, {
+      group: [
+        "blog.id",
+        "blog.title",
+        "blog.content",
+        "blog.coverImage",
+        "blog.createdAt",
+        "blog.updatedAt",
+        "user.id",
+        "user.name",
+        "user.profileImage",
+        "likes.userId",
+      ],
       attributes: [
         "id",
         "title",
@@ -90,9 +102,20 @@ export class BlogDB {
   async getBlogs(offset, limit) {
     const { rows: blogs, count } = await Blog.findAndCountAll({
       subQuery: false,
-      group: ["Blog.id"],
       offset,
       limit,
+      group: [
+        "blog.id",
+        "blog.title",
+        "blog.content",
+        "blog.coverImage",
+        "blog.createdAt",
+        "blog.updatedAt",
+        "user.id",
+        "user.name",
+        "user.profileImage",
+        "likes.userId",
+      ],
       attributes: [
         "id",
         "title",
@@ -138,7 +161,18 @@ export class BlogDB {
     const { rows: blogs, count } = await Blog.findAndCountAll({
       where: { userId },
       subQuery: false,
-      group: ["Blog.id"],
+      group: [
+        "blog.id",
+        "blog.title",
+        "blog.content",
+        "blog.coverImage",
+        "blog.createdAt",
+        "blog.updatedAt",
+        "user.id",
+        "user.name",
+        "user.profileImage",
+        "likes.userId",
+      ],
       offset,
       limit,
       attributes: [
@@ -230,7 +264,18 @@ export class BlogDB {
     const { rows: blogs, count } = await Blog.findAndCountAll({
       where: { title: { [Op.substring]: keyword } },
       subQuery: false,
-      group: ["Blog.id"],
+      group: [
+        "blog.id",
+        "blog.title",
+        "blog.content",
+        "blog.coverImage",
+        "blog.createdAt",
+        "blog.updatedAt",
+        "user.id",
+        "user.name",
+        "user.profileImage",
+        "likes.userId",
+      ],
       offset,
       limit,
       attributes: [

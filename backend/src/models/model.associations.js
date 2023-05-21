@@ -9,20 +9,20 @@ export const createModelAssociations = () => {
   User.belongsTo(UserType, { onDelete: "CASCADE" });
   UserType.hasMany(User, { onDelete: "CASCADE" });
 
-  User.hasMany(Blog, { onDelete: "CASCADE" });
   Blog.belongsTo(User, { onDelete: "CASCADE" });
+  User.hasMany(Blog, { onDelete: "CASCADE" });
 
-  Blog.hasMany(Like, { onDelete: "CASCADE" });
   Like.belongsTo(Blog, { onDelete: "CASCADE" });
+  Blog.hasMany(Like, { onDelete: "CASCADE" });
 
-  User.hasMany(Like, { onDelete: "CASCADE" });
   Like.belongsTo(User, { onDelete: "CASCADE" });
+  User.hasMany(Like, { onDelete: "CASCADE" });
 
-  User.hasMany(Comment, { onDelete: "CASCADE" });
   Comment.belongsTo(User, { onDelete: "CASCADE" });
+  User.hasMany(Comment, { onDelete: "CASCADE" });
 
-  Blog.hasMany(Comment, { onDelete: "CASCADE" });
   Comment.belongsTo(Blog, { onDelete: "CASCADE" });
+  Blog.hasMany(Comment, { onDelete: "CASCADE" });
 
   Comment.hasMany(Comment, {
     as: "replies",
@@ -35,9 +35,9 @@ export const createModelAssociations = () => {
     onDelete: "CASCADE",
   });
 
-  Comment.hasMany(CommentLike, { onDelete: "CASCADE" });
   CommentLike.belongsTo(Comment, { onDelete: "CASCADE" });
+  Comment.hasMany(CommentLike, { onDelete: "CASCADE" });
 
-  User.hasMany(CommentLike, { onDelete: "CASCADE" });
   CommentLike.belongsTo(User, { onDelete: "CASCADE" });
+  User.hasMany(CommentLike, { onDelete: "CASCADE" });
 };

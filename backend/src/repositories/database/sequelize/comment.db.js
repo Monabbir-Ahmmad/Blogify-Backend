@@ -46,6 +46,18 @@ export class CommentDB {
    */
   async getCommentById(commentId) {
     const comment = await Comment.findByPk(commentId, {
+      group: [
+        "comment.id",
+        "comment.text",
+        "comment.parentId",
+        "comment.blogId",
+        "comment.createdAt",
+        "comment.updatedAt",
+        "user.id",
+        "user.name",
+        "user.profileImage",
+        "commentLikes.userId",
+      ],
       attributes: [
         "id",
         "text",
@@ -91,6 +103,20 @@ export class CommentDB {
     const { rows: comments, count } = await Comment.findAndCountAll({
       subQuery: false,
       where: { blogId, parentId: null },
+      offset,
+      limit,
+      group: [
+        "comment.id",
+        "comment.text",
+        "comment.parentId",
+        "comment.blogId",
+        "comment.createdAt",
+        "comment.updatedAt",
+        "user.id",
+        "user.name",
+        "user.profileImage",
+        "commentLikes.userId",
+      ],
       attributes: [
         "id",
         "text",
@@ -115,12 +141,9 @@ export class CommentDB {
           as: "replies",
           attributes: [],
           required: false,
-          where: { parentId: Sequelize.col("Comment.id") },
+          where: { parentId: Sequelize.col("comment.id") },
         },
       ],
-      group: ["Comment.id"],
-      offset,
-      limit,
     });
 
     return {
@@ -140,6 +163,20 @@ export class CommentDB {
     const { rows: comments, count } = await Comment.findAndCountAll({
       subQuery: false,
       where: { parentId: commentId },
+      offset,
+      limit,
+      group: [
+        "comment.id",
+        "comment.text",
+        "comment.parentId",
+        "comment.blogId",
+        "comment.createdAt",
+        "comment.updatedAt",
+        "user.id",
+        "user.name",
+        "user.profileImage",
+        "commentLikes.userId",
+      ],
       attributes: [
         "id",
         "text",
@@ -164,12 +201,9 @@ export class CommentDB {
           as: "replies",
           attributes: [],
           required: false,
-          where: { parentId: Sequelize.col("Comment.id") },
+          where: { parentId: Sequelize.col("comment.id") },
         },
       ],
-      group: ["Comment.id"],
-      offset,
-      limit,
     });
 
     return {
