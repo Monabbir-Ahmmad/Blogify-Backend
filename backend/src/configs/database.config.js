@@ -9,9 +9,6 @@ export const database = new Sequelize({
   username: environment.DB_USER,
   password: environment.DB_PASSWORD,
   storage: environment.DB_STORAGE,
-  dialectOptions: {
-    ssl: true,
-  },
   logging: environment.NODE_ENV === "development" ? console.log : false,
 });
 
