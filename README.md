@@ -89,11 +89,11 @@ The API documentation is available in Postman. You can find it [here](https://do
 
 ## Technologies Used
 
-- [Express.js](https://expressjs.com/) - A fast, unopinionated, and minimalist web framework for Node.js.
+- [Express.js](https://expressjs.com) - A fast, unopinionated, and minimalist web framework for Node.js.
 
-- [Sequelize](https://sequelize.org/) - A powerful Node.js-based Object Relational Mapper (ORM) for database management.
+- [Sequelize](https://sequelize.org) - A powerful Node.js-based Object Relational Mapper (ORM) for database management.
 
-- [MySQL](https://www.mysql.com/) - An open-source relational database management system.
+- [PostgreSQL](https://www.postgresql.org) - An open-source relational database management system.
 
 - [Cloudinary](https://cloudinary.com/documentation) - A cloud-based image and video management platform.
 
