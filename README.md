@@ -85,7 +85,7 @@ Make sure to include the required headers in your requests for authorization usi
 
 ## API Documentation
 
-The API documentation is available in Postman. You can find it [here](https://www.getpostman.com/collections/your-api-collection-link).
+The API documentation is available in Postman. You can find it [here](https://documenter.getpostman.com/view/23652878/2s93m33iXs).
 
 ## Technologies Used
 
