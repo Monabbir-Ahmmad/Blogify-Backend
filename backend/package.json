@@ -4,6 +4,10 @@
   "description": "",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": ">=16.x <20.x",
+    "npm": ">=7.x <9.6.x"
+  },
   "scripts": {
     "start": "node server",
     "dev": "set \"NODE_ENV=development\" & nodemon server",
