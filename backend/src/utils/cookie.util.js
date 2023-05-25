@@ -11,7 +11,7 @@ export class CookieUtil {
   setAuthCookie(res, token) {
     res.cookie("authorization", token, {
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "strict",
       secure: false,
     });
   }
