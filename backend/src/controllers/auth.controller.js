@@ -97,7 +97,7 @@ export class AuthController {
 
     cookieUtil.setAuthCookie(res, result.accessToken);
 
-    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK, result);
+    responseUtil.sendContentNegotiatedResponse(req, res, StatusCode.OK);
   }
 }
 

@@ -181,8 +181,7 @@ describe("AuthController", () => {
       expect(responseUtil.sendContentNegotiatedResponse).toHaveBeenCalledWith(
         req,
         res,
-        StatusCode.OK,
-        expectedResult
+        StatusCode.OK
       );
     });
   });
