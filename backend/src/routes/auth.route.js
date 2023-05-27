@@ -38,7 +38,7 @@ authRouter
   );
 
 authRouter
-  .route("/reset-password/:resetToken")
+  .route("/reset-password")
   .put(
     authRouteValidator.resetPassword,
     validationCheck,

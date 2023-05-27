@@ -135,6 +135,16 @@ describe("AuthService", () => {
         "hashedPassword"
       );
     });
+
+    it("should throw HttpError with 401 status code if token verification fails", async () => {
+      tokenUtil.verifyResetToken.mockImplementation(() => {
+        throw new Error();
+      });
+
+      await expect(
+        authService.resetPassword(resetToken, newPassword)
+      ).rejects.toThrow(HttpError);
+    });
   });
 
   describe("refreshAccessToken", () => {
@@ -159,7 +169,7 @@ describe("AuthService", () => {
 
     it("should throw HttpError with 401 status code if token verification fails", async () => {
       tokenUtil.verifyRefreshToken.mockImplementation(() => {
-        throw new Error("Verification failed");
+        throw new Error();
       });
 
       await expect(

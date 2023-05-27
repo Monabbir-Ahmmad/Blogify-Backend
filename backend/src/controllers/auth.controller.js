@@ -77,8 +77,7 @@ export class AuthController {
    * @param {Express.Response} res - The HTTP response object.
    */
   async resetPassword(req, res) {
-    const resetToken = req.params.resetToken;
-    const { newPassword } = req.body;
+    const { newPassword, resetToken } = req.body;
 
     const result = await authService.resetPassword(resetToken, newPassword);
 

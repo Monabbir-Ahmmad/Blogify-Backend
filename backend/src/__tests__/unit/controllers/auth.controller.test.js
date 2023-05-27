@@ -132,10 +132,8 @@ describe("AuthController", () => {
   describe("resetPassword", () => {
     it("should reset the user's password and return the result", async () => {
       req = {
-        params: {
-          resetToken: "reset-token",
-        },
         body: {
+          resetToken: "reset-token",
           newPassword: "new-password",
         },
       };
@@ -145,7 +143,7 @@ describe("AuthController", () => {
       await authController.resetPassword(req, res);
 
       expect(authService.resetPassword).toHaveBeenCalledWith(
-        req.params.resetToken,
+        req.body.resetToken,
         req.body.newPassword
       );
       expect(responseUtil.sendContentNegotiatedResponse).toHaveBeenCalledWith(

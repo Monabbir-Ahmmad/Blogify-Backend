@@ -76,7 +76,7 @@ export class AuthService {
       html: await mailUtil.getResetPasswordMailTemplate(
         environment.APP_NAME,
         user.name,
-        resetToken
+        `${environment.CLIENT_URL}/reset-password/${resetToken}`
       ),
     });
   }
@@ -86,9 +86,20 @@ export class AuthService {
    * @param {string} resetToken - Reset token of the user sent in mail.
    * @param {string} newPassword - New password of the user.
    * @returns {Promise<void>}
+   * @throws {HttpError} 401 - Token verification failed.
    */
   async resetPassword(resetToken, newPassword) {
-    const decodedToken = tokenUtil.verifyResetToken(resetToken);
+    let decodedToken = null;
+
+    try {
+      decodedToken = tokenUtil.verifyResetToken(resetToken);
+    } catch (error) {
+      throw new HttpError(
+        StatusCode.UNAUTHORIZED,
+        "Token verification failed."
+      );
+    }
+
     const user = await userService.getUser(decodedToken.id);
     newPassword = await passwordUtil.hashPassword(newPassword);
 
