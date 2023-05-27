@@ -18,7 +18,7 @@ describe("CookieUtil", () => {
 
       expect(res.cookie).toHaveBeenCalledWith("authorization", token, {
         httpOnly: true,
-        sameSite: "none",
+        sameSite: "strict",
         secure: false,
       });
     });

@@ -47,8 +47,4 @@ authRouter
 
 authRouter
   .route("/refresh-token")
-  .post(
-    authRouteValidator.refreshAccessToken,
-    validationCheck,
-    errorMiddleware.asyncHandler(authController.refreshAccessToken)
-  );
+  .post(errorMiddleware.asyncHandler(authController.refreshAccessToken));

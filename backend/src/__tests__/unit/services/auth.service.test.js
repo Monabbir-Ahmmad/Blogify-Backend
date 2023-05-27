@@ -148,6 +148,7 @@ describe("AuthService", () => {
     beforeEach(() => {
       tokenUtil.verifyRefreshToken.mockReturnValue(decodedToken);
       tokenUtil.generateAccessToken.mockReturnValue(expectedAccessToken);
+      userService.getUser.mockResolvedValue(user);
     });
 
     it("should refresh the access token of a user", async () => {

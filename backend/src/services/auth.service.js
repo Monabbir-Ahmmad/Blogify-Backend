@@ -99,16 +99,14 @@ export class AuthService {
    * This is used to refresh the access token of a user.
    * @param {string} refreshToken - Refresh token of the user.
    * @returns {Promise<{accessToken: string}>} - New access token.
-   * @throws {HttpError} 401 - Token failed.
+   * @throws {HttpError} 401 - Token verification failed.
    */
   async refreshAccessToken(refreshToken) {
     try {
       const decodedToken = tokenUtil.verifyRefreshToken(refreshToken);
+      const user = await userService.getUser(decodedToken.id);
 
-      const accessToken = tokenUtil.generateAccessToken(
-        decodedToken.id,
-        decodedToken.userType
-      );
+      const accessToken = tokenUtil.generateAccessToken(user.id, user.userType);
 
       return { accessToken };
     } catch (error) {

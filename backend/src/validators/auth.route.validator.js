@@ -53,14 +53,9 @@ const resetPassword = [
     ),
 ];
 
-const refreshAccessToken = [
-  body("refreshToken").notEmpty().withMessage("Refresh token is required."),
-];
-
 export const authRouteValidator = {
   signup,
   signin,
   forgotPassword,
   resetPassword,
-  refreshAccessToken,
 };

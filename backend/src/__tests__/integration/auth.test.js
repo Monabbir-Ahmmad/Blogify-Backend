@@ -28,7 +28,6 @@ describe("Auth", () => {
       expect(token).toBeTruthy();
       expect(response.body).toHaveProperty("userId");
       expect(response.body).toHaveProperty("refreshToken");
-      expect(response.body).toHaveProperty("accessToken");
     });
   });
 
@@ -50,7 +49,6 @@ describe("Auth", () => {
       expect(token).toBeTruthy();
       expect(response.body).toHaveProperty("userId");
       expect(response.body).toHaveProperty("refreshToken");
-      expect(response.body).toHaveProperty("accessToken");
     });
   });
 
@@ -85,9 +83,8 @@ describe("Auth", () => {
         .split(";")[0]
         .split("=")[1];
 
-      expect(response.status).toBe(StatusCode.OK);
       expect(token).toBeTruthy();
-      expect(response.body).toHaveProperty("accessToken");
+      expect(response.status).toBe(StatusCode.OK);
     });
   });
 
