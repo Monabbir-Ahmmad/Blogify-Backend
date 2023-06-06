@@ -106,6 +106,7 @@ export class CommentDB {
       where: { blogId, parentId: null },
       offset,
       limit,
+      order: [["createdAt", "DESC"]],
       group: [
         "comment.id",
         "comment.text",
@@ -169,6 +170,7 @@ export class CommentDB {
       where: { parentId: commentId },
       offset,
       limit,
+      order: [["createdAt", "DESC"]],
       group: [
         "comment.id",
         "comment.text",

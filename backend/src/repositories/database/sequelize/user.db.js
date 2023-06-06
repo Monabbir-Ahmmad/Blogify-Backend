@@ -149,6 +149,7 @@ export class UserDB {
       },
       offset,
       limit,
+      order: [["name", "ASC"]],
       attributes: ["id", "name", "profileImage"],
     });
 

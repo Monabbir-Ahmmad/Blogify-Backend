@@ -105,6 +105,7 @@ export class BlogDB {
       subQuery: false,
       offset,
       limit,
+      order: [["createdAt", "DESC"]],
       group: [
         "blog.id",
         "blog.title",
@@ -163,6 +164,9 @@ export class BlogDB {
     const { rows: blogs, count } = await Blog.findAndCountAll({
       where: { userId },
       subQuery: false,
+      offset,
+      limit,
+      order: [["createdAt", "DESC"]],
       group: [
         "blog.id",
         "blog.title",
@@ -176,8 +180,6 @@ export class BlogDB {
         "likes.userId",
         "likes.blogId",
       ],
-      offset,
-      limit,
       attributes: [
         "id",
         "title",
@@ -269,6 +271,9 @@ export class BlogDB {
     const { rows: blogs, count } = await Blog.findAndCountAll({
       where: { title: { [Op.substring]: keyword } },
       subQuery: false,
+      offset,
+      limit,
+      order: [["createdAt", "DESC"]],
       group: [
         "blog.id",
         "blog.title",
@@ -282,8 +287,6 @@ export class BlogDB {
         "likes.userId",
         "likes.blogId",
       ],
-      offset,
-      limit,
       attributes: [
         "id",
         "title",
@@ -293,7 +296,6 @@ export class BlogDB {
         "updatedAt",
         [Sequelize.fn("COUNT", Sequelize.col("comments.id")), "commentCount"],
       ],
-
       include: [
         {
           model: User,
