@@ -15,8 +15,9 @@ describe("Search", () => {
 
       expect(response.status).toBe(StatusCode.OK);
       expect(response.body).toHaveProperty("data");
-      expect(response.body).toHaveProperty("count");
-      expect(response.body).toHaveProperty("limit");
+      expect(response.body).toHaveProperty("totalItems");
+      expect(response.body).toHaveProperty("pageSize");
+      expect(response.body).toHaveProperty("totalPages");
     });
   });
 
@@ -26,8 +27,9 @@ describe("Search", () => {
 
       expect(response.status).toBe(StatusCode.OK);
       expect(response.body).toHaveProperty("data");
-      expect(response.body).toHaveProperty("count");
-      expect(response.body).toHaveProperty("limit");
+      expect(response.body).toHaveProperty("totalItems");
+      expect(response.body).toHaveProperty("pageSize");
+      expect(response.body).toHaveProperty("totalPages");
     });
   });
 });

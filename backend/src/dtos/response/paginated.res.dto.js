@@ -3,13 +3,14 @@
  * @subcategory Response
  * @classdesc A class that defines the structure of the paginated response DTO.
  * @property {any[]} data - The data of the paginated response.
- * @property {number} count - The item count of the paginated response.
- * @property {number} limit - The limit of the paginated response.
+ * @property {number} totalItems - The total number of items.
+ * @property {number} pageSize - The number of items per page.
  */
 export class PaginatedResDto {
-  constructor(data, count, limit) {
+  constructor(data, totalItems, pageSize) {
     this.data = data;
-    this.count = count;
-    this.limit = limit;
+    this.totalItems = totalItems;
+    this.pageSize = pageSize;
+    this.totalPages = Math.ceil(totalItems / pageSize);
   }
 }
