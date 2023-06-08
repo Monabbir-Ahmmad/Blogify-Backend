@@ -36,11 +36,9 @@ describe("BlogService", () => {
 
   const offset = 0;
   const limit = 10;
-  const pageCount = 1;
-  const blogs = [
-    { ...blog, id: 1 },
-    { ...blog, id: 2 },
-  ];
+  const count = 1;
+  const blogs = [{ ...blog, id: 1 }];
+
   const expectedBlogsResDto = blogs.map(
     (blog) =>
       new BlogResDto(
@@ -54,8 +52,9 @@ describe("BlogService", () => {
       )
   );
   const expectedPaginatedResDto = new PaginatedResDto(
-    pageCount,
-    expectedBlogsResDto
+    expectedBlogsResDto,
+    count,
+    limit
   );
 
   beforeEach(() => {
@@ -100,7 +99,7 @@ describe("BlogService", () => {
 
   describe("getBlogs", () => {
     beforeEach(() => {
-      blogDB.getBlogs.mockResolvedValue({ pageCount: 1, blogs });
+      blogDB.getBlogs.mockResolvedValue({ blogs, count, limit });
       mapper.mapArray.mockReturnValue(expectedBlogsResDto);
     });
 
@@ -112,7 +111,7 @@ describe("BlogService", () => {
 
   describe("getUserBlogs", () => {
     beforeEach(() => {
-      blogDB.getUserBlogs.mockResolvedValue({ pageCount: 1, blogs });
+      blogDB.getUserBlogs.mockResolvedValue({ blogs, count, limit });
       mapper.mapArray.mockReturnValue(expectedBlogsResDto);
     });
 
@@ -205,7 +204,7 @@ describe("BlogService", () => {
     const keyword = "test";
 
     beforeEach(() => {
-      blogDB.searchBlogByTitle.mockResolvedValue({ pageCount, blogs });
+      blogDB.searchBlogByTitle.mockResolvedValue({ blogs, count, limit });
       mapper.mapArray.mockReturnValue(expectedBlogsResDto);
     });
 

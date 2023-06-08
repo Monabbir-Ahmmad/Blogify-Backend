@@ -25,16 +25,16 @@ describe("CommentController", () => {
     0
   );
 
-  const expectedPaginatedCommentResDto = new PaginatedResDto(1, [
-    {
-      ...expectedCommentResDto,
-      id: 1,
-    },
-    {
-      ...expectedCommentResDto,
-      id: 2,
-    },
-  ]);
+  const expectedPaginatedCommentResDto = new PaginatedResDto(
+    [
+      {
+        ...expectedCommentResDto,
+        id: 1,
+      },
+    ],
+    1,
+    10
+  );
 
   beforeEach(() => {
     responseUtil.sendContentNegotiatedResponse.mockImplementationOnce();
@@ -150,16 +150,16 @@ describe("CommentController", () => {
         0
       );
 
-      const expectedPaginatedReplyResDto = new PaginatedResDto(1, [
-        {
-          ...expectedReplyResDto,
-          id: 1,
-        },
-        {
-          ...expectedReplyResDto,
-          id: 2,
-        },
-      ]);
+      const expectedPaginatedReplyResDto = new PaginatedResDto(
+        [
+          {
+            ...expectedReplyResDto,
+            id: 1,
+          },
+        ],
+        1,
+        10
+      );
 
       commentService.getCommentReplies.mockResolvedValueOnce(
         expectedPaginatedReplyResDto

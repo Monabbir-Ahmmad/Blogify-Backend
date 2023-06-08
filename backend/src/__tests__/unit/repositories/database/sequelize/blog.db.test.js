@@ -86,8 +86,9 @@ describe("BlogDB", () => {
       const result = await blogDB.getBlogs(offset, limit);
 
       expect(result).toEqual({
-        pageCount: 0,
         blogs: [],
+        count: 0,
+        limit,
       });
     });
   });
@@ -101,7 +102,7 @@ describe("BlogDB", () => {
 
       const result = await blogDB.getUserBlogs(userId, offset, limit);
 
-      expect(result).toEqual({ pageCount: 0, blogs: [] });
+      expect(result).toEqual({ blogs: [], count: 0, limit });
     });
   });
 

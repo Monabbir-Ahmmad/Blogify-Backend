@@ -98,7 +98,7 @@ export class CommentDB {
    * @param {string|number} blogId - The ID of the blog post.
    * @param {number} offset - The offset for pagination.
    * @param {number} limit - The maximum number of comments to retrieve.
-   * @returns {Promise<{pageCount: number, comments: Comment[]}>} A promise that resolves to an object containing the page count and the retrieved comments.
+   * @returns {Promise<{comments: Comment[], count: number, limit: number}>} A promise that resolves to an object containing the retrieved comments, the item count, and the limit.
    */
   async getCommentsByBlogId(blogId, offset, limit) {
     const { rows: comments, count } = await Comment.findAndCountAll({
@@ -152,8 +152,9 @@ export class CommentDB {
     });
 
     return {
-      pageCount: Math.ceil(count.length / limit),
       comments,
+      count: count.length,
+      limit,
     };
   }
 
@@ -162,7 +163,7 @@ export class CommentDB {
    * @param {string|number} commentId - The ID of the parent comment.
    * @param {number} offset - The offset for pagination.
    * @param {number} limit - The maximum number of replies to retrieve.
-   * @returns {Promise<{pageCount: number, comments: Comment[]}>} A promise that resolves to an object containing the page count and the retrieved replies.
+   * @returns {Promise<{comments: Comment[], count: number, limit: number}>} A promise that resolves to an object containing the retrieved replies, the item count, and the limit.
    */
   async getRepliesByCommentId(commentId, offset, limit) {
     const { rows: comments, count } = await Comment.findAndCountAll({
@@ -216,8 +217,9 @@ export class CommentDB {
     });
 
     return {
-      pageCount: Math.ceil(count.length / limit),
       comments,
+      count: count.length,
+      limit,
     };
   }
 

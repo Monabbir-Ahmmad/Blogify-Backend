@@ -36,11 +36,8 @@ describe("CommentService", () => {
 
   const offset = 0;
   const limit = 10;
-  const pageCount = 1;
-  const comments = [
-    { ...comment, id: 1 },
-    { ...comment, id: 2 },
-  ];
+  const count = 1;
+  const comments = [{ ...comment, id: 1 }];
 
   const expectedCommentsResDto = comments.map(
     (comment) =>
@@ -53,8 +50,9 @@ describe("CommentService", () => {
       )
   );
   const expectedPaginatedCommentResDto = new PaginatedResDto(
-    pageCount,
-    expectedCommentsResDto
+    expectedCommentsResDto,
+    count,
+    limit
   );
 
   beforeEach(() => {
@@ -119,8 +117,9 @@ describe("CommentService", () => {
   describe("getComments", () => {
     beforeEach(() => {
       commentDB.getCommentsByBlogId.mockResolvedValue({
-        pageCount,
         comments,
+        count,
+        limit,
       });
       mapper.mapArray.mockReturnValue(expectedCommentsResDto);
     });
@@ -138,8 +137,9 @@ describe("CommentService", () => {
   describe("getCommentReplies", () => {
     beforeEach(() => {
       commentDB.getRepliesByCommentId.mockResolvedValue({
-        pageCount,
         comments,
+        count,
+        limit,
       });
       mapper.mapArray.mockReturnValue(expectedCommentsResDto);
     });

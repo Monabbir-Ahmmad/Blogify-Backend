@@ -138,7 +138,7 @@ export class UserDB {
    * @param {string} keyword - The keyword to search for in the user names.
    * @param {number} offset - The offset for pagination.
    * @param {number} limit - The maximum number of users to retrieve.
-   * @returns {Promise<{pageCount: number, users: User[]}>} A promise that resolves to an object containing the page count and the retrieved users.
+   * @returns {Promise<{users: User[], count: number, limit: number}>} A promise that resolves to an object containing the retrieved users, the total number of users, and the limit.
    */
   async searchUserByName(keyword, offset, limit) {
     const { rows: users, count } = await User.findAndCountAll({
@@ -154,8 +154,9 @@ export class UserDB {
     });
 
     return {
-      pageCount: Math.ceil(count / limit),
       users,
+      count,
+      limit,
     };
   }
 }

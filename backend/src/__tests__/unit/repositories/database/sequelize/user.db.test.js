@@ -234,7 +234,8 @@ describe("UserDB", () => {
 
       expect(result).toEqual({
         users,
-        pageCount: 0,
+        count,
+        limit,
       });
     });
   });

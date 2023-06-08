@@ -48,11 +48,16 @@ export class BlogService {
    * @returns {Promise<PaginatedResDto<BlogResDto>>} - Paginated blog response DTO.
    */
   async getBlogs({ offset, limit }) {
-    const { pageCount, blogs } = await blogDB.getBlogs(offset, limit);
+    const {
+      blogs,
+      count,
+      limit: pageSize,
+    } = await blogDB.getBlogs(offset, limit);
 
     return new PaginatedResDto(
-      pageCount,
-      mapper.mapArray(Blog, BlogResDto, blogs)
+      mapper.mapArray(Blog, BlogResDto, blogs),
+      count,
+      pageSize
     );
   }
 
@@ -63,15 +68,16 @@ export class BlogService {
    * @returns {Promise<PaginatedResDto<BlogResDto>>} - Paginated blog response DTO.
    */
   async getUserBlogs(userId, { offset, limit }) {
-    const { pageCount, blogs } = await blogDB.getUserBlogs(
-      userId,
-      offset,
-      limit
-    );
+    const {
+      blogs,
+      count,
+      limit: pageSize,
+    } = await blogDB.getUserBlogs(userId, offset, limit);
 
     return new PaginatedResDto(
-      pageCount,
-      mapper.mapArray(Blog, BlogResDto, blogs)
+      mapper.mapArray(Blog, BlogResDto, blogs),
+      count,
+      pageSize
     );
   }
 
@@ -143,15 +149,16 @@ export class BlogService {
    * @returns {Promise<PaginatedResDto<BlogResDto>>} - Paginated blog response DTO.
    */
   async searchBlog(keyword, { offset, limit }) {
-    const { pageCount, blogs } = await blogDB.searchBlogByTitle(
-      keyword,
-      offset,
-      limit
-    );
+    const {
+      blogs,
+      count,
+      limit: pageSize,
+    } = await blogDB.searchBlogByTitle(keyword, offset, limit);
 
     return new PaginatedResDto(
-      pageCount,
-      mapper.mapArray(Blog, BlogResDto, blogs)
+      mapper.mapArray(Blog, BlogResDto, blogs),
+      count,
+      pageSize
     );
   }
 }
