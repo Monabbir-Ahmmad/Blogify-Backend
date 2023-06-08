@@ -26,16 +26,16 @@ describe("BlogController", () => {
     0
   );
 
-  const expectedPaginatedBlogResDto = new PaginatedResDto(1, [
-    {
-      ...expectedBlogResDto,
-      id: 1,
-    },
-    {
-      ...expectedBlogResDto,
-      id: 2,
-    },
-  ]);
+  const expectedPaginatedBlogResDto = new PaginatedResDto(
+    [
+      {
+        ...expectedBlogResDto,
+        id: 1,
+      },
+    ],
+    1,
+    10
+  );
 
   beforeEach(() => {
     responseUtil.sendContentNegotiatedResponse.mockImplementationOnce();

@@ -294,21 +294,19 @@ describe("UserService", () => {
     const keyword = "test";
     const offset = 0;
     const limit = 10;
-    const users = [
-      { ...user, id: 1 },
-      { ...user, id: 2 },
-    ];
-    const pageCount = 2;
+    const users = [{ ...user, id: 1 }];
+    const count = 1;
     const expectedUsersResDto = users.map(
       (user) => new UserResDto(user.id, user.name, user.email)
     );
     const expectedPaginatedResDto = new PaginatedResDto(
-      pageCount,
-      expectedUsersResDto
+      expectedUsersResDto,
+      count,
+      limit,
     );
 
     beforeEach(() => {
-      userDB.searchUserByName.mockResolvedValue({ pageCount, users });
+      userDB.searchUserByName.mockResolvedValue({ users, count, limit });
       mapper.mapArray.mockReturnValue(expectedUsersResDto);
     });
 

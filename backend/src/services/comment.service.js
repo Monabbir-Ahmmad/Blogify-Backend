@@ -58,15 +58,16 @@ export class CommentService {
    * @returns {Promise<PaginatedResDto<CommentResDto>>} - Paginated comment response DTO.
    */
   async getComments(blogId, { offset, limit }) {
-    const { pageCount, comments } = await commentDB.getCommentsByBlogId(
-      blogId,
-      offset,
-      limit
-    );
+    const {
+      comments,
+      count,
+      limit: pageSize,
+    } = await commentDB.getCommentsByBlogId(blogId, offset, limit);
 
     return new PaginatedResDto(
-      pageCount,
-      mapper.mapArray(Comment, CommentResDto, comments)
+      mapper.mapArray(Comment, CommentResDto, comments),
+      count,
+      pageSize
     );
   }
 
@@ -77,15 +78,16 @@ export class CommentService {
    * @returns {Promise<PaginatedResDto<CommentResDto>>} - Paginated comment response DTO.
    */
   async getCommentReplies(commentId, { offset, limit }) {
-    const { pageCount, comments } = await commentDB.getRepliesByCommentId(
-      commentId,
-      offset,
-      limit
-    );
+    const {
+      comments,
+      count,
+      limit: pageSize,
+    } = await commentDB.getRepliesByCommentId(commentId, offset, limit);
 
     return new PaginatedResDto(
-      pageCount,
-      mapper.mapArray(Comment, CommentResDto, comments)
+      mapper.mapArray(Comment, CommentResDto, comments),
+      count,
+      pageSize
     );
   }
 

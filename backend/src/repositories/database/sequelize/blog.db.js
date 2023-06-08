@@ -98,13 +98,14 @@ export class BlogDB {
    * Retrieves a list of blogs with pagination support.
    * @param {number} offset - The offset for pagination.
    * @param {number} limit - The maximum number of blogs to retrieve.
-   * @returns {Promise<{pageCount: number, blogs: Blog[]}>} A promise that resolves to an object containing the page count and the retrieved blogs.
+   * @returns {Promise<{ blogs: Blog[], count: number, limit: number }>} A promise that resolves to an object containing the retrieved blogs, the item count, and the limit.
    */
   async getBlogs(offset, limit) {
     const { rows: blogs, count } = await Blog.findAndCountAll({
       subQuery: false,
       offset,
       limit,
+      order: [["createdAt", "DESC"]],
       group: [
         "blog.id",
         "blog.title",
@@ -147,8 +148,9 @@ export class BlogDB {
     });
 
     return {
-      pageCount: Math.ceil(count.length / limit),
       blogs,
+      count: count.length,
+      limit,
     };
   }
 
@@ -157,12 +159,15 @@ export class BlogDB {
    * @param {string|number} userId - The ID of the user.
    * @param {number} offset - The offset for pagination.
    * @param {number} limit - The maximum number of blogs to retrieve.
-   * @returns {Promise<{pageCount: number, blogs: Blog[]}>} A promise that resolves to an object containing the page count and the retrieved blogs.
+   * @returns {Promise<{ blogs: Blog[], count: number, limit: number }>} A promise that resolves to an object containing the retrieved blogs, the item count, and the limit.
    */
   async getUserBlogs(userId, offset, limit) {
     const { rows: blogs, count } = await Blog.findAndCountAll({
       where: { userId },
       subQuery: false,
+      offset,
+      limit,
+      order: [["createdAt", "DESC"]],
       group: [
         "blog.id",
         "blog.title",
@@ -176,8 +181,6 @@ export class BlogDB {
         "likes.userId",
         "likes.blogId",
       ],
-      offset,
-      limit,
       attributes: [
         "id",
         "title",
@@ -207,8 +210,9 @@ export class BlogDB {
     });
 
     return {
-      pageCount: Math.ceil(count.length / limit),
       blogs,
+      count: count.length,
+      limit,
     };
   }
 
@@ -263,12 +267,15 @@ export class BlogDB {
    * @param {string} keyword - The keyword to search for in blog titles.
    * @param {number} offset - The offset for pagination.
    * @param {number} limit - The maximum number of blogs to retrieve.
-   * @returns {Promise<{pageCount: number, blogs: Blog[]}>} A promise that resolves to an object containing the page count and the retrieved blogs.
+   * @returns {Promise<{blogs: Blog[], count: number, limit: number}>} A promise that resolves to an object containing the retrieved blogs, the item count, and the limit.
    */
   async searchBlogByTitle(keyword, offset, limit) {
     const { rows: blogs, count } = await Blog.findAndCountAll({
       where: { title: { [Op.substring]: keyword } },
       subQuery: false,
+      offset,
+      limit,
+      order: [["createdAt", "DESC"]],
       group: [
         "blog.id",
         "blog.title",
@@ -282,8 +289,6 @@ export class BlogDB {
         "likes.userId",
         "likes.blogId",
       ],
-      offset,
-      limit,
       attributes: [
         "id",
         "title",
@@ -314,8 +319,9 @@ export class BlogDB {
     });
 
     return {
-      pageCount: Math.ceil(count.length / limit),
       blogs,
+      count: count.length,
+      limit,
     };
   }
 }

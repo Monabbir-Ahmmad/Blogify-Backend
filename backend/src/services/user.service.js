@@ -141,15 +141,16 @@ export class UserService {
    * @returns {Promise<PaginatedResDto<UserResDto>>} - Paginated user response DTO.
    */
   async searchUser(keyword, { offset, limit }) {
-    const { pageCount, users } = await userDB.searchUserByName(
-      keyword,
-      offset,
-      limit
-    );
+    const {
+      users,
+      count,
+      limit: pageSize,
+    } = await userDB.searchUserByName(keyword, offset, limit);
 
     return new PaginatedResDto(
-      pageCount,
-      mapper.mapArray(User, UserResDto, users)
+      mapper.mapArray(User, UserResDto, users),
+      count,
+      pageSize
     );
   }
 }

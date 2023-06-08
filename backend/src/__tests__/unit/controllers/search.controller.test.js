@@ -33,20 +33,24 @@ describe("SearchController", () => {
           limit: 10,
         },
       };
-      const expectedResult = new PaginatedResDto(1, [
-        new UserResDto(
-          1,
-          "John Doe",
-          "john.doe@email.com",
-          "male",
-          "1990-01-01",
-          "normal",
-          "profile-image.jpg",
-          "cover-image.jpg",
-          "Hello, I'm John Doe",
-          "2021-01-01"
-        ),
-      ]);
+      const expectedResult = new PaginatedResDto(
+        [
+          new UserResDto(
+            1,
+            "John Doe",
+            "john.doe@email.com",
+            "male",
+            "1990-01-01",
+            "normal",
+            "profile-image.jpg",
+            "cover-image.jpg",
+            "Hello, I'm John Doe",
+            "2021-01-01"
+          ),
+        ],
+        1,
+        10
+      );
 
       userService.searchUser.mockResolvedValueOnce(expectedResult);
       responseUtil.sendContentNegotiatedResponse.mockImplementationOnce();
@@ -77,19 +81,23 @@ describe("SearchController", () => {
           limit: 10,
         },
       };
-      const expectedResult = new PaginatedResDto(1, [
-        new BlogResDto(
-          1,
-          "Test Blog",
-          "This is a test blog",
-          "cover-image.jpg",
-          "2021-01-01",
-          "2021-01-01",
-          { id: 1, name: "John Doe" },
-          [],
-          0
-        ),
-      ]);
+      const expectedResult = new PaginatedResDto(
+        [
+          new BlogResDto(
+            1,
+            "Test Blog",
+            "This is a test blog",
+            "cover-image.jpg",
+            "2021-01-01",
+            "2021-01-01",
+            { id: 1, name: "John Doe" },
+            [],
+            0
+          ),
+        ],
+        1,
+        10
+      );
 
       blogService.searchBlog.mockResolvedValueOnce(expectedResult);
       responseUtil.sendContentNegotiatedResponse.mockImplementationOnce();

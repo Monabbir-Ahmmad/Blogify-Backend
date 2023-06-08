@@ -104,7 +104,7 @@ describe("CommentDB", () => {
 
       const result = await commentDB.getCommentsByBlogId(blogId, offset, limit);
 
-      expect(result).toEqual({ pageCount: 0, comments });
+      expect(result).toEqual({ comments, count: 0, limit });
     });
   });
 
@@ -123,7 +123,7 @@ describe("CommentDB", () => {
         limit
       );
 
-      expect(result).toEqual({ pageCount: 0, comments: replies });
+      expect(result).toEqual({ comments: replies, count: 0, limit });
     });
   });
 
