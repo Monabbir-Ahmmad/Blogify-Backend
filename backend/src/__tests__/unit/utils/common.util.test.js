@@ -85,4 +85,15 @@ describe("CommonUtil", () => {
       expect(obj).toEqual(expectedObj);
     });
   });
+
+  describe("extractTextFromHTML", () => {
+    it("should extract text from HTML", () => {
+      const html =
+        '<div class="container" style="background-color: #fff; color: #000;"><h1>Hello, World! </h1><p>This is a paragraph.</p></div>';
+      const expectedText = "Hello, World! This is a paragraph.";
+
+      const extractedText = commonUtil.extractTextFromHtml(html);
+      expect(extractedText).toBe(expectedText);
+    });
+  });
 });

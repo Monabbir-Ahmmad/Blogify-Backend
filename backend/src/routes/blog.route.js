@@ -6,6 +6,7 @@ import { blogController } from "../controllers/blog.controller.js";
 import { blogRouteValidator } from "../validators/blog.route.validator.js";
 import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { validationCheck } from "../middlewares/validation.middleware.js";
+import { userRouteValidator } from "../validators/user.route.validator.js";
 
 export const blogRouter = Router();
 
@@ -23,25 +24,38 @@ blogRouter
 
 blogRouter
   .route("/user/:userId")
-  .get(errorMiddleware.asyncHandler(blogController.getUserBlogList));
+  .get(
+    userRouteValidator.routeParam,
+    validationCheck,
+    errorMiddleware.asyncHandler(blogController.getUserBlogList)
+  );
 
 blogRouter
   .route("/like/:blogId")
   .put(
     authMiddleware.verifyToken,
+    blogRouteValidator.routeParam,
+    validationCheck,
     errorMiddleware.asyncHandler(blogController.likeBlog)
   );
 
 blogRouter
   .route("/:blogId")
-  .get(errorMiddleware.asyncHandler(blogController.getBlog))
+  .get(
+    blogRouteValidator.routeParam,
+    validationCheck,
+    errorMiddleware.asyncHandler(blogController.getBlog)
+  )
   .delete(
     authMiddleware.verifyToken,
+    blogRouteValidator.routeParam,
+    validationCheck,
     errorMiddleware.asyncHandler(blogController.deleteBlog)
   )
   .put(
     authMiddleware.verifyToken,
     upload.single("coverImage"),
+    blogRouteValidator.routeParam,
     blogRouteValidator.update,
     validationCheck,
     uploadImage,

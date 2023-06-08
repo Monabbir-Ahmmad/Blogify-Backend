@@ -1,8 +1,13 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { commonUtil } from "../utils/common.util.js";
 
 const profileUpdate = [
-  body("name").notEmpty().withMessage("Name is required."),
+  body("name")
+    .notEmpty()
+    .withMessage("Name is required.")
+    .bail()
+    .isLength({ max: 50, min: 2 })
+    .withMessage("Name must be between 2 and 50 characters long."),
   body("email")
     .notEmpty()
     .withMessage("Email is required.")
@@ -33,7 +38,10 @@ const profileUpdate = [
   body("bio")
     .optional({ nullable: true })
     .notEmpty()
-    .withMessage("Bio can not be empty."),
+    .withMessage("Bio can not be empty.")
+    .bail()
+    .isLength({ max: 500 })
+    .withMessage("Bio can not be more than 500 characters."),
 ];
 
 const passwordUpdate = [
@@ -68,8 +76,13 @@ const profileDelete = [
     .withMessage("Invalid password."),
 ];
 
+const routeParam = [
+  param("userId").isNumeric().withMessage("Invalid user id."),
+];
+
 export const userRouteValidator = {
   profileUpdate,
   passwordUpdate,
   profileDelete,
+  routeParam,
 };

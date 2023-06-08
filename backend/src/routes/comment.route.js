@@ -4,6 +4,7 @@ import { commentController } from "../controllers/comment.controller.js";
 import { commentRouteValidator } from "../validators/comment.route.validator.js";
 import { errorMiddleware } from "../middlewares/error.middleware.js";
 import { validationCheck } from "../middlewares/validation.middleware.js";
+import { blogRouteValidator } from "../validators/blog.route.validator.js";
 
 export const commentRouter = Router();
 
@@ -18,28 +19,45 @@ commentRouter
 
 commentRouter
   .route("/reply/:commentId")
-  .get(errorMiddleware.asyncHandler(commentController.getCommentReplies));
+  .get(
+    commentRouteValidator.routeParam,
+    validationCheck,
+    errorMiddleware.asyncHandler(commentController.getCommentReplies)
+  );
 
 commentRouter
   .route("/blog/:blogId")
-  .get(errorMiddleware.asyncHandler(commentController.getBlogComments));
+  .get(
+    blogRouteValidator.routeParam,
+    validationCheck,
+    errorMiddleware.asyncHandler(commentController.getBlogComments)
+  );
 
 commentRouter
   .route("/like/:commentId")
   .put(
     authMiddleware.verifyToken,
+    commentRouteValidator.routeParam,
+    validationCheck,
     errorMiddleware.asyncHandler(commentController.likeComment)
   );
 
 commentRouter
   .route("/:commentId")
-  .get(errorMiddleware.asyncHandler(commentController.getComment))
+  .get(
+    commentRouteValidator.routeParam,
+    validationCheck,
+    errorMiddleware.asyncHandler(commentController.getComment)
+  )
   .delete(
     authMiddleware.verifyToken,
+    commentRouteValidator.routeParam,
+    validationCheck,
     errorMiddleware.asyncHandler(commentController.deleteComment)
   )
   .put(
     authMiddleware.verifyToken,
+    commentRouteValidator.routeParam,
     commentRouteValidator.update,
     validationCheck,
     errorMiddleware.asyncHandler(commentController.updateComment)

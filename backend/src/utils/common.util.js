@@ -1,4 +1,5 @@
 import { cloudinary } from "../configs/cloudinary.config.js";
+import { JSDOM } from "jsdom";
 
 /**
  * @category Utilities
@@ -78,6 +79,19 @@ export class CommonUtil {
       )
         delete obj[key];
     });
+  }
+
+  /**
+   * Extracts text from HTML.
+   * @param {string} html - The HTML to extract text from.
+   * @returns {string} The extracted text.
+   */
+  extractTextFromHtml(html) {
+    const { document } = new JSDOM("").window;
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+
+    return tempDiv.textContent;
   }
 }
 
