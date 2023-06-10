@@ -42,6 +42,8 @@ export const environment = {
   EMAIL_ADDRESS: process.env.EMAIL_ADDRESS ?? "EMAIL_ADDRESS",
   EMAIL_PASSWORD: process.env.EMAIL_PASSWORD ?? "EMAIL_PASSWORD",
   CLIENT_URL: process.env.CLIENT_URL ?? "http://localhost:3000",
+  RESET_PASSWORD_URL:
+    process.env.RESET_PASSWORD_URL ?? "http://localhost:3000/reset-password",
   CLOUDINARY_NAME: process.env.CLOUDINARY_NAME ?? "CLOUDINARY_NAME",
   CLOUDINARY_KEY: process.env.CLOUDINARY_KEY ?? "CLOUDINARY_KEY",
   CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET ?? "CLOUDINARY_SECRET",

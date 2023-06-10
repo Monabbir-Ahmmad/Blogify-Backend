@@ -11,7 +11,22 @@ import seedDatabase from "./seedDatabase.js";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: environment.CLIENT_URL,
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedMethods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "OPTIONS",
+      "PATCH",
+      "HEAD",
+    ],
+  })
+);
 
 app.use(express.json());
 

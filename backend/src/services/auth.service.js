@@ -76,7 +76,7 @@ export class AuthService {
       html: await mailUtil.getResetPasswordMailTemplate(
         environment.APP_NAME,
         user.name,
-        `${environment.CLIENT_URL}/reset-password/?token=${resetToken}`
+        `${environment.RESET_PASSWORD_URL}?token=${resetToken}`
       ),
     });
   }
