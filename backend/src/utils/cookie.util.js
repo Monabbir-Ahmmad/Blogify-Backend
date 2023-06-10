@@ -12,7 +12,7 @@ export class CookieUtil {
     res.cookie("authorization", token, {
       httpOnly: true,
       sameSite: "none",
-      secure: false,
+      secure: true,
     });
   }
 
