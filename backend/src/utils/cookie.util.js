@@ -21,7 +21,11 @@ export class CookieUtil {
    * @param {Express.Response} res - The response object.
    */
   clearAuthCookie(res) {
-    res.clearCookie("authorization");
+    res.clearCookie("authorization", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
   }
 }
 
