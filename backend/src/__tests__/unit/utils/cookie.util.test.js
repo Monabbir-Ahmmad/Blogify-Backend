@@ -18,8 +18,8 @@ describe("CookieUtil", () => {
 
       expect(res.cookie).toHaveBeenCalledWith("authorization", token, {
         httpOnly: true,
-        sameSite: "strict",
-        secure: false,
+        sameSite: "none",
+        secure: true,
       });
     });
   });
@@ -28,7 +28,11 @@ describe("CookieUtil", () => {
     it("should clear the authentication cookie", () => {
       cookieUtil.clearAuthCookie(res);
 
-      expect(res.clearCookie).toHaveBeenCalledWith("authorization");
+      expect(res.clearCookie).toHaveBeenCalledWith("authorization", {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      });
     });
   });
 });
