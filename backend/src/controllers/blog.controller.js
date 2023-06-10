@@ -19,7 +19,7 @@ export class BlogController {
   async createBlog(req, res) {
     const userId = req.user.id;
     const { title, content } = req.body;
-    const coverImage = req.file?.url;
+    const coverImage = req.file?.secure_url;
 
     const result = await blogService.createBlog(
       userId,
@@ -87,7 +87,7 @@ export class BlogController {
     const userId = req.user.id;
     const blogId = req.params.blogId;
     const { title, content } = req.body;
-    const coverImage = req.file?.url || req.body.coverImage;
+    const coverImage = req.file?.secure_url || req.body.coverImage;
 
     const result = await blogService.updateBlog(
       userId,

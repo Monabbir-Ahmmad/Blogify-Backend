@@ -198,7 +198,7 @@ describe("UserController", () => {
           userId: 1,
         },
         file: {
-          url: "https://blogify/profile-image.jpg",
+          secure_url: "https://blogify/profile-image.jpg",
         },
       };
 
@@ -208,7 +208,7 @@ describe("UserController", () => {
 
       expect(userService.updateProfileImage).toHaveBeenCalledWith(
         req.user.id,
-        req.file.url
+        req.file.secure_url
       );
       expect(responseUtil.sendContentNegotiatedResponse).toHaveBeenCalledWith(
         req,
@@ -227,7 +227,7 @@ describe("UserController", () => {
           userId: 2,
         },
         file: {
-          url: "https://blogify/profile-image.jpg",
+          secure_url: "https://blogify/profile-image.jpg",
         },
       };
 
@@ -253,7 +253,7 @@ describe("UserController", () => {
           userId: 1,
         },
         file: {
-          url: "https://blogify/cover-image.jpg",
+          secure_url: "https://blogify/cover-image.jpg",
         },
       };
       const expectedResult = { message: "Cover image updated successfully" };
@@ -264,7 +264,7 @@ describe("UserController", () => {
 
       expect(userService.updateCoverImage).toHaveBeenCalledWith(
         req.user.id,
-        req.file.url
+        req.file.secure_url
       );
       expect(responseUtil.sendContentNegotiatedResponse).toHaveBeenCalledWith(
         req,
@@ -283,7 +283,7 @@ describe("UserController", () => {
           userId: 2,
         },
         file: {
-          url: "https://blogify/cover-image.jpg",
+          secure_url: "https://blogify/cover-image.jpg",
         },
       };
 

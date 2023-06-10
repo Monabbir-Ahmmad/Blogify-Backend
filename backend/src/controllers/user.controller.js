@@ -81,7 +81,7 @@ export class UserController {
    */
   async updateProfileImage(req, res) {
     const userId = req.user.id;
-    const profileImage = req.file?.url;
+    const profileImage = req.file?.secure_url;
 
     if (userId != req.params.userId) {
       throw new HttpError(
@@ -102,7 +102,7 @@ export class UserController {
    */
   async updateCoverImage(req, res) {
     const userId = req.user.id;
-    const coverImage = req.file?.url;
+    const coverImage = req.file?.secure_url;
 
     if (userId != req.params.userId) {
       throw new HttpError(
