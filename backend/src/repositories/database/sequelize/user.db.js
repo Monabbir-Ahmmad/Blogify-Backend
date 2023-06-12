@@ -69,6 +69,7 @@ export class UserDB {
         "user.birthDate",
         "user.gender",
         "user.bio",
+        "userType.id",
         "userType.name",
       ],
       attributes: [
@@ -82,8 +83,14 @@ export class UserDB {
         "birthDate",
         "gender",
         "bio",
-        [Sequelize.fn("COUNT", Sequelize.col("blogs.id")), "blogCount"],
-        [Sequelize.fn("COUNT", Sequelize.col("comments.id")), "commentCount"],
+        [
+          Sequelize.fn("COUNT", Sequelize.literal("DISTINCT blogs.id")),
+          "blogCount",
+        ],
+        [
+          Sequelize.fn("COUNT", Sequelize.literal("DISTINCT comments.id")),
+          "commentCount",
+        ],
       ],
       include: [
         {
@@ -102,8 +109,6 @@ export class UserDB {
         },
       ],
     });
-
-    console.warn(user);
 
     if (!user) return null;
 
