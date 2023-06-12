@@ -12,6 +12,8 @@
  * @property {string|null} [coverImage] - The cover image of the user.
  * @property {string|null} [bio] - The bio of the user.
  * @property {Date} createdAt - The date when the user was created.
+ * @property {number} blogCount - The number of blogs the user has.
+ * @property {number} commentCount - The number of comments the user has.
  */
 export class UserResDto {
   constructor(
@@ -24,7 +26,9 @@ export class UserResDto {
     profileImage,
     coverImage,
     bio,
-    createdAt
+    createdAt,
+    blogCount,
+    commentCount
   ) {
     this.id = id;
     this.name = name;
@@ -36,5 +40,7 @@ export class UserResDto {
     this.coverImage = coverImage;
     this.bio = bio;
     this.createdAt = createdAt;
+    this.blogCount = blogCount;
+    this.commentCount = commentCount;
   }
 }

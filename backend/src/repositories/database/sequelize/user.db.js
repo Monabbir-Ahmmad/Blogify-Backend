@@ -1,4 +1,7 @@
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
+
+import { Blog } from "../../../models/blog.model.js";
+import { Comment } from "../../../models/comment.model.js";
 import { SignupReqDto } from "../../../dtos/request/signup.req.dto.js";
 import { User } from "../../../models/user.model.js";
 import { UserProfileUpdateReqDto } from "../../../dtos/request/userProfileUpdate.req.dto.js";
@@ -54,12 +57,57 @@ export class UserDB {
    * @returns {Promise<User|null>} A promise that resolves to the retrieved user or null if not found.
    */
   async getUserById(userId) {
-    return await User.findByPk(userId, {
-      include: {
-        model: UserType,
-        attributes: ["name"],
-      },
+    const user = await User.findByPk(userId, {
+      group: [
+        "user.id",
+        "user.name",
+        "user.email",
+        "user.password",
+        "user.profileImage",
+        "user.coverImage",
+        "user.createdAt",
+        "user.birthDate",
+        "user.gender",
+        "user.bio",
+        "userType.name",
+      ],
+      attributes: [
+        "id",
+        "name",
+        "email",
+        "password",
+        "profileImage",
+        "coverImage",
+        "createdAt",
+        "birthDate",
+        "gender",
+        "bio",
+        [Sequelize.fn("COUNT", Sequelize.col("blogs.id")), "blogCount"],
+        [Sequelize.fn("COUNT", Sequelize.col("comments.id")), "commentCount"],
+      ],
+      include: [
+        {
+          model: UserType,
+          attributes: ["name"],
+        },
+        {
+          model: Blog,
+          attributes: [],
+          required: false,
+        },
+        {
+          model: Comment,
+          attributes: [],
+          required: false,
+        },
+      ],
     });
+
+    console.warn(user);
+
+    if (!user) return null;
+
+    return user;
   }
 
   /**
@@ -150,7 +198,14 @@ export class UserDB {
       offset,
       limit,
       order: [["name", "ASC"]],
-      attributes: ["id", "name", "profileImage"],
+      attributes: [
+        "id",
+        "name",
+        "profileImage",
+        "createdAt",
+        "coverImage",
+        "bio",
+      ],
     });
 
     return {

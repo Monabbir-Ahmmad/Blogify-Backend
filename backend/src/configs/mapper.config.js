@@ -16,6 +16,8 @@ export const mapper = AutoMapper.getInstance();
 mapper.setMapping(User, UserResDto, {
   properties: {
     userType: (user) => user.userType?.name,
+    blogCount: (user) => parseInt(user.get("blogCount")) ?? 0,
+    commentCount: (user) => parseInt(user.get("commentCount")) ?? 0,
   },
 });
 
