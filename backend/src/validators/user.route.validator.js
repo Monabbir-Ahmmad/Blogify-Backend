@@ -1,4 +1,5 @@
 import { body, param } from "express-validator";
+
 import { commonUtil } from "../utils/common.util.js";
 
 const profileUpdate = [
@@ -18,12 +19,15 @@ const profileUpdate = [
     .notEmpty()
     .withMessage("Password is required.")
     .bail()
+    .isLength({ max: 20, min: 8 })
+    .withMessage("Invalid password.")
+    .bail()
     .isStrongPassword()
     .withMessage("Invalid password."),
   body("gender")
     .optional({ nullable: true })
-    .notEmpty()
-    .withMessage("Gender is required."),
+    .isLength({ max: 50, min: 1 })
+    .withMessage("Gender must be between 1 and 50 characters long."),
   body("birthDate")
     .optional({ nullable: true })
     .notEmpty()
@@ -37,11 +41,8 @@ const profileUpdate = [
     .withMessage("Must be at least 10 years old."),
   body("bio")
     .optional({ nullable: true })
-    .notEmpty()
-    .withMessage("Bio can not be empty.")
-    .bail()
-    .isLength({ max: 500 })
-    .withMessage("Bio can not be more than 500 characters."),
+    .isLength({ max: 500, min: 1 })
+    .withMessage("Bio must be between 1 and 500 characters long."),
 ];
 
 const passwordUpdate = [
@@ -49,15 +50,21 @@ const passwordUpdate = [
     .notEmpty()
     .withMessage("Old password is required.")
     .bail()
+    .isLength({ max: 20, min: 8 })
+    .withMessage("Invalid old password.")
+    .bail()
     .isStrongPassword()
     .withMessage("Invalid old password."),
   body("newPassword")
     .notEmpty()
     .withMessage("New password is required.")
     .bail()
+    .isLength({ max: 20, min: 8 })
+    .withMessage("New password must be between 8 and 20 characters long.")
+    .bail()
     .isStrongPassword()
     .withMessage(
-      "New password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+      "New password should have at least one uppercase letter, one lowercase letter, one number and one special character."
     )
     .custom((newPassword, { req }) => {
       if (newPassword === req.body.oldPassword) {
@@ -71,6 +78,9 @@ const profileDelete = [
   body("password")
     .notEmpty()
     .withMessage("Password is required.")
+    .bail()
+    .isLength({ max: 20, min: 8 })
+    .withMessage("Invalid password.")
     .bail()
     .isStrongPassword()
     .withMessage("Invalid password."),

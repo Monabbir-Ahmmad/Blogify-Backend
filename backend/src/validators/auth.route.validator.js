@@ -16,9 +16,12 @@ const signup = [
     .notEmpty()
     .withMessage("Password is required.")
     .bail()
+    .isLength({ max: 20, min: 8 })
+    .withMessage("Password must be between 8 and 20 characters long.")
+    .bail()
     .isStrongPassword()
     .withMessage(
-      "Password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+      "Password should have at least one uppercase letter, one lowercase letter, one number and one special character."
     ),
 ];
 
@@ -32,6 +35,9 @@ const signin = [
   body("password")
     .notEmpty()
     .withMessage("Password is required.")
+    .bail()
+    .isLength({ max: 20, min: 8 })
+    .withMessage("Invalid password.")
     .bail()
     .isStrongPassword()
     .withMessage("Invalid password."),
@@ -51,9 +57,12 @@ const resetPassword = [
     .notEmpty()
     .withMessage("New password is required.")
     .bail()
+    .isLength({ max: 20, min: 8 })
+    .withMessage("New password must be between 8 and 20 characters long.")
+    .bail()
     .isStrongPassword()
     .withMessage(
-      "Password should have at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character."
+      "Password should have at least one uppercase letter, one lowercase letter, one number and one special character."
     ),
   body("resetToken").notEmpty().withMessage("Reset token is required."),
 ];

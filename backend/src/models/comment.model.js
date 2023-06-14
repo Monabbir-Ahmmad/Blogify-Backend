@@ -21,7 +21,7 @@ export class Comment extends Model {}
 Comment.init(
   {
     text: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(500),
       allowNull: false,
       validate: { notEmpty: true },
     },

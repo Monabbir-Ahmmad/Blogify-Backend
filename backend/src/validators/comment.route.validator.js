@@ -15,7 +15,11 @@ const post = [
     .withMessage("Parent comment id can not be empty."),
 ];
 
-const update = [body("text").notEmpty().withMessage("Text is required.")];
+const update = [
+  body("text")
+    .isLength({ min: 1, max: 500 })
+    .withMessage("Text must be between 1 and 500 characters long."),
+];
 
 const routeParam = [
   param("commentId").isNumeric().withMessage("Invalid comment id."),
