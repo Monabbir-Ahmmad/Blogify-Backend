@@ -271,7 +271,9 @@ export class BlogDB {
    */
   async searchBlogByTitle(keyword, offset, limit) {
     const { rows: blogs, count } = await Blog.findAndCountAll({
-      where: { title: { [Op.substring]: keyword } },
+      where: Sequelize.where(Sequelize.fn("LOWER", Sequelize.col("title")), {
+        [Op.substring]: keyword.toLowerCase(),
+      }),
       subQuery: false,
       offset,
       limit,

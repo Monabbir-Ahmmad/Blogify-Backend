@@ -195,11 +195,9 @@ export class UserDB {
    */
   async searchUserByName(keyword, offset, limit) {
     const { rows: users, count } = await User.findAndCountAll({
-      where: {
-        name: {
-          [Op.substring]: keyword,
-        },
-      },
+      where: Sequelize.where(Sequelize.fn("LOWER", Sequelize.col("name")), {
+        [Op.substring]: keyword.toLowerCase(),
+      }),
       offset,
       limit,
       order: [["name", "ASC"]],
