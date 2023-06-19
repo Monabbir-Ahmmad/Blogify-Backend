@@ -117,8 +117,6 @@ export class CommentDB {
         "user.id",
         "user.name",
         "user.profileImage",
-        "commentLikes.userId",
-        "commentLikes.commentId",
       ],
       attributes: [
         "id",
@@ -138,6 +136,7 @@ export class CommentDB {
           model: CommentLike,
           attributes: ["userId"],
           required: false,
+          separate: true,
         },
         {
           model: Comment,
@@ -182,8 +181,6 @@ export class CommentDB {
         "user.id",
         "user.name",
         "user.profileImage",
-        "commentLikes.userId",
-        "commentLikes.commentId",
       ],
       attributes: [
         "id",
@@ -203,6 +200,7 @@ export class CommentDB {
           model: CommentLike,
           attributes: ["userId"],
           required: false,
+          separate: true,
         },
         {
           model: Comment,
