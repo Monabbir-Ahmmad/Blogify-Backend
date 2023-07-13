@@ -116,8 +116,6 @@ export class BlogDB {
         "user.id",
         "user.name",
         "user.profileImage",
-        "likes.userId",
-        "likes.blogId",
       ],
       attributes: [
         "id",
@@ -137,6 +135,7 @@ export class BlogDB {
           model: Like,
           attributes: ["userId"],
           required: false,
+          separate: true,
         },
         {
           model: Comment,
@@ -178,8 +177,6 @@ export class BlogDB {
         "user.id",
         "user.name",
         "user.profileImage",
-        "likes.userId",
-        "likes.blogId",
       ],
       attributes: [
         "id",
@@ -199,6 +196,7 @@ export class BlogDB {
           model: Like,
           attributes: ["userId"],
           required: false,
+          separate: true,
         },
         {
           model: Comment,
@@ -288,8 +286,6 @@ export class BlogDB {
         "user.id",
         "user.name",
         "user.profileImage",
-        "likes.userId",
-        "likes.blogId",
       ],
       attributes: [
         "id",
@@ -309,6 +305,7 @@ export class BlogDB {
           model: Like,
           attributes: ["userId"],
           required: false,
+          separate: true,
         },
         {
           model: Comment,
