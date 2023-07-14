@@ -3,4 +3,3 @@ coverage
 docs
 npm-debug.log
 *.sqlite
-**/__tests__
